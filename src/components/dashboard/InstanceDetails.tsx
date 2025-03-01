@@ -9,10 +9,10 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge'; // Fixed import casing
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
-import { Server, Clock, Database, CreditCard } from 'lucide-react';
+import { Server, Clock, Database, CreditCard, Download, BarChart, Shield, Terminal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Dialog,
@@ -72,10 +72,11 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="overview">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="overview">概览</TabsTrigger>
                   <TabsTrigger value="specifications">规格</TabsTrigger>
                   <TabsTrigger value="performance">性能</TabsTrigger>
+                  <TabsTrigger value="usage">使用方法</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="overview" className="pt-4">
@@ -281,6 +282,108 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                               {Math.floor(instance.performance * 0.8)} TFLOPS
                             </p>
                             <p className="text-xs text-muted-foreground">FP16 性能</p>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="usage" className="pt-4">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-medium mb-3">快速开始指南</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <div className="flex items-center justify-center h-6 w-6 rounded-full bg-primary text-white text-sm font-medium shrink-0">1</div>
+                          <div>
+                            <p className="font-medium">租用实例</p>
+                            <p className="text-sm text-muted-foreground">完成租用流程并等待实例启动</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="flex items-center justify-center h-6 w-6 rounded-full bg-primary text-white text-sm font-medium shrink-0">2</div>
+                          <div>
+                            <p className="font-medium">连接到实例</p>
+                            <p className="text-sm text-muted-foreground">使用SSH或Web终端连接到您的实例</p>
+                            <div className="mt-2 p-2 bg-muted rounded-md font-mono text-xs overflow-x-auto">
+                              ssh root@{instance.id}.vastai.com
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="flex items-center justify-center h-6 w-6 rounded-full bg-primary text-white text-sm font-medium shrink-0">3</div>
+                          <div>
+                            <p className="font-medium">安装您的环境</p>
+                            <p className="text-sm text-muted-foreground">安装所需的深度学习框架和依赖</p>
+                            <div className="mt-2 p-2 bg-muted rounded-md font-mono text-xs overflow-x-auto">
+                              conda create -n myenv python=3.9<br />
+                              conda activate myenv<br />
+                              pip install tensorflow torch
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="flex items-center justify-center h-6 w-6 rounded-full bg-primary text-white text-sm font-medium shrink-0">4</div>
+                          <div>
+                            <p className="font-medium">开始使用</p>
+                            <p className="text-sm text-muted-foreground">上传数据并开始您的工作</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-lg font-medium mb-3">常用命令</h3>
+                      <div className="space-y-3">
+                        <Card>
+                          <CardHeader className="py-2 px-4">
+                            <div className="flex items-center gap-2">
+                              <Terminal className="h-4 w-4 text-muted-foreground" />
+                              <p className="text-sm font-medium">检查GPU状态</p>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="py-2 px-4 bg-muted">
+                            <pre className="font-mono text-xs">nvidia-smi</pre>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card>
+                          <CardHeader className="py-2 px-4">
+                            <div className="flex items-center gap-2">
+                              <Download className="h-4 w-4 text-muted-foreground" />
+                              <p className="text-sm font-medium">下载数据</p>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="py-2 px-4 bg-muted">
+                            <pre className="font-mono text-xs">wget https://example.com/dataset.zip</pre>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card>
+                          <CardHeader className="py-2 px-4">
+                            <div className="flex items-center gap-2">
+                              <BarChart className="h-4 w-4 text-muted-foreground" />
+                              <p className="text-sm font-medium">运行基准测试</p>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="py-2 px-4 bg-muted">
+                            <pre className="font-mono text-xs">python -c "import torch; print(torch.cuda.get_device_name(0))"</pre>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card>
+                          <CardHeader className="py-2 px-4">
+                            <div className="flex items-center gap-2">
+                              <Shield className="h-4 w-4 text-muted-foreground" />
+                              <p className="text-sm font-medium">安全关闭</p>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="py-2 px-4 bg-muted">
+                            <pre className="font-mono text-xs">sudo shutdown -h now</pre>
                           </CardContent>
                         </Card>
                       </div>

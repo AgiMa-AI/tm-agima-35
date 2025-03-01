@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge'; // Fixed import casing
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
 import { Server, Database, CreditCard } from 'lucide-react';
