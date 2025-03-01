@@ -22,13 +22,13 @@ const Details = () => {
     return (
       <Layout>
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <h2 className="text-2xl font-bold mb-2">Instance Not Found</h2>
+          <h2 className="text-2xl font-bold mb-2">未找到实例</h2>
           <p className="text-muted-foreground mb-6">
-            The instance you're looking for doesn't exist or has been removed.
+            您寻找的实例不存在或已被移除。
           </p>
           <Button onClick={handleGoBack}>
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Go Back
+            返回
           </Button>
         </div>
       </Layout>
@@ -45,11 +45,11 @@ const Details = () => {
             onClick={handleGoBack}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Instances
+            返回实例列表
           </Button>
           <h1 className="text-3xl font-bold tracking-tight">{instance.name}</h1>
           <p className="text-muted-foreground mt-1">
-            Detailed information and rental options
+            详细信息和租用选项
           </p>
         </div>
         

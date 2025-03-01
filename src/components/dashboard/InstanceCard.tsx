@@ -16,9 +16,9 @@ interface InstanceCardProps {
 const InstanceCard = ({ instance, className }: InstanceCardProps) => {
   // Define badge styles based on availability
   const availabilityBadge = {
-    available: <Badge variant="success">Available</Badge>,
-    rented: <Badge variant="warning">In Use</Badge>,
-    offline: <Badge variant="danger">Offline</Badge>,
+    available: <Badge className="bg-green-500 hover:bg-green-600">可用</Badge>,
+    rented: <Badge className="bg-yellow-500 hover:bg-yellow-600">使用中</Badge>,
+    offline: <Badge className="bg-red-500 hover:bg-red-600">离线</Badge>,
   };
 
   return (
@@ -42,7 +42,7 @@ const InstanceCard = ({ instance, className }: InstanceCardProps) => {
             </div>
           </div>
           <p className="text-lg font-bold text-primary">
-            ${instance.price}<span className="text-xs text-muted-foreground">/hr</span>
+            ¥{instance.price}<span className="text-xs text-muted-foreground">/小时</span>
           </p>
         </div>
 
@@ -51,25 +51,25 @@ const InstanceCard = ({ instance, className }: InstanceCardProps) => {
             <Server className="h-5 w-5 text-muted-foreground" />
             <div>
               <p className="text-sm font-medium">{instance.gpuModel}</p>
-              <p className="text-xs text-muted-foreground">{instance.gpuMemory} GB VRAM</p>
+              <p className="text-xs text-muted-foreground">{instance.gpuMemory} GB 显存</p>
             </div>
           </div>
           
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">CPU</span>
-              <span>{instance.cpuCores} Cores</span>
+              <span>{instance.cpuCores} 核心</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">RAM</span>
+              <span className="text-xs text-muted-foreground">内存</span>
               <span>{instance.ramSize} GB</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">Storage</span>
+              <span className="text-xs text-muted-foreground">存储</span>
               <span>{instance.storageSize} GB</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">Performance</span>
+              <span className="text-xs text-muted-foreground">性能</span>
               <span className="flex items-center">
                 <span className={cn(
                   "inline-block w-2 h-2 rounded-full mr-1",
@@ -90,7 +90,7 @@ const InstanceCard = ({ instance, className }: InstanceCardProps) => {
           className="flex-1"
           asChild
         >
-          <Link to={`/details/${instance.id}`}>Details</Link>
+          <Link to={`/details/${instance.id}`}>详情</Link>
         </Button>
         <Button 
           variant="default" 
@@ -98,7 +98,7 @@ const InstanceCard = ({ instance, className }: InstanceCardProps) => {
           className="flex-1"
           disabled={instance.availability !== 'available'}
         >
-          Rent Now
+          立即租用
         </Button>
       </CardFooter>
     </Card>

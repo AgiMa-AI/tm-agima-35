@@ -45,12 +45,15 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
     <aside className={cn(
       'border-r bg-background transition-all duration-300 ease-in-out',
       collapsed ? 'w-[70px]' : 'w-[240px]',
+      'lg:block',
+      !collapsed && 'hidden',
       className
     )}>
       <div className="flex h-full flex-col">
         <div className="flex h-14 items-center border-b px-4">
           <Link to="/" className="flex items-center gap-2 font-semibold">
-            {!collapsed && <span className="text-xl">Cloud GPU</span>}
+            {!collapsed && <span className="text-xl">GPU 云平台</span>}
+            {collapsed && <Server className="h-6 w-6" />}
           </Link>
         </div>
         <ScrollArea className="flex-1 py-4">
@@ -60,30 +63,30 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 "mb-1 text-xs font-medium text-muted-foreground",
                 collapsed && "sr-only"
               )}>
-                Overview
+                概览
               </h3>
               <NavItem 
                 href="/" 
                 icon={<Home className="h-4 w-4" />}
-                title="Dashboard"
+                title="控制面板"
                 isActive={isActive('/')}
               />
               <NavItem 
                 href="/instances" 
                 icon={<Server className="h-4 w-4" />}
-                title="All Instances"
+                title="所有实例"
                 isActive={isActive('/instances')}
               />
               <NavItem 
                 href="/billing" 
                 icon={<CreditCard className="h-4 w-4" />}
-                title="Billing"
+                title="账单"
                 isActive={isActive('/billing')}
               />
               <NavItem 
                 href="/history" 
                 icon={<Clock className="h-4 w-4" />}
-                title="Usage History"
+                title="使用历史"
                 isActive={isActive('/history')}
               />
             </div>
@@ -95,18 +98,18 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 "mb-1 text-xs font-medium text-muted-foreground",
                 collapsed && "sr-only"
               )}>
-                Management
+                管理
               </h3>
               <NavItem 
                 href="/storage" 
                 icon={<Database className="h-4 w-4" />}
-                title="Storage"
+                title="存储"
                 isActive={isActive('/storage')}
               />
               <NavItem 
                 href="/settings" 
                 icon={<Settings className="h-4 w-4" />}
-                title="Settings"
+                title="设置"
                 isActive={isActive('/settings')}
               />
             </div>
@@ -115,7 +118,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
         <div className="mt-auto p-4 border-t">
           <Button className="w-full" size="sm">
             <Plus className="h-4 w-4 mr-2" />
-            {!collapsed && "New Instance"}
+            {!collapsed && "新建实例"}
           </Button>
         </div>
       </div>

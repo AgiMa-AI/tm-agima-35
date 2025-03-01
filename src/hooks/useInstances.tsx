@@ -52,15 +52,15 @@ export const useInstances = (initialFilters: InstanceFilters = {}) => {
     setFilters({});
   };
   
-  // Get available filter options
+  // Get available filter options with priceRange as [number, number]
   const filterOptions = useMemo(() => {
+    const minPrice = Math.min(...instances.map(instance => instance.price));
+    const maxPrice = Math.max(...instances.map(instance => instance.price));
+    
     return {
       locations: [...new Set(instances.map(instance => instance.location))],
       gpuModels: [...new Set(instances.map(instance => instance.gpuModel))],
-      priceRange: [
-        Math.min(...instances.map(instance => instance.price)),
-        Math.max(...instances.map(instance => instance.price))
-      ],
+      priceRange: [minPrice, maxPrice] as [number, number],
       availabilityOptions: ['available', 'rented', 'offline'] as const
     };
   }, []);
