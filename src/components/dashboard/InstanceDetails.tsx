@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge'; // Fixed import casing
+import { Badge } from '@/components/ui/badge'; // Fixed the casing
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
 import { Server, Clock, Database, CreditCard, Download, BarChart, Shield, Terminal } from 'lucide-react';

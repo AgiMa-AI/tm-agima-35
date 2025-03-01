@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge'; // 修复大小写问题
+import { Badge } from '@/components/ui/badge'; // Fixed the casing
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
 import { Server, Database, CreditCard } from 'lucide-react';
