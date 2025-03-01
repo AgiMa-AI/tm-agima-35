@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Home, Server, CreditCard, Clock, Settings, Plus, Database } from 'lucide-react';
+import { Home, Server, CreditCard, Clock, Settings, Plus, Database, Smartphone } from 'lucide-react';
 
 interface SidebarProps {
   collapsed?: boolean;
@@ -105,6 +104,12 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 icon={<Database className="h-4 w-4" />}
                 title="存储"
                 isActive={isActive('/storage')}
+              />
+              <NavItem 
+                href="/mobile-app" 
+                icon={<Smartphone className="h-4 w-4" />}
+                title="移动应用"
+                isActive={isActive('/mobile-app')}
               />
               <NavItem 
                 href="/settings" 

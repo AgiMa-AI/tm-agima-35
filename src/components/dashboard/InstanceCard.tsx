@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge'; // Fixed import casing
+import { Badge } from '@/components/ui/badge'; // 修复大小写问题
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
 import { Server, Database, CreditCard } from 'lucide-react';
@@ -16,9 +16,9 @@ interface InstanceCardProps {
 const InstanceCard = ({ instance, className }: InstanceCardProps) => {
   // Define badge styles based on availability
   const availabilityBadge = {
-    available: <Badge className="bg-green-500 hover:bg-green-600">可用</Badge>,
-    rented: <Badge className="bg-yellow-500 hover:bg-yellow-600">使用中</Badge>,
-    offline: <Badge className="bg-red-500 hover:bg-red-600">离线</Badge>,
+    available: <Badge variant="outline" className="bg-green-500 text-white hover:bg-green-600">可用</Badge>,
+    rented: <Badge variant="outline" className="bg-yellow-500 text-white hover:bg-yellow-600">使用中</Badge>,
+    offline: <Badge variant="outline" className="bg-red-500 text-white hover:bg-red-600">离线</Badge>,
   };
 
   return (

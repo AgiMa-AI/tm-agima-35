@@ -11,6 +11,7 @@ import History from "./pages/History";
 import Billing from "./pages/Billing";
 import Storage from "./pages/Storage";
 import Settings from "./pages/Settings";
+import MobileApp from "./pages/MobileApp";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/history" element={<History />} />
           <Route path="/storage" element={<Storage />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/mobile-app" element={<MobileApp />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
