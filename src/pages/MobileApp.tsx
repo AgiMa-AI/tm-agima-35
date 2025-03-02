@@ -21,7 +21,7 @@ const MobileApp = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           <Card className="md:col-span-7">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between flex-wrap gap-2">
                 <CardTitle className="text-xl flex items-center">
                   <Smartphone className="mr-2 h-5 w-5" />
                   移动客户端
@@ -41,7 +41,7 @@ const MobileApp = () => {
                   <TabsTrigger value="ios">iOS版</TabsTrigger>
                 </TabsList>
                 <TabsContent value="android" className="space-y-4 mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
                     <div className="flex justify-center">
                       <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=300" 
                            alt="Android App" 
@@ -73,7 +73,7 @@ const MobileApp = () => {
                   </div>
                 </TabsContent>
                 <TabsContent value="ios" className="space-y-4 mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
                     <div className="flex justify-center">
                       <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=300" 
                            alt="iOS App" 
@@ -161,7 +161,7 @@ const MobileApp = () => {
           </Card>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
               <CardTitle>扫码下载</CardTitle>
@@ -244,7 +244,7 @@ const MobileApp = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="border rounded-lg p-4 hover:border-primary transition-colors">
                   <div className="flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary mb-4">
                     <span className="font-bold text-lg">1</span>

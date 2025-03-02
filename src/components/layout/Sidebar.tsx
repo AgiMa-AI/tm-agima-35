@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -45,7 +46,6 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
       'border-r bg-background transition-all duration-300 ease-in-out',
       collapsed ? 'w-[70px]' : 'w-[240px]',
       'lg:block',
-      !collapsed && 'hidden',
       className
     )}>
       <div className="flex h-full flex-col">
@@ -121,9 +121,9 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
           </nav>
         </ScrollArea>
         <div className="mt-auto p-4 border-t">
-          <Button className="w-full" size="sm">
+          <Button className="w-full justify-center" size="sm">
             <Plus className="h-4 w-4 mr-2" />
-            {!collapsed && "新建实例"}
+            {!collapsed ? "新建实例" : null}
           </Button>
         </div>
       </div>

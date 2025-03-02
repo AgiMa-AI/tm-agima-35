@@ -137,3 +137,12 @@
     transition: opacity 0.2s, transform 0.2s;
   }
 }
+
+/* Extra small screen size */
+@layer utilities {
+  @variants responsive {
+    .xs\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

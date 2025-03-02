@@ -36,13 +36,13 @@ const InstanceCard = ({ instance, className, onRent }: InstanceCardProps) => {
       "flex flex-col",
       className
     )}>
-      <CardContent className="p-6 flex-1">
-        <div className="flex justify-between items-start">
+      <CardContent className="p-4 sm:p-6 flex-1">
+        <div className="flex justify-between items-start flex-wrap gap-2">
           <div>
             <h3 className="text-lg font-semibold tracking-tight mb-1 line-clamp-1">
               {instance.name}
             </h3>
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4 flex-wrap">
               {availabilityBadge[instance.availability]}
               <span className="text-xs text-muted-foreground">
                 {instance.location}
@@ -52,7 +52,7 @@ const InstanceCard = ({ instance, className, onRent }: InstanceCardProps) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <p className="text-lg font-bold text-primary">
+                <p className="text-lg font-bold text-primary whitespace-nowrap">
                   ¥{instance.price}<span className="text-xs text-muted-foreground">/小时</span>
                 </p>
               </TooltipTrigger>
@@ -100,11 +100,11 @@ const InstanceCard = ({ instance, className, onRent }: InstanceCardProps) => {
         </div>
       </CardContent>
       
-      <CardFooter className="p-4 pt-0 border-t mt-4 flex justify-between gap-2">
+      <CardFooter className="p-3 sm:p-4 pt-0 border-t mt-4 flex justify-between gap-2 flex-wrap sm:flex-nowrap">
         <Button 
           variant="outline" 
           size="sm" 
-          className="flex-1"
+          className="flex-1 min-w-[80px]"
           asChild
         >
           <Link to={`/details/${instance.id}`}>详情</Link>
@@ -112,7 +112,7 @@ const InstanceCard = ({ instance, className, onRent }: InstanceCardProps) => {
         <Button 
           variant="default" 
           size="sm" 
-          className="flex-1"
+          className="flex-1 min-w-[80px]"
           disabled={instance.availability !== 'available'}
           onClick={handleRentClick}
         >

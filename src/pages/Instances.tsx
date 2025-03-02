@@ -29,9 +29,9 @@ const Instances = () => {
   
   return (
     <Layout searchHandler={handleSearch}>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">所有 GPU 实例</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">所有 GPU 实例</h1>
           <p className="text-muted-foreground mt-1">
             浏览和筛选可用的 GPU 实例
           </p>
@@ -44,14 +44,14 @@ const Instances = () => {
           onFilterReset={resetFilters}
         />
         
-        <div className="flex items-end justify-between mb-4">
+        <div className="flex items-end justify-between mb-4 flex-wrap gap-2">
           <p className="text-sm text-muted-foreground">
             显示 {filteredCount} 个，共 {totalCount} 个实例
           </p>
         </div>
         
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {Array(8).fill(0).map((_, i) => (
               <div key={i} className="flex flex-col space-y-3">
                 <Skeleton className="h-[300px] w-full rounded-xl" />
@@ -59,13 +59,13 @@ const Instances = () => {
             ))}
           </div>
         ) : instances.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {instances.map((instance) => (
               <InstanceCard key={instance.id} instance={instance} />
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="flex flex-col items-center justify-center py-8 sm:py-12 text-center">
             <Server className="h-12 w-12 text-muted-foreground/50 mb-4" />
             <h3 className="text-lg font-medium">未找到实例</h3>
             <p className="text-muted-foreground mt-1 max-w-md">

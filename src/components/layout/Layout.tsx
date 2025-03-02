@@ -21,12 +21,13 @@ const Layout = ({
   searchHandler
 }: LayoutProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const location = useLocation();
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
+      const newIsMobile = window.innerWidth < 768;
+      setIsMobile(newIsMobile);
       if (window.innerWidth >= 1024) {
         setSidebarCollapsed(false);
       } else {
@@ -42,6 +43,13 @@ const Layout = ({
     };
   }, []);
 
+  // Close sidebar when route changes on mobile
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarCollapsed(true);
+    }
+  }, [location.pathname, isMobile]);
+
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
@@ -52,7 +60,17 @@ const Layout = ({
       <div className="flex flex-1 overflow-hidden">
         {!hideSidebar && (
           <>
-            <Sidebar collapsed={sidebarCollapsed} />
+            <div 
+              className={cn(
+                "fixed inset-0 bg-black/50 z-40 transition-opacity lg:hidden",
+                sidebarCollapsed ? "opacity-0 pointer-events-none" : "opacity-100"
+              )}
+              onClick={() => setSidebarCollapsed(true)}
+            />
+            <Sidebar collapsed={sidebarCollapsed} className={cn(
+              "absolute z-50 h-full lg:relative",
+              sidebarCollapsed && isMobile ? "-translate-x-full" : "translate-x-0"
+            )} />
             <Button 
               variant="outline" 
               size="icon" 
@@ -65,9 +83,9 @@ const Layout = ({
         )}
         <main className={cn(
           "flex-1 overflow-y-auto transition-all duration-300 ease-in-out",
-          !hideSidebar && !sidebarCollapsed && !isMobile ? 'ml-[240px]' : 'ml-0'
+          !hideSidebar && !sidebarCollapsed && !isMobile ? 'lg:ml-[240px]' : 'ml-0'
         )}>
-          <div className="container mx-auto py-8 px-4 md:px-8 animate-fade-in">
+          <div className="container mx-auto py-4 sm:py-8 px-3 sm:px-4 md:px-8 animate-fade-in">
             {children}
           </div>
         </main>
