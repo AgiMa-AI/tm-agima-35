@@ -60,6 +60,7 @@ const Layout = ({
       <div className="flex flex-1 overflow-hidden">
         {!hideSidebar && (
           <>
+            {/* Mobile sidebar overlay */}
             <div 
               className={cn(
                 "fixed inset-0 bg-black/50 z-40 transition-opacity lg:hidden",
@@ -67,10 +68,12 @@ const Layout = ({
               )}
               onClick={() => setSidebarCollapsed(true)}
             />
+            {/* Sidebar */}
             <Sidebar collapsed={sidebarCollapsed} className={cn(
-              "absolute z-50 h-full lg:relative",
+              "absolute z-50 h-full lg:relative transition-transform duration-300",
               sidebarCollapsed && isMobile ? "-translate-x-full" : "translate-x-0"
             )} />
+            {/* Mobile toggle button */}
             <Button 
               variant="outline" 
               size="icon" 

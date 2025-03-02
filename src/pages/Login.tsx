@@ -72,20 +72,20 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary">GPU 计算资源租赁平台</h1>
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary">GPU 计算资源租赁平台</h1>
           <p className="text-muted-foreground mt-2">高性能计算资源，随时随地可用</p>
         </div>
         
         <Card className="w-full shadow-lg border-blue-100 animate-fade-in">
-          <CardHeader className="space-y-1">
+          <CardHeader className="space-y-1 px-4 py-5 sm:px-6">
             <CardTitle className="text-xl text-center">欢迎使用</CardTitle>
             <CardDescription className="text-center">
               登录您的账户以继续使用服务
             </CardDescription>
           </CardHeader>
           
-          <CardContent>
+          <CardContent className="px-4 sm:px-6">
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-4">
                 <TabsTrigger value="login">登录</TabsTrigger>
@@ -168,11 +168,11 @@ const Login = () => {
                   <div className="grid grid-cols-2 gap-3 mt-4">
                     <Button variant="outline" className="flex items-center gap-2">
                       <Mail className="h-4 w-4" />
-                      <span>Google</span>
+                      <span className="hidden xs:inline">Google</span>
                     </Button>
                     <Button variant="outline" className="flex items-center gap-2">
                       <Github className="h-4 w-4" />
-                      <span>GitHub</span>
+                      <span className="hidden xs:inline">GitHub</span>
                     </Button>
                   </div>
                 </div>
@@ -279,8 +279,8 @@ const Login = () => {
             </Tabs>
           </CardContent>
           
-          <CardFooter className="flex flex-col space-y-4">
-            <div className="text-sm text-center text-muted-foreground">
+          <CardFooter className="flex flex-col space-y-4 px-4 py-5 sm:px-6">
+            <div className="text-xs sm:text-sm text-center text-muted-foreground">
               <span>登录即表示您同意我们的</span>
               <a href="#" className="text-primary hover:underline"> 服务条款 </a>
               <span>和</span>

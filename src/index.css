@@ -138,11 +138,94 @@
   }
 }
 
-/* Extra small screen size */
+/* Mobile Responsive Utilities */
 @layer utilities {
-  @variants responsive {
-    .xs\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Extra small screen size */
+  .xs\:inline {
+    display: inline;
+  }
+  
+  .xs\:hidden {
+    display: none;
+  }
+  
+  .xs\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  /* Mobile spacing */
+  .sm-spacing {
+    @apply space-y-2 sm:space-y-4;
+  }
+  
+  /* Responsive text */
+  .responsive-text {
+    @apply text-sm sm:text-base;
+  }
+  
+  /* Responsive buttons */
+  .responsive-btn {
+    @apply px-3 py-1.5 sm:px-4 sm:py-2;
+  }
+  
+  /* Mobile friendly touch targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Mobile animations */
+  .mobile-slide-in {
+    animation: slide-in 0.3s ease forwards;
+  }
+  
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
     }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
+
+/* Media Queries for better mobile support */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  input, select, textarea {
+    font-size: 16px !important; /* Prevent zoom on focus in iOS */
+  }
+  
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Add even more specific mobile styles */
+  .xs-text-center {
+    text-align: center;
+  }
+  
+  .xs-full-width {
+    width: 100% !important;
+  }
+  
+  .xs-p-2 {
+    padding: 0.5rem !important;
+  }
+}
+
+/* Better touch feedback */
+@media (hover: none) {
+  .hover\:bg-primary:active {
+    @apply bg-primary/90;
+  }
+  
+  button:active, a:active {
+    opacity: 0.8;
   }
 }
