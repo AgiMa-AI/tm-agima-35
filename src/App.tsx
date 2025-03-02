@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Instances from "./pages/Instances";
 import Details from "./pages/Details";
@@ -14,30 +14,41 @@ import Settings from "./pages/Settings";
 import MobileApp from "./pages/MobileApp";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import { AuthProvider } from "./hooks/useAuth";
 
-const queryClient = new QueryClient();
+// Create a new QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Index />} />
-          <Route path="/instances" element={<Instances />} />
-          <Route path="/details/:id" element={<Details />} />
-          <Route path="/billing" element={<Billing />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/storage" element={<Storage />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/mobile-app" element={<MobileApp />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/instances" element={<Instances />} />
+            <Route path="/details/:id" element={<Details />} />
+            <Route path="/billing" element={<Billing />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/storage" element={<Storage />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/mobile-app" element={<MobileApp />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </TooltipProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </QueryClientProvider>
 );
 
