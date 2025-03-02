@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Eye, EyeOff, User, Key, LucideGithub, LucideGoogle } from 'lucide-react';
+import { Eye, EyeOff, User, Key, Github, Mail } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { Separator } from '@/components/ui/separator';
 
@@ -167,11 +167,11 @@ const Login = () => {
                   
                   <div className="grid grid-cols-2 gap-3 mt-4">
                     <Button variant="outline" className="flex items-center gap-2">
-                      <LucideGoogle className="h-4 w-4" />
+                      <Mail className="h-4 w-4" />
                       <span>Google</span>
                     </Button>
                     <Button variant="outline" className="flex items-center gap-2">
-                      <LucideGithub className="h-4 w-4" />
+                      <Github className="h-4 w-4" />
                       <span>GitHub</span>
                     </Button>
                   </div>
