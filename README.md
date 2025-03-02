@@ -1,69 +1,78 @@
-# Welcome to your Lovable project
 
-## Project info
+# GPU 计算资源租赁平台
 
-**URL**: https://lovable.dev/projects/5348c451-c83b-4458-95b0-37542e6b4888
+## 项目技术栈
 
-## How can I edit this code?
+**前端**: Flutter + Dart
+**后端**: Go + Fiber 框架
+**数据库**: PostgreSQL + Redis
 
-There are several ways of editing your application.
+## 项目说明
 
-**Use Lovable**
+GPU 计算资源租赁平台是一个连接GPU资源供应商和需求方的双边市场平台。该平台允许GPU拥有者出租其计算资源，而需要高性能计算能力的用户可以租用这些资源。
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/5348c451-c83b-4458-95b0-37542e6b4888) and start prompting.
+### 核心功能
 
-Changes made via Lovable will be committed automatically to this repo.
+- **用户系统**: 支持租赁者和出租者两种角色
+- **算力产品管理**: 出租者可发布GPU资源，租赁者可选择租赁
+- **租赁订单系统**: 处理租赁交易和支付
+- **收益计算**: 自动计算租赁收益和推广分成
+- **用户树结构**: 支持多级推广系统和收益分成
+- **积分系统**: 1￥ = 1积分，用于平台内支付和奖励
+- **数据可视化**: 提供收益、使用情况等数据分析
 
-**Use your preferred IDE**
+## 开发计划
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+本项目将分三个阶段进行开发:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. **核心功能**: 用户系统、产品管理、订单系统、收益计算
+2. **增强功能**: VIP体系、推广系统、积分系统、数据可视化
+3. **智能化运营**: AI收益预测、风控机制、活动系统
 
-Follow these steps:
+## 如何使用
+
+### 开发环境配置
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# 前端 (Flutter)
+flutter pub get
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# 后端 (Go)
+go mod download
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# 启动开发服务器
+make dev
 ```
 
-**Edit a file directly in GitHub**
+## API 文档
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+API文档将在开发过程中更新并提供Swagger UI界面访问。
 
-**Use GitHub Codespaces**
+## 部署说明
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+支持Docker容器化部署，详细部署文档将在项目进行过程中提供。
 
-## What technologies are used for this project?
+## 项目架构
 
-This project is built with .
+```
+├── frontend/           # Flutter前端代码
+│   ├── lib/            # Dart源代码
+│   ├── assets/         # 静态资源
+│   └── test/           # 测试代码
+│
+├── backend/            # Go后端代码
+│   ├── api/            # API路由和处理器
+│   ├── models/         # 数据模型
+│   ├── services/       # 业务逻辑
+│   └── utils/          # 工具函数
+│
+├── database/           # 数据库相关
+│   ├── migrations/     # 数据库迁移脚本
+│   └── seeds/          # 初始数据
+│
+└── docs/               # 项目文档
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 版权信息
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/5348c451-c83b-4458-95b0-37542e6b4888) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+© 2023 GPU计算资源租赁平台
