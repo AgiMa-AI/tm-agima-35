@@ -1,7 +1,7 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Bell, Search, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Bell, LogIn, LogOut, Search, Settings, User } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,16 +12,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { toast } from '@/components/ui/use-toast';
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
 }
 
 const Header = ({ onSearch }: HeaderProps) => {
+  // 这里模拟用户登录状态，实际开发中应该使用真实的认证状态
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onSearch) {
       onSearch(e.target.value);
     }
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleLogout = () => {
+    // 模拟退出登录
+    setIsLoggedIn(false);
+    toast({
+      title: "已退出登录",
+      description: "您已成功退出登录",
+    });
+    navigate('/login');
   };
 
   return (
@@ -32,7 +52,7 @@ const Header = ({ onSearch }: HeaderProps) => {
             to="/"
             className="flex items-center space-x-2 font-semibold text-xl transition-colors hover:text-primary"
           >
-            <span className="hidden sm:inline-block">Cloud GPU</span>
+            <span className="hidden sm:inline-block">GPU云算力</span>
           </Link>
         </div>
 
@@ -41,7 +61,7 @@ const Header = ({ onSearch }: HeaderProps) => {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search instances..."
+              placeholder="搜索GPU实例..."
               className="w-full pl-8 bg-background border-muted"
               onChange={handleSearch}
             />
@@ -53,32 +73,58 @@ const Header = ({ onSearch }: HeaderProps) => {
             variant="ghost"
             size="icon"
             className="rounded-full"
-            aria-label="Notifications"
+            aria-label="通知"
           >
             <Bell className="h-5 w-5" />
           </Button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full border"
-                aria-label="User menu"
-              >
-                <User className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Log out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {isLoggedIn ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full border"
+                  aria-label="用户菜单"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/placeholder.svg" alt="用户头像" />
+                    <AvatarFallback>US</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>我的账户</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>个人资料</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/billing')}>
+                  <span>账单管理</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/settings')}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>设置</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>退出登录</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="flex items-center gap-1"
+              onClick={handleLogin}
+            >
+              <LogIn className="h-4 w-4" />
+              <span>登录</span>
+            </Button>
+          )}
         </div>
       </div>
     </header>

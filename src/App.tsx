@@ -13,6 +13,7 @@ import Storage from "./pages/Storage";
 import Settings from "./pages/Settings";
 import MobileApp from "./pages/MobileApp";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Index />} />
           <Route path="/instances" element={<Instances />} />
           <Route path="/details/:id" element={<Details />} />
