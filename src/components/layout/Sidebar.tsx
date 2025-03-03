@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Home, Server, CreditCard, Clock, Settings, Plus, Database, Smartphone, BarChart } from 'lucide-react';
+import { Home, Server, CreditCard, Clock, Settings, Plus, Database, Smartphone, BarChart, Bot, Cpu } from 'lucide-react';
 
 interface SidebarProps {
   collapsed?: boolean;
@@ -72,8 +73,20 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
               <NavItem 
                 href="/instances" 
                 icon={<Server className="h-4 w-4" />}
-                title="所有实例"
+                title="GPU 实例"
                 isActive={isActive('/instances')}
+              />
+              <NavItem 
+                href="/agi-models" 
+                icon={<Bot className="h-4 w-4" />}
+                title="AGI 模型"
+                isActive={isActive('/agi-models')}
+              />
+              <NavItem 
+                href="/agi-hosting" 
+                icon={<Cpu className="h-4 w-4" />}
+                title="算力托管"
+                isActive={isActive('/agi-hosting')}
               />
               <NavItem 
                 href="/charts" 
@@ -128,7 +141,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
         <div className="mt-auto p-4 border-t">
           <Button className="w-full justify-center" size="sm">
             <Plus className="h-4 w-4 mr-2" />
-            {!collapsed ? "新建实例" : null}
+            {!collapsed ? "创建资源" : null}
           </Button>
         </div>
       </div>
