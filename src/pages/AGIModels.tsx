@@ -9,6 +9,7 @@ import { Bot, Server, Cpu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
+// Use the FilterRecord type that matches what useAGIModels expects
 type FilterRecord = Record<string, string[] | undefined>;
 
 const AGIModels = () => {

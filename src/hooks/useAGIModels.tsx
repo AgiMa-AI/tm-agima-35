@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { AGIModel } from '@/types/agi';
@@ -130,20 +129,15 @@ const mockAGIModels: AGIModel[] = [
   }
 ];
 
-// Update the interface to be compatible with Record<string, string[]>
-interface AGIModelFilters {
-  search?: string[];
-  type?: string[];
-  creator?: string[];
-  industry?: string[]; // 适用产业
-  series?: string[]; // 系列选项
+// Define the type for filter record that matches what's expected in components
+export type FilterRecord = Record<string, string[] | undefined>;
+
+// Update the interface to be compatible with FilterRecord
+interface AGIModelFilters extends FilterRecord {
   featured?: boolean;
   minCost?: number;
   maxCost?: number;
 }
-
-// Define the type for filter record that matches what's expected in AGIModelFilters
-type FilterRecord = Record<string, string[] | undefined>;
 
 export const useAGIModels = () => {
   const [models, setModels] = useState<AGIModel[]>([]);
@@ -297,7 +291,7 @@ export const useAGIModels = () => {
     applyFilters();
   }, [filters]);
   
-  // 更新筛选条件
+  // 更新筛选条件 - Update the type to use the FilterRecord type
   const updateFilters = useCallback((newFilters: Partial<FilterRecord>) => {
     setFilters(prevFilters => ({
       ...prevFilters,

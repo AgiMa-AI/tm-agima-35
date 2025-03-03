@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Filter, X } from 'lucide-react';
+import { FilterRecord } from '@/hooks/useAGIModels';
 
 interface FilterOption {
   label: string;
@@ -12,8 +12,8 @@ interface FilterOption {
 
 interface AGIFilterBarProps {
   availableFilters: Record<string, FilterOption>;
-  activeFilters: Record<string, string[]>;
-  onFilterChange: (filters: Record<string, any>) => void;
+  activeFilters: Record<string, string[] | undefined>;
+  onFilterChange: (filters: FilterRecord) => void;
   onFilterReset: () => void;
 }
 
