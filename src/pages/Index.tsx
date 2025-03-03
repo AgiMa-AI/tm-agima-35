@@ -9,11 +9,12 @@ import StatsMultiple from '@/components/charts/StatsMultiple';
 import GpuComparison from '@/components/charts/GpuComparison';
 import { useInstances } from '@/hooks/useInstances';
 import { useChartData } from '@/hooks/useChartData';
-import { Server, Clock, CreditCard, Database, BarChart, PieChart, LineChart } from 'lucide-react';
+import { Server, Clock, CreditCard, Database, BarChart, PieChart, LineChart, RefreshCcw } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Badge } from '@/components/ui/badge';
 
 const Index = () => {
   const { 
@@ -31,7 +32,8 @@ const Index = () => {
     hostMapData,
     statsData,
     gpuComparisonData,
-    loading: chartsLoading
+    loading: chartsLoading,
+    lastUpdated
   } = useChartData();
   
   const handleSearch = (query: string) => {
@@ -40,6 +42,22 @@ const Index = () => {
   
   const handleFilterChange = (newFilters: any) => {
     updateFilters(newFilters);
+  };
+  
+  // Function to format the last updated time
+  const formatLastUpdated = () => {
+    if (!lastUpdated) return '未更新';
+    
+    const now = new Date();
+    const diffSeconds = Math.floor((now.getTime() - lastUpdated.getTime()) / 1000);
+    
+    if (diffSeconds < 60) {
+      return `${diffSeconds}秒前`;
+    } else if (diffSeconds < 3600) {
+      return `${Math.floor(diffSeconds / 60)}分钟前`;
+    } else {
+      return `${Math.floor(diffSeconds / 3600)}小时前`;
+    }
   };
   
   return (
@@ -83,8 +101,14 @@ const Index = () => {
         {/* Charts Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2">
               Vast.ai 数据分析
+              {lastUpdated && (
+                <Badge variant="outline" className="ml-2 text-xs">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse mr-1.5"></div>
+                  实时数据 · {formatLastUpdated()}
+                </Badge>
+              )}
             </h2>
             <Button variant="ghost" size="sm" asChild>
               <Link to="/charts" className="flex items-center gap-1">
