@@ -1,131 +1,252 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { AGIModel } from '@/types/agi';
 
-// 模拟的AGI模型数据
+// 模拟的AGI模型数据 - 更新为更具未来科技感的内容
 const mockAGIModels: AGIModel[] = [
   {
-    id: 'agi-compute-x9000',
-    name: 'ComputeX 9000',
-    description: '顶级算力解决方案，适用于最先进的AGI训练和推理任务，提供卓越的性能和可靠性',
-    version: '1.0',
-    creator: 'NeuralCore',
-    type: 'text',
-    parameters: '1.5万亿',
-    contextWindow: '32K tokens',
+    id: 'quantum-nexus-9000',
+    name: 'Quantum Nexus 9000',
+    description: '量子加速计算核心，支持超大规模并行处理，专为突破性AGI研究设计的尖端算力平台',
+    longDescription: '量子加速计算核心平台采用突破性量子-经典混合架构，集成量子位处理单元与传统GPU加速器，在维持高能效的同时，实现复杂神经网络的超大规模并行计算。专为前沿AGI研究与大规模多智能体模拟设计，支持高维度量子态编码，极大提升复杂推理与优化任务的计算效率。其专有量子纠错算法确保高保真度计算，为AGI的安全性与可靠性奠定坚实基础。',
+    version: '2.1',
+    creator: 'QuantumAI Labs',
+    type: 'multimodal',
+    parameters: '5万亿',
+    contextWindow: '512K tokens',
     costPerToken: 0.45,
     inputCost: 0.15,
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475',
+    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb',
     featured: true,
-    tags: ['高性能计算', '企业级', 'AGI研发'],
-    features: ['超大规模数据处理能力', '分布式训练优化', '自适应资源分配'],
-    useCases: ['大规模AGI训练', '复杂科学模拟', '实时决策分析']
+    maxInputTokens: '256K',
+    maxOutputTokens: '128K',
+    tags: ['量子加速', '混合计算', 'AGI优化', '超大规模'],
+    features: [
+      '量子-经典混合计算架构',
+      '实时多智能体系统模拟',
+      '高维度量子态自监督学习',
+      'AGI安全保障框架'
+    ],
+    useCases: [
+      '突破性AGI研发',
+      '复杂系统模拟',
+      '量子金融建模',
+      '先进材料发现'
+    ],
+    architecture: '量子-经典混合架构',
+    trainingData: '跨领域科学数据集',
+    cutoffDate: '2024年6月',
+    quantization: 'QLoRA',
+    supportedLanguages: ['英语', '中文', '日语', '德语', '法语', '俄语', '阿拉伯语']
   },
   {
-    id: 'agi-neuronet-opus',
-    name: 'NeuroNet Opus',
-    description: '专为多模态AI研发定制的算力方案，平衡性能与能耗，适合长期研究项目',
-    version: '3.0',
-    creator: 'Cognisys',
-    type: 'multimodal',
-    parameters: '1.3万亿',
-    contextWindow: '100K tokens',
+    id: 'neocortex-ultra',
+    name: 'NeoCorteX Ultra',
+    description: '仿生神经计算网络，模拟人类大脑皮层处理机制，实现超低能耗的高效智能推理与自我优化',
+    longDescription: '仿生神经计算网络采用突破性神经形态芯片架构，模拟人类大脑皮层的信息处理机制，实现了能耗比传统GPU降低95%的同时，提供更高效的智能推理能力。其独特的脉冲神经网络设计支持连续学习与记忆巩固，使模型能够像人脑一样不断优化自身。平台集成了专有的神经可塑性算法，实现动态权重调整，为长期AGI研究提供了理想的低能耗计算平台。',
+    version: '3.5',
+    creator: 'Synapse Systems',
+    type: 'text',
+    parameters: '1.8万亿',
+    contextWindow: '1M tokens',
     costPerToken: 0.55,
-    image: 'https://images.unsplash.com/photo-1526374965328-7f61d2c6f44d',
+    image: 'https://images.unsplash.com/photo-1593349480506-8433634cdcbe',
     featured: true,
-    tags: ['多模态', '研究', '能效优化'],
-    features: ['多模态并行处理', '动态内存管理', '低能耗高性能'],
-    useCases: ['多模态模型研发', '学术研究', '长期AI实验']
+    maxInputTokens: '500K',
+    maxOutputTokens: '200K',
+    tags: ['神经形态计算', '仿生芯片', '低能耗', '连续学习'],
+    features: [
+      '神经形态计算架构',
+      '脉冲神经网络处理',
+      '自适应连续学习',
+      '超低功耗设计'
+    ],
+    useCases: [
+      '可解释AI研究',
+      '认知科学研究',
+      '边缘智能部署',
+      '长期智能演化'
+    ],
+    architecture: '神经形态SNN',
+    trainingData: '多模态认知语料库',
+    cutoffDate: '2024年5月',
+    quantization: 'SpikingQA',
+    supportedLanguages: ['英语', '中文', '法语', '德语', '西班牙语', '葡萄牙语', '日语']
   },
   {
-    id: 'agi-quantum-edge',
-    name: 'Quantum Edge 70B',
-    description: '结合量子计算优势的新一代算力方案，为复杂推理和优化问题提供突破性能力',
-    version: '3.0',
-    creator: 'QuantumAI',
-    type: 'text',
-    parameters: '700亿',
-    contextWindow: '8K tokens',
-    costPerToken: 0.25,
-    image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7',
-    tags: ['量子加速', '混合计算', '优化问题'],
-    features: ['量子辅助计算加速', '复杂优化问题解决', '高效资源调度'],
-    useCases: ['复杂优化问题', '金融模型', '科学计算']
-  },
-  {
-    id: 'agi-fusion-pro',
-    name: 'Fusion Pro',
-    description: '融合计算架构算力套件，专为企业级多场景AI部署设计，确保稳定性和一致性',
-    version: '1.0',
-    creator: 'FusionTech',
+    id: 'fusion-tensor-x',
+    name: 'Fusion Tensor X',
+    description: '融合张量加速架构，动态分配计算资源，为大型多模态模型提供前所未有的并行处理能力',
+    version: '4.0',
+    creator: 'TensorWave',
     type: 'multimodal',
-    parameters: '1.2万亿',
-    contextWindow: '16K tokens',
-    costPerToken: 0.40,
-    image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d',
-    tags: ['企业部署', '多架构融合', '稳定可靠'],
-    features: ['多架构统一调度', '企业级资源隔离', '自动容错和恢复'],
-    useCases: ['企业AI基础设施', '关键业务系统', '大规模部署']
-  },
-  {
-    id: 'agi-thinker-cluster',
-    name: 'Thinker Cluster',
-    description: '专为分布式思维和推理设计的集群计算方案，优化大规模语言模型推理',
-    version: '1.5',
-    creator: 'CognitiveX',
-    type: 'text',
-    parameters: '400亿',
-    contextWindow: '4K tokens',
-    costPerToken: 0.20,
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475',
-    tags: ['分布式计算', '推理优化', '集群部署'],
-    features: ['低延迟推理优化', '动态集群扩展', '高吞吐量处理'],
-    useCases: ['实时AI服务', '高并发应用', '边缘计算部署']
-  },
-  {
-    id: 'agi-neural-lite',
-    name: 'Neural Lite 7B',
-    description: '轻量级算力解决方案，为边缘设备和资源受限环境提供AI能力，保持高效率',
-    version: '1.0',
-    creator: 'EdgeAI',
-    type: 'text',
-    parameters: '70亿',
-    contextWindow: '8K tokens',
-    costPerToken: 0.15,
-    image: 'https://images.unsplash.com/photo-1526374965328-7f61d2c6f44d',
-    tags: ['边缘计算', '轻量级', '资源节约'],
-    features: ['边缘设备优化', '低功耗运行', '压缩计算技术'],
-    useCases: ['IoT设备', '移动应用', '嵌入式系统']
-  },
-  {
-    id: 'agi-percept-ultra',
-    name: 'Percept Ultra',
-    description: '专为视觉和空间感知AI定制的算力平台，优化大规模图像和视频处理',
-    version: '2.0',
-    creator: 'VisionCore',
-    type: 'vision',
-    parameters: '800亿',
-    contextWindow: '12K tokens',
-    costPerToken: 0.50,
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475',
-    tags: ['视觉AI', '空间感知', '实时处理'],
-    features: ['大规模视觉数据并行处理', '3D空间推理加速', '实时视觉分析'],
-    useCases: ['自动驾驶', '工业视觉检测', '增强现实应用']
-  },
-  {
-    id: 'agi-soundscape-xl',
-    name: 'SoundScape XL',
-    description: '音频和语音处理专用算力方案，支持高精度语音识别和音频生成模型',
-    version: '1.5',
-    creator: 'AudioTech',
-    type: 'audio',
-    parameters: '200亿',
-    contextWindow: '30分钟音频',
+    parameters: '2.2万亿',
+    contextWindow: '256K tokens',
     costPerToken: 0.35,
-    image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7',
-    tags: ['音频处理', '语音识别', '声学模型'],
-    features: ['高精度音频特征提取', '实时语音处理', '多语言音频分析'],
-    useCases: ['语音助手', '音频内容创作', '音乐生成与分析']
+    image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e',
+    tags: ['分布式计算', '多模态', '动态资源分配'],
+    features: [
+      '自适应计算资源分配',
+      '多模态跨域理解',
+      '大规模分布式训练',
+      '实时模型协同'
+    ],
+    useCases: [
+      '超大规模多模态模型',
+      '复杂系统模拟',
+      '创意内容生成',
+      '科学发现'
+    ],
+    architecture: '融合张量处理器',
+    trainingData: '跨模态知识图谱',
+    cutoffDate: '2024年4月',
+    quantization: 'DynamicTQ'
+  },
+  {
+    id: 'hyperdrive-matrix',
+    name: 'HyperDrive Matrix',
+    description: '矩阵超速计算引擎，专为时空数据分析和预测性AGI任务设计，支持极速推理和全域优化',
+    version: '2.0',
+    creator: 'Chronos AI',
+    type: 'text',
+    parameters: '1.2万亿',
+    contextWindow: '128K tokens',
+    costPerToken: 0.30,
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31',
+    tags: ['时空分析', '预测建模', '高速推理'],
+    features: [
+      '时空数据超并行处理',
+      '预测性智能优化',
+      '多维时序建模',
+      '全域搜索加速'
+    ],
+    useCases: [
+      '金融预测模型',
+      '气候变化分析',
+      '复杂系统预测',
+      '全域优化问题'
+    ],
+    architecture: '矩阵加速计算',
+    trainingData: '时空序列数据集',
+    cutoffDate: '2024年3月',
+    quantization: 'TensorHQ'
+  },
+  {
+    id: 'biomimetic-cognition',
+    name: 'Biomimetic Cognition',
+    description: '生物仿生认知平台，融合神经科学与计算机科学前沿技术，支持类人思维过程模拟与研究',
+    version: '1.5',
+    creator: 'NeuraSci',
+    type: 'text',
+    parameters: '3.5万亿',
+    contextWindow: '384K tokens',
+    costPerToken: 0.60,
+    image: 'https://images.unsplash.com/photo-1617791160505-6f00504e3519',
+    tags: ['仿生认知', '类脑计算', '神经科学'],
+    features: [
+      '类脑认知过程模拟',
+      '情感智能与意识研究',
+      '神经符号推理',
+      '自监督学习框架'
+    ],
+    useCases: [
+      'AGI认知架构研究',
+      '意识与情感模拟',
+      '类人决策系统',
+      '神经科学研究'
+    ],
+    architecture: '仿生神经网络',
+    trainingData: '认知神经科学数据',
+    cutoffDate: '2024年5月',
+    quantization: 'NeuroQ'
+  },
+  {
+    id: 'edge-neural-compact',
+    name: 'Edge Neural Compact',
+    description: '边缘智能优化解决方案，为资源受限环境提供高能效AI处理能力，实现本地化AGI部署',
+    version: '2.0',
+    creator: 'EdgeMind',
+    type: 'vision',
+    parameters: '350亿',
+    contextWindow: '16K tokens',
+    costPerToken: 0.15,
+    image: 'https://images.unsplash.com/photo-1580584126903-c17d41830450',
+    tags: ['边缘计算', '轻量级', '低能耗'],
+    features: [
+      '边缘设备优化架构',
+      '动态精度调整',
+      '模型适应性压缩',
+      '超低功耗推理'
+    ],
+    useCases: [
+      '智能物联网设备',
+      '自主机器人',
+      '移动AI应用',
+      '远程感知系统'
+    ],
+    architecture: '高效边缘神经处理器',
+    trainingData: '边缘场景数据集',
+    cutoffDate: '2024年2月',
+    quantization: 'INT4/INT8混合'
+  },
+  {
+    id: 'holographic-vision',
+    name: 'Holographic Vision',
+    description: '全息视觉计算平台，实现突破性的3D空间理解与建模，为元宇宙与空间智能提供算力支持',
+    version: '1.0',
+    creator: 'MetaVision',
+    type: 'vision',
+    parameters: '900亿',
+    contextWindow: '24K tokens',
+    costPerToken: 0.40,
+    image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e',
+    tags: ['全息视觉', '3D理解', '空间智能'],
+    features: [
+      '全息3D场景理解',
+      '多视角空间建模',
+      '动态物体追踪与预测',
+      '实时空间语义分析'
+    ],
+    useCases: [
+      '元宇宙内容创建',
+      '增强现实应用',
+      '自动驾驶感知',
+      '智能机器人导航'
+    ],
+    architecture: '空间视觉处理器',
+    trainingData: '3D场景与全息数据',
+    cutoffDate: '2024年4月',
+    quantization: 'SpatialQ'
+  },
+  {
+    id: 'sonic-intelligence',
+    name: 'Sonic Intelligence',
+    description: '声学智能处理平台，专为高保真音频分析与生成设计，支持前沿音频AGI研究与应用',
+    version: '3.0',
+    creator: 'AudioNexus',
+    type: 'audio',
+    parameters: '500亿',
+    contextWindow: '60分钟音频',
+    costPerToken: 0.25,
+    image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d',
+    tags: ['声学处理', '音频分析', '语音技术'],
+    features: [
+      '高保真声学特征提取',
+      '多层次音频语义理解',
+      '情感与语调分析',
+      '实时音频合成'
+    ],
+    useCases: [
+      '音乐创作辅助',
+      '高级语音识别',
+      '音频环境理解',
+      '声音仿真与重构'
+    ],
+    architecture: '神经声学处理器',
+    trainingData: '多语言音频语料库',
+    cutoffDate: '2024年3月',
+    quantization: 'AudioHQ'
   }
 ];
 
