@@ -5,7 +5,7 @@ import { useAGIModels } from '@/hooks/useAGIModels';
 import { Skeleton } from '@/components/ui/skeleton';
 import AGIModelCard from '@/components/agi/AGIModelCard';
 import AGIFilterBar from '@/components/agi/AGIFilterBar';
-import { Bot, Server } from 'lucide-react';
+import { Bot, Server, Cpu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,9 +43,9 @@ const AGIModels = () => {
       <div className="space-y-4 sm:space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <div>
-            <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-center sm:text-left">AGI 模型租赁</h1>
+            <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-center sm:text-left">AGI 算力需求</h1>
             <p className="text-muted-foreground mt-1 text-sm sm:text-base text-center sm:text-left">
-              浏览和租赁先进的人工智能模型
+              浏览和租赁先进的AI算力解决方案
             </p>
           </div>
           <Button onClick={handleHostAGI} className="w-full sm:w-auto">
@@ -63,7 +63,7 @@ const AGIModels = () => {
         
         <div className="flex items-end justify-between mb-4 flex-wrap gap-2">
           <p className="text-xs sm:text-sm text-muted-foreground w-full sm:w-auto text-center sm:text-left">
-            显示 {filteredCount} 个，共 {totalCount} 个模型
+            显示 {filteredCount} 个，共 {totalCount} 个算力方案
           </p>
         </div>
         
@@ -83,10 +83,10 @@ const AGIModels = () => {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-6 sm:py-8 md:py-12 text-center font-display">
-            <Bot className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground/50 mb-3 sm:mb-4" />
-            <h3 className="text-base sm:text-lg font-medium">未找到模型</h3>
+            <Cpu className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground/50 mb-3 sm:mb-4" />
+            <h3 className="text-base sm:text-lg font-medium">未找到算力方案</h3>
             <p className="text-sm text-muted-foreground mt-1 max-w-md px-4">
-              我们找不到符合您当前筛选条件的模型。请尝试调整您的筛选条件。
+              我们找不到符合您当前筛选条件的算力方案。请尝试调整您的筛选条件。
             </p>
           </div>
         )}

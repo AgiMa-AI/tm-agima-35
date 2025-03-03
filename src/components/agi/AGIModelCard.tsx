@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AGIModel } from '@/types/agi';
-import { Bot, ExternalLink, Star } from 'lucide-react';
+import { Bot, ExternalLink, Star, Cpu, CheckCircle2, Sparkles } from 'lucide-react';
 
 interface AGIModelCardProps {
   model: AGIModel;
@@ -44,7 +44,7 @@ const AGIModelCard = ({ model }: AGIModelCardProps) => {
           />
         ) : (
           <div className="w-full h-40 bg-muted flex items-center justify-center">
-            <Bot className="h-16 w-16 text-muted-foreground/30" />
+            <Cpu className="h-16 w-16 text-muted-foreground/30" />
           </div>
         )}
         
@@ -67,6 +67,40 @@ const AGIModelCard = ({ model }: AGIModelCardProps) => {
         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
           {model.description}
         </p>
+        
+        {/* 主要功能部分 */}
+        {model.features && model.features.length > 0 && (
+          <div className="mb-3">
+            <h4 className="text-xs font-medium flex items-center mb-1">
+              <CheckCircle2 className="h-3 w-3 mr-1 text-green-500" />
+              主要功能
+            </h4>
+            <ul className="text-xs text-muted-foreground pl-4">
+              {model.features.slice(0, 2).map((feature, index) => (
+                <li key={index} className="list-disc list-outside">
+                  <span className="line-clamp-1">{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
+        {/* 适用场景部分 */}
+        {model.useCases && model.useCases.length > 0 && (
+          <div className="mb-3">
+            <h4 className="text-xs font-medium flex items-center mb-1">
+              <Sparkles className="h-3 w-3 mr-1 text-blue-500" />
+              适用场景
+            </h4>
+            <div className="flex flex-wrap gap-1">
+              {model.useCases.slice(0, 2).map((useCase, index) => (
+                <Badge key={index} variant="outline" className="text-[10px] px-1.5 py-0">
+                  {useCase}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
         
         <div className="grid grid-cols-2 gap-2 mt-2">
           <div className="bg-muted/60 p-2 rounded-md text-center">

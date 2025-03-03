@@ -16,8 +16,8 @@ export interface AGIModel {
   maxInputTokens?: string;
   maxOutputTokens?: string;
   tags?: string[];
-  features?: string[];
-  useCases?: string[];
+  features?: string[];  // 新增：主要功能
+  useCases?: string[];  // 新增：适用场景
   architecture?: string;
   trainingData?: string;
   cutoffDate?: string;

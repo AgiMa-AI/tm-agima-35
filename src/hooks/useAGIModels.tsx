@@ -6,111 +6,127 @@ import { AGIModel } from '@/types/agi';
 // 模拟的AGI模型数据
 const mockAGIModels: AGIModel[] = [
   {
-    id: 'agi-gpt4-pro',
-    name: 'GPT-4 Pro',
-    description: '强大的通用人工智能模型，适用于各种复杂任务，拥有卓越的推理和创意能力',
+    id: 'agi-compute-x9000',
+    name: 'ComputeX 9000',
+    description: '顶级算力解决方案，适用于最先进的AGI训练和推理任务，提供卓越的性能和可靠性',
     version: '1.0',
-    creator: 'OpenAI',
+    creator: 'NeuralCore',
     type: 'text',
     parameters: '1.5万亿',
     contextWindow: '32K tokens',
     costPerToken: 0.45,
     inputCost: 0.15,
-    image: 'https://cdn.example.com/agi/gpt4.jpg',
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475',
     featured: true,
-    tags: ['GPT', '通用AI', '高性能', '企业级']
+    tags: ['高性能计算', '企业级', 'AGI研发'],
+    features: ['超大规模数据处理能力', '分布式训练优化', '自适应资源分配'],
+    useCases: ['大规模AGI训练', '复杂科学模拟', '实时决策分析']
   },
   {
-    id: 'agi-claude-3',
-    name: 'Claude 3 Opus',
-    description: '以深度理解和安全性为特色的对话型AI，适合需要深度知识的任务',
+    id: 'agi-neuronet-opus',
+    name: 'NeuroNet Opus',
+    description: '专为多模态AI研发定制的算力方案，平衡性能与能耗，适合长期研究项目',
     version: '3.0',
-    creator: 'Anthropic',
+    creator: 'Cognisys',
     type: 'multimodal',
     parameters: '1.3万亿',
     contextWindow: '100K tokens',
     costPerToken: 0.55,
-    image: 'https://cdn.example.com/agi/claude3.jpg',
+    image: 'https://images.unsplash.com/photo-1526374965328-7f61d2c6f44d',
     featured: true,
-    tags: ['Claude', '安全AI', '对话', '长上下文']
+    tags: ['多模态', '研究', '能效优化'],
+    features: ['多模态并行处理', '动态内存管理', '低能耗高性能'],
+    useCases: ['多模态模型研发', '学术研究', '长期AI实验']
   },
   {
-    id: 'agi-llama-3',
-    name: 'Llama 3 70B',
-    description: '开源大型语言模型，提供出色的性能和更广泛的定制能力',
+    id: 'agi-quantum-edge',
+    name: 'Quantum Edge 70B',
+    description: '结合量子计算优势的新一代算力方案，为复杂推理和优化问题提供突破性能力',
     version: '3.0',
-    creator: 'Meta AI',
+    creator: 'QuantumAI',
     type: 'text',
     parameters: '700亿',
     contextWindow: '8K tokens',
     costPerToken: 0.25,
-    image: 'https://cdn.example.com/agi/llama3.jpg',
-    tags: ['Llama', '开源', '可定制']
+    image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7',
+    tags: ['量子加速', '混合计算', '优化问题'],
+    features: ['量子辅助计算加速', '复杂优化问题解决', '高效资源调度'],
+    useCases: ['复杂优化问题', '金融模型', '科学计算']
   },
   {
-    id: 'agi-gemini-pro',
-    name: 'Gemini Pro',
-    description: '多模态人工智能模型，能够理解和生成文本、图像和代码',
+    id: 'agi-fusion-pro',
+    name: 'Fusion Pro',
+    description: '融合计算架构算力套件，专为企业级多场景AI部署设计，确保稳定性和一致性',
     version: '1.0',
-    creator: 'Google DeepMind',
+    creator: 'FusionTech',
     type: 'multimodal',
     parameters: '1.2万亿',
     contextWindow: '16K tokens',
     costPerToken: 0.40,
-    image: 'https://cdn.example.com/agi/gemini.jpg',
-    tags: ['Gemini', '多模态', 'Google']
+    image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d',
+    tags: ['企业部署', '多架构融合', '稳定可靠'],
+    features: ['多架构统一调度', '企业级资源隔离', '自动容错和恢复'],
+    useCases: ['企业AI基础设施', '关键业务系统', '大规模部署']
   },
   {
-    id: 'agi-falcon-40b',
-    name: 'Falcon 40B',
-    description: '开源大型语言模型，专注于高效推理和准确回答',
+    id: 'agi-thinker-cluster',
+    name: 'Thinker Cluster',
+    description: '专为分布式思维和推理设计的集群计算方案，优化大规模语言模型推理',
     version: '1.5',
-    creator: 'Technology Innovation Institute',
+    creator: 'CognitiveX',
     type: 'text',
     parameters: '400亿',
     contextWindow: '4K tokens',
     costPerToken: 0.20,
-    image: 'https://cdn.example.com/agi/falcon.jpg',
-    tags: ['Falcon', '开源', '高效']
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475',
+    tags: ['分布式计算', '推理优化', '集群部署'],
+    features: ['低延迟推理优化', '动态集群扩展', '高吞吐量处理'],
+    useCases: ['实时AI服务', '高并发应用', '边缘计算部署']
   },
   {
-    id: 'agi-mistral-7b',
-    name: 'Mistral 7B',
-    description: '轻量级但高性能的语言模型，适合资源受限场景',
+    id: 'agi-neural-lite',
+    name: 'Neural Lite 7B',
+    description: '轻量级算力解决方案，为边缘设备和资源受限环境提供AI能力，保持高效率',
     version: '1.0',
-    creator: 'Mistral AI',
+    creator: 'EdgeAI',
     type: 'text',
     parameters: '70亿',
     contextWindow: '8K tokens',
     costPerToken: 0.15,
-    image: 'https://cdn.example.com/agi/mistral.jpg',
-    tags: ['Mistral', '轻量级', '高效']
+    image: 'https://images.unsplash.com/photo-1526374965328-7f61d2c6f44d',
+    tags: ['边缘计算', '轻量级', '资源节约'],
+    features: ['边缘设备优化', '低功耗运行', '压缩计算技术'],
+    useCases: ['IoT设备', '移动应用', '嵌入式系统']
   },
   {
-    id: 'agi-vision-pro',
-    name: 'Vision Pro',
-    description: '专为图像理解和视觉任务优化的多模态人工智能',
+    id: 'agi-percept-ultra',
+    name: 'Percept Ultra',
+    description: '专为视觉和空间感知AI定制的算力平台，优化大规模图像和视频处理',
     version: '2.0',
-    creator: 'AI Vision Labs',
+    creator: 'VisionCore',
     type: 'vision',
     parameters: '800亿',
     contextWindow: '12K tokens',
     costPerToken: 0.50,
-    image: 'https://cdn.example.com/agi/vision.jpg',
-    tags: ['视觉', '图像', '多模态']
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475',
+    tags: ['视觉AI', '空间感知', '实时处理'],
+    features: ['大规模视觉数据并行处理', '3D空间推理加速', '实时视觉分析'],
+    useCases: ['自动驾驶', '工业视觉检测', '增强现实应用']
   },
   {
-    id: 'agi-whisper-xl',
-    name: 'Whisper XL',
-    description: '先进的语音识别和转录模型，支持多种语言',
+    id: 'agi-soundscape-xl',
+    name: 'SoundScape XL',
+    description: '音频和语音处理专用算力方案，支持高精度语音识别和音频生成模型',
     version: '1.5',
-    creator: 'Audio AI',
+    creator: 'AudioTech',
     type: 'audio',
     parameters: '200亿',
     contextWindow: '30分钟音频',
     costPerToken: 0.35,
-    image: 'https://cdn.example.com/agi/whisper.jpg',
-    tags: ['语音', '音频', '转录']
+    image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7',
+    tags: ['音频处理', '语音识别', '声学模型'],
+    features: ['高精度音频特征提取', '实时语音处理', '多语言音频分析'],
+    useCases: ['语音助手', '音频内容创作', '音乐生成与分析']
   }
 ];
 
@@ -119,6 +135,8 @@ interface AGIModelFilters {
   search?: string[];
   type?: string[];
   creator?: string[];
+  industry?: string[]; // 适用产业
+  series?: string[]; // 系列选项
   featured?: boolean;
   minCost?: number;
   maxCost?: number;
@@ -146,15 +164,38 @@ export const useAGIModels = () => {
       ]
     },
     creator: {
-      label: '开发者',
+      label: '开发厂商',
       options: [
-        { value: 'OpenAI', label: 'OpenAI' },
-        { value: 'Anthropic', label: 'Anthropic' },
-        { value: 'Meta AI', label: 'Meta AI' },
-        { value: 'Google DeepMind', label: 'Google DeepMind' },
-        { value: 'Mistral AI', label: 'Mistral AI' },
-        { value: 'AI Vision Labs', label: '视觉AI实验室' },
-        { value: 'Audio AI', label: '音频AI' }
+        { value: 'NeuralCore', label: 'NeuralCore' },
+        { value: 'Cognisys', label: 'Cognisys' },
+        { value: 'QuantumAI', label: 'QuantumAI' },
+        { value: 'FusionTech', label: 'FusionTech' },
+        { value: 'CognitiveX', label: 'CognitiveX' },
+        { value: 'EdgeAI', label: 'EdgeAI' },
+        { value: 'VisionCore', label: 'VisionCore' },
+        { value: 'AudioTech', label: 'AudioTech' }
+      ]
+    },
+    series: {
+      label: '系列选项',
+      options: [
+        { value: '高性能计算', label: '高性能计算' },
+        { value: '量子加速', label: '量子加速' },
+        { value: '分布式计算', label: '分布式计算' },
+        { value: '边缘计算', label: '边缘计算' },
+        { value: '多架构融合', label: '多架构融合' }
+      ]
+    },
+    industry: {
+      label: '适用产业',
+      options: [
+        { value: '科学研究', label: '科学研究' },
+        { value: '金融服务', label: '金融服务' },
+        { value: '制造业', label: '制造业' },
+        { value: '医疗健康', label: '医疗健康' },
+        { value: '自动驾驶', label: '自动驾驶' },
+        { value: '内容创作', label: '内容创作' },
+        { value: '教育培训', label: '教育培训' }
       ]
     }
   };
@@ -213,6 +254,28 @@ export const useAGIModels = () => {
         );
       }
       
+      // 系列选项筛选
+      if (filters.series && filters.series.length > 0) {
+        filtered = filtered.filter(model => 
+          model.tags && model.tags.some(tag => filters.series?.includes(tag))
+        );
+      }
+      
+      // 适用产业筛选（基于useCases）
+      if (filters.industry && filters.industry.length > 0) {
+        filtered = filtered.filter(model => {
+          if (!model.useCases) return false;
+          
+          // 将useCases字符串与产业关键词进行匹配
+          return filters.industry?.some(industry => {
+            const industryLower = industry.toLowerCase();
+            return model.useCases?.some(useCase => 
+              useCase.toLowerCase().includes(industryLower)
+            );
+          });
+        });
+      }
+      
       // 特色筛选
       if (filters.featured) {
         filtered = filtered.filter(model => model.featured);
@@ -261,7 +324,7 @@ export const useAGIModels = () => {
     if (model) {
       toast({
         title: "租赁成功",
-        description: `您已成功租赁 ${model.name} 模型`,
+        description: `您已成功租赁 ${model.name} 算力方案`,
       });
       return true;
     } else {
