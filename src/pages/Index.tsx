@@ -9,9 +9,11 @@ import StatsMultiple from '@/components/charts/StatsMultiple';
 import GpuComparison from '@/components/charts/GpuComparison';
 import { useInstances } from '@/hooks/useInstances';
 import { useChartData } from '@/hooks/useChartData';
-import { Server, Clock, CreditCard, Database } from 'lucide-react';
+import { Server, Clock, CreditCard, Database, BarChart, PieChart, LineChart } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const { 
@@ -79,16 +81,24 @@ const Index = () => {
         </div>
         
         {/* Charts Section */}
-        <div className="space-y-6">
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
-            Vast.ai 数据分析
-          </h2>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
+              Vast.ai 数据分析
+            </h2>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/charts" className="flex items-center gap-1">
+                <BarChart className="h-4 w-4" />
+                查看详细图表
+              </Link>
+            </Button>
+          </div>
           
           <Tabs defaultValue="map" className="space-y-4">
             <TabsList className="mb-2">
-              <TabsTrigger value="map">主机地图</TabsTrigger>
-              <TabsTrigger value="stats">性能统计</TabsTrigger>
-              <TabsTrigger value="comparison">GPU 对比</TabsTrigger>
+              <TabsTrigger value="map"><PieChart className="h-3.5 w-3.5 mr-1.5" />主机地图</TabsTrigger>
+              <TabsTrigger value="stats"><LineChart className="h-3.5 w-3.5 mr-1.5" />性能统计</TabsTrigger>
+              <TabsTrigger value="comparison"><BarChart className="h-3.5 w-3.5 mr-1.5" />GPU 对比</TabsTrigger>
             </TabsList>
             
             <TabsContent value="map">

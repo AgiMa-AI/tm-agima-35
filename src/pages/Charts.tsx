@@ -5,7 +5,7 @@ import HostMap from '@/components/charts/HostMap';
 import StatsMultiple from '@/components/charts/StatsMultiple';
 import GpuComparison from '@/components/charts/GpuComparison';
 import { useChartData } from '@/hooks/useChartData';
-import { ChartIcon } from 'lucide-react';
+import { BarChart, PieChart, LineChart } from 'lucide-react';
 
 const Charts = () => {
   const { hostMapData, statsData, gpuComparisonData, loading } = useChartData();
@@ -23,7 +23,7 @@ const Charts = () => {
         <div className="space-y-8">
           <section className="space-y-4">
             <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
-              <ChartIcon className="h-5 w-5" />
+              <PieChart className="h-5 w-5" />
               全球主机分布
             </h2>
             <HostMap data={hostMapData} loading={loading} />
@@ -31,7 +31,7 @@ const Charts = () => {
 
           <section className="space-y-4">
             <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
-              <ChartIcon className="h-5 w-5" />
+              <LineChart className="h-5 w-5" />
               性能统计
             </h2>
             <StatsMultiple data={statsData} loading={loading} />
@@ -39,7 +39,7 @@ const Charts = () => {
 
           <section className="space-y-4">
             <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
-              <ChartIcon className="h-5 w-5" />
+              <BarChart className="h-5 w-5" />
               GPU 对比分析
             </h2>
             <GpuComparison data={gpuComparisonData} loading={loading} />
