@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -16,6 +15,11 @@ const AGIModelCard = ({ model }: AGIModelCardProps) => {
   
   const handleViewDetails = () => {
     navigate(`/agi/${model.id}`);
+  };
+  
+  const handleRent = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/agi-rental/${model.id}`);
   };
   
   const getModelTypeBadgeColor = (type: string) => {
@@ -81,7 +85,6 @@ const AGIModelCard = ({ model }: AGIModelCardProps) => {
           {model.description}
         </p>
         
-        {/* 主要功能部分 - 更现代的设计 */}
         {model.features && model.features.length > 0 && (
           <div className="mb-3">
             <h4 className="text-xs font-medium flex items-center mb-1 text-indigo-500">
@@ -99,7 +102,6 @@ const AGIModelCard = ({ model }: AGIModelCardProps) => {
           </div>
         )}
         
-        {/* 适用场景部分 - 更现代的设计 */}
         {model.useCases && model.useCases.length > 0 && (
           <div className="mb-3">
             <h4 className="text-xs font-medium flex items-center mb-1 text-violet-500">
@@ -133,15 +135,25 @@ const AGIModelCard = ({ model }: AGIModelCardProps) => {
           <span className="font-bold text-indigo-600 dark:text-indigo-400">¥{model.costPerToken}</span>
           <span className="text-xs text-muted-foreground">/1K tokens</span>
         </div>
-        <Button 
-          variant="default" 
-          size="sm" 
-          onClick={handleViewDetails}
-          className="bg-indigo-600 hover:bg-indigo-700"
-        >
-          查看详情
-          <ExternalLink className="ml-1 h-3.5 w-3.5" />
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleViewDetails}
+          >
+            详情
+            <ExternalLink className="ml-1 h-3.5 w-3.5" />
+          </Button>
+          <Button 
+            variant="default" 
+            size="sm" 
+            onClick={handleRent}
+            className="bg-indigo-600 hover:bg-indigo-700"
+          >
+            租赁
+            <Zap className="ml-1 h-3.5 w-3.5" />
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

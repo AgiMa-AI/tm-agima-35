@@ -253,8 +253,14 @@ const mockAGIModels: AGIModel[] = [
 // Define the type for filter record that matches what's expected in components
 export type FilterRecord = Record<string, string[] | undefined>;
 
-// Update the interface to be compatible with FilterRecord
-interface AGIModelFilters extends FilterRecord {
+// 修复类型问题：为特殊过滤器创建单独的接口
+interface AGIModelFilters {
+  search?: string[];
+  type?: string[];
+  creator?: string[];
+  series?: string[];
+  industry?: string[];
+  // 特殊过滤器，不遵循string[]类型
   featured?: boolean;
   minCost?: number;
   maxCost?: number;
@@ -345,7 +351,7 @@ export const useAGIModels = () => {
     const applyFilters = () => {
       let filtered = [...mockAGIModels];
       
-      // 搜索筛选 - updated to handle string array
+      // 搜索筛选
       if (filters.search && filters.search.length > 0) {
         const searchLower = filters.search[0].toLowerCase();
         filtered = filtered.filter(model => 
@@ -412,8 +418,8 @@ export const useAGIModels = () => {
     applyFilters();
   }, [filters]);
   
-  // 更新筛选条件 - Update the type to use the FilterRecord type
-  const updateFilters = useCallback((newFilters: Partial<FilterRecord>) => {
+  // 更新筛选条件 - 修复类型问题
+  const updateFilters = useCallback((newFilters: Partial<FilterRecord | AGIModelFilters>) => {
     setFilters(prevFilters => ({
       ...prevFilters,
       ...newFilters
