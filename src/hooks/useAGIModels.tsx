@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { AGIModel } from '@/types/agi';
@@ -251,7 +250,7 @@ const mockAGIModels: AGIModel[] = [
 ];
 
 // Define the type for filter record that matches what's expected in components
-export type FilterRecord = Record<string, string[] | undefined>;
+export type FilterRecord = Record<string, string[] | undefined | boolean | number>;
 
 // 修复类型问题：为特殊过滤器创建单独的接口
 interface AGIModelFilters {
