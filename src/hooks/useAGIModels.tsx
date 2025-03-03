@@ -114,14 +114,18 @@ const mockAGIModels: AGIModel[] = [
   }
 ];
 
+// Update the interface to be compatible with Record<string, string[]>
 interface AGIModelFilters {
-  search?: string;
+  search?: string[];
   type?: string[];
   creator?: string[];
   featured?: boolean;
   minCost?: number;
   maxCost?: number;
 }
+
+// Define the type for filter record that matches what's expected in AGIModelFilters
+type FilterRecord = Record<string, string[] | undefined>;
 
 export const useAGIModels = () => {
   const [models, setModels] = useState<AGIModel[]>([]);
@@ -185,9 +189,9 @@ export const useAGIModels = () => {
     const applyFilters = () => {
       let filtered = [...mockAGIModels];
       
-      // 搜索筛选
-      if (filters.search) {
-        const searchLower = filters.search.toLowerCase();
+      // 搜索筛选 - updated to handle string array
+      if (filters.search && filters.search.length > 0) {
+        const searchLower = filters.search[0].toLowerCase();
         filtered = filtered.filter(model => 
           model.name.toLowerCase().includes(searchLower) || 
           model.description.toLowerCase().includes(searchLower) ||
@@ -231,7 +235,7 @@ export const useAGIModels = () => {
   }, [filters]);
   
   // 更新筛选条件
-  const updateFilters = useCallback((newFilters: Partial<AGIModelFilters>) => {
+  const updateFilters = useCallback((newFilters: Partial<FilterRecord>) => {
     setFilters(prevFilters => ({
       ...prevFilters,
       ...newFilters

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -47,6 +46,14 @@ const AGIHosting = () => {
     { id: 1, hardware: 'GPU 专业套餐', startDate: '2023-11-15', status: 'active', earnings: 1285.50 },
     { id: 2, hardware: 'GPU 基础套餐', startDate: '2023-10-01', endDate: '2023-11-01', status: 'completed', earnings: 650.75 }
   ];
+  
+  // Fix the type error by using a different approach to handle tab switching
+  const switchToHardwareTab = () => {
+    const hardwareTab = document.querySelector('button[value="hardware"]') as HTMLButtonElement;
+    if (hardwareTab) {
+      hardwareTab.click();
+    }
+  };
   
   return (
     <Layout>
@@ -183,7 +190,7 @@ const AGIHosting = () => {
                     <p className="text-muted-foreground max-w-md mx-auto mb-6">
                       通过提供您的硬件资源来支持AGI模型运行，并获取稳定的被动收益
                     </p>
-                    <Button onClick={() => document.querySelector('button[value="hardware"]')?.click()}>
+                    <Button onClick={switchToHardwareTab}>
                       <Plus className="h-4 w-4 mr-2" />
                       开始托管
                     </Button>

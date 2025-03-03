@@ -9,6 +9,8 @@ import { Bot, Server } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
+type FilterRecord = Record<string, string[] | undefined>;
+
 const AGIModels = () => {
   const { 
     models, 
@@ -24,10 +26,11 @@ const AGIModels = () => {
   const navigate = useNavigate();
   
   const handleSearch = (query: string) => {
-    updateFilters({ search: query || undefined });
+    // Convert search string to an array to match FilterRecord type
+    updateFilters({ search: query ? [query] : undefined });
   };
   
-  const handleFilterChange = (newFilters: any) => {
+  const handleFilterChange = (newFilters: FilterRecord) => {
     updateFilters(newFilters);
   };
 
