@@ -5,11 +5,18 @@ import HostMap from '@/components/charts/HostMap';
 import StatsMultiple from '@/components/charts/StatsMultiple';
 import GpuComparison from '@/components/charts/GpuComparison';
 import { useChartData } from '@/hooks/useChartData';
-import { BarChart, PieChart, LineChart, RefreshCcw } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { RefreshCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
 
 const Charts = () => {
   const { hostMapData, statsData, gpuComparisonData, loading, lastUpdated } = useChartData();
@@ -37,12 +44,12 @@ const Charts = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="space-y-4 p-4 bg-muted/10">
+        <div className="flex flex-wrap items-center justify-between gap-4 bg-background p-4 rounded-md shadow-sm">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Vast.ai 数据分析中心</h1>
+            <h1 className="text-2xl font-medium">Vast.ai 数据分析</h1>
             <p className="text-muted-foreground mt-1">
-              实时 GPU 实例数据监控和分析
+              GPU 实例数据监控和分析
             </p>
           </div>
           
@@ -53,85 +60,93 @@ const Charts = () => {
             <Button 
               variant="outline" 
               size="sm" 
-              className="flex items-center gap-1.5"
+              className="flex items-center gap-1.5 h-8"
               onClick={handleRefresh}
             >
               <RefreshCcw className="h-3.5 w-3.5" />
-              刷新数据
+              刷新
             </Button>
           </div>
         </div>
         
-        <Separator />
-        
-        <Tabs defaultValue="hostmap" className="space-y-6">
-          <div className="flex justify-center">
-            <TabsList className="grid grid-cols-3 w-full max-w-md">
-              <TabsTrigger value="hostmap" className="flex items-center gap-1.5">
-                <PieChart className="h-4 w-4" />
-                <span className="hidden sm:inline">主机地图</span>
+        <Tabs defaultValue="hostmap" className="space-y-4">
+          <div className="bg-background p-4 rounded-md shadow-sm">
+            <TabsList className="w-full justify-start bg-muted/20 p-1">
+              <TabsTrigger value="hostmap" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+                主机地图
               </TabsTrigger>
-              <TabsTrigger value="stats" className="flex items-center gap-1.5">
-                <LineChart className="h-4 w-4" />
-                <span className="hidden sm:inline">性能统计</span>
+              <TabsTrigger value="stats" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+                性能统计
               </TabsTrigger>
-              <TabsTrigger value="gpucompare" className="flex items-center gap-1.5">
-                <BarChart className="h-4 w-4" />
-                <span className="hidden sm:inline">GPU对比</span>
+              <TabsTrigger value="gpucompare" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+                GPU对比
+              </TabsTrigger>
+              <TabsTrigger value="table" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+                数据表格
               </TabsTrigger>
             </TabsList>
           </div>
           
-          <TabsContent value="hostmap" className="mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <HostMap data={hostMapData} loading={loading} />
-              </CardContent>
-            </Card>
+          <TabsContent value="hostmap" className="mt-0">
+            <HostMap data={hostMapData} loading={loading} />
           </TabsContent>
           
-          <TabsContent value="stats" className="mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <StatsMultiple data={statsData} loading={loading} />
-              </CardContent>
-            </Card>
+          <TabsContent value="stats" className="mt-0">
+            <StatsMultiple data={statsData} loading={loading} />
           </TabsContent>
           
-          <TabsContent value="gpucompare" className="mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <GpuComparison data={gpuComparisonData} loading={loading} />
-              </CardContent>
-            </Card>
+          <TabsContent value="gpucompare" className="mt-0">
+            <GpuComparison data={gpuComparisonData} loading={loading} />
+          </TabsContent>
+          
+          <TabsContent value="table" className="mt-0">
+            <div className="bg-background rounded-md shadow-md border-0">
+              <div className="p-4 bg-muted/30">
+                <h3 className="text-lg font-medium">GPU 数据表格</h3>
+                <p className="text-sm text-muted-foreground">详细数据列表</p>
+              </div>
+              <div className="p-4">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>GPU 型号</TableHead>
+                      <TableHead>性能分数</TableHead>
+                      <TableHead>价格 (¥/小时)</TableHead>
+                      <TableHead>内存 (GB)</TableHead>
+                      <TableHead>功率 (W)</TableHead>
+                      <TableHead>效率比</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {loading ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center py-8">加载数据中...</TableCell>
+                      </TableRow>
+                    ) : (
+                      gpuComparisonData.map((gpu) => (
+                        <TableRow key={gpu.name}>
+                          <TableCell className="font-medium">{gpu.name}</TableCell>
+                          <TableCell>{gpu.performance}</TableCell>
+                          <TableCell>{gpu.price.toFixed(2)}</TableCell>
+                          <TableCell>{gpu.memory}</TableCell>
+                          <TableCell>{gpu.power}</TableCell>
+                          <TableCell>{gpu.efficiency.toFixed(1)}</TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <section className="space-y-4">
-            <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
-              <PieChart className="h-5 w-5" />
-              全球主机分布
-            </h2>
-            <HostMap data={hostMapData} loading={loading} />
-          </section>
-
-          <section className="space-y-4">
-            <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
-              <LineChart className="h-5 w-5" />
-              性能统计
-            </h2>
-            <StatsMultiple data={statsData} loading={loading} />
-          </section>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <HostMap data={hostMapData} loading={loading} />
+          <StatsMultiple data={statsData} loading={loading} />
         </div>
 
-        <section className="space-y-4">
-          <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
-            <BarChart className="h-5 w-5" />
-            GPU 对比分析
-          </h2>
-          <GpuComparison data={gpuComparisonData} loading={loading} />
-        </section>
+        <GpuComparison data={gpuComparisonData} loading={loading} />
       </div>
     </Layout>
   );

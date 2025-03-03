@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { HostMapData, StatsData, GpuData } from '@/types/chartData';
 import { fetchAllChartData } from '@/services/chartDataService';
+import { toast as sonnerToast } from 'sonner';
 
 export type { HostMapData, StatsData, GpuData };
 
@@ -30,6 +31,9 @@ export const useChartData = () => {
       } catch (error) {
         console.error("Error in useChartData:", error);
         setError("Failed to fetch data. Please try again later.");
+        sonnerToast.error("数据加载失败", {
+          description: "无法连接到实时数据源，已切换到模拟数据"
+        });
       } finally {
         setLoading(false);
       }

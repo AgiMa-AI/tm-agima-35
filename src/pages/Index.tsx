@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '@/components/layout/Layout';
 import MetricCard from '@/components/ui/MetricCard';
 import InstanceCard from '@/components/dashboard/InstanceCard';
@@ -62,15 +62,15 @@ const Index = () => {
   
   return (
     <Layout searchHandler={handleSearch}>
-      <div className="space-y-4 sm:space-y-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">控制面板</h1>
+      <div className="space-y-4">
+        <div className="bg-background p-4 rounded-md shadow-sm">
+          <h1 className="text-2xl font-medium">控制面板</h1>
           <p className="text-muted-foreground mt-1">
             监控和管理您的 GPU 实例
           </p>
         </div>
         
-        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3">
           <MetricCard
             title="可用实例"
             value={instances.filter(i => i.availability === 'available').length}
@@ -99,9 +99,9 @@ const Index = () => {
         </div>
         
         {/* Charts Section */}
-        <div className="space-y-3">
+        <div className="bg-background p-4 rounded-md shadow-sm space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2">
+            <h2 className="text-xl font-medium flex items-center gap-2">
               Vast.ai 数据分析
               {lastUpdated && (
                 <Badge variant="outline" className="ml-2 text-xs">
@@ -110,19 +110,25 @@ const Index = () => {
                 </Badge>
               )}
             </h2>
-            <Button variant="ghost" size="sm" asChild>
+            <Button variant="outline" size="sm" asChild className="h-8">
               <Link to="/charts" className="flex items-center gap-1">
                 <BarChart className="h-4 w-4" />
-                查看详细图表
+                详细图表
               </Link>
             </Button>
           </div>
           
           <Tabs defaultValue="map" className="space-y-4">
-            <TabsList className="mb-2">
-              <TabsTrigger value="map"><PieChart className="h-3.5 w-3.5 mr-1.5" />主机地图</TabsTrigger>
-              <TabsTrigger value="stats"><LineChart className="h-3.5 w-3.5 mr-1.5" />性能统计</TabsTrigger>
-              <TabsTrigger value="comparison"><BarChart className="h-3.5 w-3.5 mr-1.5" />GPU 对比</TabsTrigger>
+            <TabsList className="bg-muted/20 p-1">
+              <TabsTrigger value="map" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+                <PieChart className="h-3.5 w-3.5 mr-1.5" />主机地图
+              </TabsTrigger>
+              <TabsTrigger value="stats" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+                <LineChart className="h-3.5 w-3.5 mr-1.5" />性能统计
+              </TabsTrigger>
+              <TabsTrigger value="comparison" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+                <BarChart className="h-3.5 w-3.5 mr-1.5" />GPU 对比
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="map">
@@ -139,9 +145,9 @@ const Index = () => {
           </Tabs>
         </div>
         
-        <div className="space-y-3 sm:space-y-4">
+        <div className="bg-background p-4 rounded-md shadow-sm space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">GPU 实例</h2>
+            <h2 className="text-xl font-medium">GPU 实例</h2>
             <p className="text-sm text-muted-foreground">
               显示 {filteredCount} 个，共 {totalCount} 个实例
             </p>
@@ -155,7 +161,7 @@ const Index = () => {
           />
           
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {Array(8).fill(0).map((_, i) => (
                 <div key={i} className="flex flex-col space-y-3">
                   <Skeleton className="h-[300px] w-full rounded-xl" />
@@ -163,13 +169,13 @@ const Index = () => {
               ))}
             </div>
           ) : instances.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {instances.map((instance) => (
                 <InstanceCard key={instance.id} instance={instance} />
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-8 sm:py-12 text-center">
+            <div className="flex flex-col items-center justify-center py-8 text-center">
               <Server className="h-12 w-12 text-muted-foreground/50 mb-4" />
               <h3 className="text-lg font-medium">未找到实例</h3>
               <p className="text-muted-foreground mt-1 max-w-md">

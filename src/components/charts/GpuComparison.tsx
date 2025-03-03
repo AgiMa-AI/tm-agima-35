@@ -30,18 +30,18 @@ const GpuComparison = ({ data, loading = false }: GpuComparisonProps) => {
   }));
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>GPU 对比分析</CardTitle>
+    <Card className="w-full border-0 bg-background shadow-md">
+      <CardHeader className="bg-muted/30 pb-2">
+        <CardTitle className="text-lg font-medium">GPU 对比分析</CardTitle>
         <CardDescription>不同 GPU 型号性能和价格对比</CardDescription>
       </CardHeader>
-      <CardContent className="pt-2">
+      <CardContent className="pt-4 pb-2">
         <Tabs defaultValue="performance">
-          <TabsList className="mb-4">
-            <TabsTrigger value="performance">性能对比</TabsTrigger>
-            <TabsTrigger value="price">价格对比</TabsTrigger>
-            <TabsTrigger value="efficiency">效率对比</TabsTrigger>
-            <TabsTrigger value="radar">雷达图</TabsTrigger>
+          <TabsList className="mb-4 bg-muted/20">
+            <TabsTrigger value="performance" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">性能对比</TabsTrigger>
+            <TabsTrigger value="price" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">价格对比</TabsTrigger>
+            <TabsTrigger value="efficiency" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">效率对比</TabsTrigger>
+            <TabsTrigger value="radar" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">雷达图</TabsTrigger>
           </TabsList>
           
           {loading ? (
@@ -53,12 +53,17 @@ const GpuComparison = ({ data, loading = false }: GpuComparisonProps) => {
               <TabsContent value="performance">
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={data} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis type="category" dataKey="name" width={150} />
-                    <Tooltip />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(140, 140, 140, 0.2)" />
+                    <XAxis type="number" stroke="#8884d8" tick={{ fill: '#8884d8' }} />
+                    <YAxis type="category" dataKey="name" width={150} stroke="#8884d8" tick={{ fill: '#8884d8' }} />
+                    <Tooltip 
+                      wrapperStyle={{ zIndex: 100 }}
+                      contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', border: '1px solid #555' }}
+                      itemStyle={{ color: '#fff' }}
+                      labelStyle={{ color: '#aaa' }}
+                    />
                     <Legend />
-                    <Bar dataKey="performance" name="性能分数" fill="var(--primary)" />
+                    <Bar dataKey="performance" name="性能分数" fill="#8884d8" />
                   </BarChart>
                 </ResponsiveContainer>
               </TabsContent>
@@ -66,10 +71,16 @@ const GpuComparison = ({ data, loading = false }: GpuComparisonProps) => {
               <TabsContent value="price">
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={data} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis type="category" dataKey="name" width={150} />
-                    <Tooltip formatter={(value) => [`¥${value}`, '每小时价格']} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(140, 140, 140, 0.2)" />
+                    <XAxis type="number" stroke="#ff7300" tick={{ fill: '#ff7300' }} />
+                    <YAxis type="category" dataKey="name" width={150} stroke="#ff7300" tick={{ fill: '#ff7300' }} />
+                    <Tooltip 
+                      formatter={(value) => [`¥${value}`, '每小时价格']} 
+                      wrapperStyle={{ zIndex: 100 }}
+                      contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', border: '1px solid #555' }}
+                      itemStyle={{ color: '#fff' }}
+                      labelStyle={{ color: '#aaa' }}
+                    />
                     <Legend />
                     <Bar dataKey="price" name="每小时价格" fill="#ff7300" />
                   </BarChart>
@@ -79,10 +90,15 @@ const GpuComparison = ({ data, loading = false }: GpuComparisonProps) => {
               <TabsContent value="efficiency">
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={data} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis type="category" dataKey="name" width={150} />
-                    <Tooltip />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(140, 140, 140, 0.2)" />
+                    <XAxis type="number" stroke="#8884d8" tick={{ fill: '#8884d8' }} />
+                    <YAxis type="category" dataKey="name" width={150} stroke="#8884d8" tick={{ fill: '#8884d8' }} />
+                    <Tooltip 
+                      wrapperStyle={{ zIndex: 100 }}
+                      contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', border: '1px solid #555' }}
+                      itemStyle={{ color: '#fff' }}
+                      labelStyle={{ color: '#aaa' }}
+                    />
                     <Legend />
                     <Bar dataKey="efficiency" name="性能/价格比" fill="#8884d8" />
                   </BarChart>
@@ -92,9 +108,9 @@ const GpuComparison = ({ data, loading = false }: GpuComparisonProps) => {
               <TabsContent value="radar">
                 <ResponsiveContainer width="100%" height={300}>
                   <RadarChart cx="50%" cy="50%" outerRadius="80%" data={normalizedData}>
-                    <PolarGrid />
-                    <PolarAngleAxis dataKey="name" />
-                    <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                    <PolarGrid stroke="rgba(140, 140, 140, 0.2)" />
+                    <PolarAngleAxis dataKey="name" tick={{ fill: '#8884d8' }} />
+                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: '#8884d8' }} />
                     {normalizedData.map((entry, index) => (
                       <Radar
                         key={entry.name}
@@ -115,7 +131,12 @@ const GpuComparison = ({ data, loading = false }: GpuComparisonProps) => {
                       />
                     ))}
                     <Legend />
-                    <Tooltip />
+                    <Tooltip 
+                      wrapperStyle={{ zIndex: 100 }}
+                      contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', border: '1px solid #555' }}
+                      itemStyle={{ color: '#fff' }}
+                      labelStyle={{ color: '#aaa' }}
+                    />
                   </RadarChart>
                 </ResponsiveContainer>
               </TabsContent>

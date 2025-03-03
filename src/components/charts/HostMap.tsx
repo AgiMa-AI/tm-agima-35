@@ -18,12 +18,12 @@ interface HostMapProps {
 
 const HostMap = ({ data, loading = false }: HostMapProps) => {
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>主机地理分布</CardTitle>
+    <Card className="w-full border-0 bg-background shadow-md">
+      <CardHeader className="bg-muted/30 pb-2">
+        <CardTitle className="text-lg font-medium">主机地理分布</CardTitle>
         <CardDescription>全球 GPU 实例分布图</CardDescription>
       </CardHeader>
-      <CardContent className="pt-2">
+      <CardContent className="pt-4 pb-2">
         {loading ? (
           <div className="h-[300px] w-full flex items-center justify-center">
             <div className="text-muted-foreground">加载数据中...</div>
@@ -38,9 +38,9 @@ const HostMap = ({ data, loading = false }: HostMapProps) => {
                 bottom: 0,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" dataKey="lng" name="经度" unit="°" />
-              <YAxis type="number" dataKey="lat" name="纬度" unit="°" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(140, 140, 140, 0.2)" />
+              <XAxis type="number" dataKey="lng" name="经度" unit="°" stroke="#8884d8" tick={{ fill: '#8884d8' }} />
+              <YAxis type="number" dataKey="lat" name="纬度" unit="°" stroke="#8884d8" tick={{ fill: '#8884d8' }} />
               <ZAxis 
                 type="number" 
                 dataKey="gpuCount" 
@@ -59,7 +59,7 @@ const HostMap = ({ data, loading = false }: HostMapProps) => {
                   if (active && payload && payload.length) {
                     const data = payload[0].payload;
                     return (
-                      <div className="bg-background border rounded-md shadow-md p-2 text-xs">
+                      <div className="bg-background/90 border rounded-md shadow-md p-3 text-xs">
                         <p className="font-medium">{data.name}</p>
                         <p className="text-muted-foreground">{data.location}</p>
                         <div className="mt-1">
@@ -72,9 +72,10 @@ const HostMap = ({ data, loading = false }: HostMapProps) => {
                   }
                   return null;
                 }}
+                wrapperStyle={{ zIndex: 100 }}
               />
               <Legend />
-              <Scatter name="GPU 主机" data={data} fill="var(--primary)" />
+              <Scatter name="GPU 主机" data={data} fill="#8884d8" />
             </ScatterChart>
           </ResponsiveContainer>
         )}
