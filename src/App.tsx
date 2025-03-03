@@ -19,6 +19,19 @@ import { AuthProvider } from "./hooks/useAuth";
 import AGIModels from "./pages/AGIModels";
 import AGIDetails from "./pages/AGIDetails";
 import AGIHosting from "./pages/AGIHosting";
+import AGIRental from "./pages/AGIRental";
+
+// New pages for the updated business logic
+import AGILeasing from "./pages/AGILeasing";
+import ApiAccess from "./pages/ApiAccess";
+import Earnings from "./pages/Earnings";
+import Invitation from "./pages/Invitation";
+
+// Admin pages
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminUsers from "./pages/admin/Users";
+import AdminTasks from "./pages/admin/Tasks";
+import AdminApiKeys from "./pages/admin/ApiKeys";
 
 // Create a new QueryClient instance with extended caching for our chart data
 const queryClient = new QueryClient({
@@ -54,6 +67,19 @@ const App = () => (
             <Route path="/agi-models" element={<AGIModels />} />
             <Route path="/agi/:id" element={<AGIDetails />} />
             <Route path="/agi-hosting" element={<AGIHosting />} />
+            <Route path="/agi-rental/:id" element={<AGIRental />} />
+            
+            {/* 新增业务路由 */}
+            <Route path="/agi-leasing" element={<AGILeasing />} />
+            <Route path="/api-access" element={<ApiAccess />} />
+            <Route path="/earnings" element={<Earnings />} />
+            <Route path="/invitation" element={<Invitation />} />
+            
+            {/* 管理后台路由 */}
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/tasks" element={<AdminTasks />} />
+            <Route path="/admin/api-keys" element={<AdminApiKeys />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

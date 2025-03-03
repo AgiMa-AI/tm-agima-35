@@ -5,7 +5,11 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Home, Server, CreditCard, Clock, Settings, Plus, Database, Smartphone, BarChart, Bot, Cpu } from 'lucide-react';
+import { 
+  Home, Server, CreditCard, Clock, Settings, Database, 
+  Smartphone, BarChart, Bot, Cpu, Globe, Users, Key, 
+  Puzzle, Shield, LineChart, PieChart, Share2 
+} from 'lucide-react';
 
 interface SidebarProps {
   collapsed?: boolean;
@@ -51,7 +55,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
       <div className="flex h-full flex-col">
         <div className="flex h-14 items-center border-b px-4">
           <Link to="/" className="flex items-center gap-2 font-semibold">
-            {!collapsed && <span className="text-xl">GPU 云平台</span>}
+            {!collapsed && <span className="text-xl">算力云平台</span>}
             {collapsed && <Server className="h-6 w-6" />}
           </Link>
         </div>
@@ -62,7 +66,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 "mb-1 text-xs font-medium text-muted-foreground",
                 collapsed && "sr-only"
               )}>
-                概览
+                数据概览
               </h3>
               <NavItem 
                 href="/" 
@@ -83,28 +87,43 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 isActive={isActive('/agi-models')}
               />
               <NavItem 
+                href="/charts" 
+                icon={<BarChart className="h-4 w-4" />}
+                title="市场数据"
+                isActive={isActive('/charts')}
+              />
+            </div>
+            
+            <div className="grid gap-1 px-2 pt-4">
+              <h3 className={cn(
+                "mb-1 text-xs font-medium text-muted-foreground",
+                collapsed && "sr-only"
+              )}>
+                算力业务
+              </h3>
+              <NavItem 
                 href="/agi-hosting" 
                 icon={<Cpu className="h-4 w-4" />}
-                title="算力托管"
+                title="算力出租"
                 isActive={isActive('/agi-hosting')}
               />
               <NavItem 
-                href="/charts" 
-                icon={<BarChart className="h-4 w-4" />}
-                title="数据分析"
-                isActive={isActive('/charts')}
+                href="/agi-leasing" 
+                icon={<LineChart className="h-4 w-4" />}
+                title="算力租赁"
+                isActive={isActive('/agi-leasing')}
               />
               <NavItem 
-                href="/billing" 
-                icon={<CreditCard className="h-4 w-4" />}
-                title="账单"
-                isActive={isActive('/billing')}
+                href="/api-access" 
+                icon={<Puzzle className="h-4 w-4" />}
+                title="API 接入"
+                isActive={isActive('/api-access')}
               />
               <NavItem 
-                href="/history" 
-                icon={<Clock className="h-4 w-4" />}
-                title="使用历史"
-                isActive={isActive('/history')}
+                href="/earnings" 
+                icon={<PieChart className="h-4 w-4" />}
+                title="收益明细"
+                isActive={isActive('/earnings')}
               />
             </div>
             
@@ -115,12 +134,18 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 "mb-1 text-xs font-medium text-muted-foreground",
                 collapsed && "sr-only"
               )}>
-                管理
+                用户中心
               </h3>
+              <NavItem 
+                href="/invitation" 
+                icon={<Share2 className="h-4 w-4" />}
+                title="邀请管理"
+                isActive={isActive('/invitation')}
+              />
               <NavItem 
                 href="/storage" 
                 icon={<Database className="h-4 w-4" />}
-                title="存储"
+                title="存储管理"
                 isActive={isActive('/storage')}
               />
               <NavItem 
@@ -132,16 +157,58 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
               <NavItem 
                 href="/settings" 
                 icon={<Settings className="h-4 w-4" />}
-                title="设置"
+                title="账户设置"
                 isActive={isActive('/settings')}
+              />
+            </div>
+            
+            {!collapsed && <Separator className="my-4" />}
+            
+            <div className="grid gap-1 px-2 pt-2">
+              <h3 className={cn(
+                "mb-1 text-xs font-medium text-muted-foreground bg-primary/5 px-2 py-1 rounded-sm",
+                collapsed && "sr-only"
+              )}>
+                后台管理
+              </h3>
+              <NavItem 
+                href="/admin/dashboard" 
+                icon={<Shield className="h-4 w-4" />}
+                title="管理控制台"
+                isActive={isActive('/admin/dashboard')}
+              />
+              <NavItem 
+                href="/admin/users" 
+                icon={<Users className="h-4 w-4" />}
+                title="用户管理"
+                isActive={isActive('/admin/users')}
+              />
+              <NavItem 
+                href="/admin/tasks" 
+                icon={<Clock className="h-4 w-4" />}
+                title="任务调度"
+                isActive={isActive('/admin/tasks')}
+              />
+              <NavItem 
+                href="/admin/api-keys" 
+                icon={<Key className="h-4 w-4" />}
+                title="API 密钥"
+                isActive={isActive('/admin/api-keys')}
               />
             </div>
           </nav>
         </ScrollArea>
         <div className="mt-auto p-4 border-t">
-          <Button className="w-full justify-center" size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            {!collapsed ? "创建资源" : null}
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full justify-center bg-primary/5 hover:bg-primary/10 text-primary" 
+            asChild
+          >
+            <Link to="/admin/dashboard">
+              <Shield className="h-4 w-4 mr-2" />
+              {!collapsed ? "后台管理" : null}
+            </Link>
           </Button>
         </div>
       </div>
