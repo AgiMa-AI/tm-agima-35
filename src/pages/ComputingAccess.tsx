@@ -11,10 +11,190 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
-import { Terminal, Key, Code, CloudCog, Cpu, LineChart, Shield, Lock, Copy, Eye, EyeOff } from 'lucide-react';
+import { Terminal, Key, Code, CloudCog, Cpu, LineChart, Shield, Lock, Copy, Eye, EyeOff, Server, Globe, Activity, Wifi } from 'lucide-react';
 
-const ApiAccess = () => {
+// 服务器数据模型
+interface ComputingServer {
+  id: string;
+  location: string;
+  country: string;
+  city: string;
+  provider: string;
+  serverType: 'GPU' | 'CPU' | 'TPU' | 'ASIC';
+  specs: {
+    model: string;
+    cores: number;
+    memory: string;
+    bandwidth: string;
+  };
+  status: 'online' | 'busy' | 'maintenance';
+  load: number; // 0-100
+  ping: number; // in ms
+  owner: string;
+  available: boolean;
+}
+
+// 模拟服务器数据
+const mockServers: ComputingServer[] = [
+  {
+    id: 'sv-001',
+    location: 'Asia',
+    country: '中国',
+    city: '上海',
+    provider: '阿里云',
+    serverType: 'GPU',
+    specs: {
+      model: 'NVIDIA RTX A6000',
+      cores: 10752,
+      memory: '48GB GDDR6',
+      bandwidth: '10 Gbps'
+    },
+    status: 'online',
+    load: 42,
+    ping: 15,
+    owner: '算力平台',
+    available: true
+  },
+  {
+    id: 'sv-002',
+    location: 'Asia',
+    country: '中国',
+    city: '北京',
+    provider: '腾讯云',
+    serverType: 'GPU',
+    specs: {
+      model: 'NVIDIA A100',
+      cores: 6912,
+      memory: '80GB HBM2',
+      bandwidth: '25 Gbps'
+    },
+    status: 'busy',
+    load: 87,
+    ping: 23,
+    owner: '算力平台',
+    available: true
+  },
+  {
+    id: 'sv-003',
+    location: 'Asia',
+    country: '中国',
+    city: '深圳',
+    provider: '华为云',
+    serverType: 'GPU',
+    specs: {
+      model: 'NVIDIA Tesla V100',
+      cores: 5120,
+      memory: '32GB HBM2',
+      bandwidth: '15 Gbps'
+    },
+    status: 'online',
+    load: 28,
+    ping: 30,
+    owner: '企业用户',
+    available: true
+  },
+  {
+    id: 'sv-004',
+    location: 'Americas',
+    country: '美国',
+    city: '西雅图',
+    provider: 'AWS',
+    serverType: 'GPU',
+    specs: {
+      model: 'NVIDIA A10G',
+      cores: 9216,
+      memory: '24GB GDDR6',
+      bandwidth: '20 Gbps'
+    },
+    status: 'online',
+    load: 15,
+    ping: 150,
+    owner: '算力平台',
+    available: true
+  },
+  {
+    id: 'sv-005',
+    location: 'Europe',
+    country: '德国',
+    city: '法兰克福',
+    provider: 'Hetzner',
+    serverType: 'CPU',
+    specs: {
+      model: 'AMD EPYC 7763',
+      cores: 128,
+      memory: '512GB DDR4',
+      bandwidth: '40 Gbps'
+    },
+    status: 'maintenance',
+    load: 0,
+    ping: 210,
+    owner: '算力平台',
+    available: false
+  },
+  {
+    id: 'sv-006',
+    location: 'Europe',
+    country: '英国',
+    city: '伦敦',
+    provider: 'OVH',
+    serverType: 'GPU',
+    specs: {
+      model: 'NVIDIA RTX 4090',
+      cores: 16384,
+      memory: '24GB GDDR6X',
+      bandwidth: '12 Gbps'
+    },
+    status: 'online',
+    load: 65,
+    ping: 195,
+    owner: '企业用户',
+    available: true
+  },
+  {
+    id: 'sv-007',
+    location: 'Asia',
+    country: '中国',
+    city: '杭州',
+    provider: '阿里云',
+    serverType: 'TPU',
+    specs: {
+      model: 'Google TPU v4',
+      cores: 4096,
+      memory: '128GB HBM',
+      bandwidth: '30 Gbps'
+    },
+    status: 'online',
+    load: 52,
+    ping: 26,
+    owner: '算力平台',
+    available: true
+  },
+  {
+    id: 'sv-008',
+    location: 'Americas',
+    country: '美国',
+    city: '旧金山',
+    provider: 'Google Cloud',
+    serverType: 'TPU',
+    specs: {
+      model: 'Google TPU v3',
+      cores: 2048,
+      memory: '64GB HBM',
+      bandwidth: '20 Gbps'
+    },
+    status: 'busy',
+    load: 93,
+    ping: 168,
+    owner: '算力平台',
+    available: true
+  }
+];
+
+const ComputingAccess = () => {
   const [showApiKey, setShowApiKey] = useState(false);
+  const [serverFilter, setServerFilter] = useState<string>('all');
+  const [locationFilter, setLocationFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   
   const handleCopyApiKey = () => {
     navigator.clipboard.writeText('sk-1234567890abcdefghijklmnopqrstuvwxyz');
@@ -26,27 +206,219 @@ const ApiAccess = () => {
       description: '新密钥已复制到剪贴板并发送到您的邮箱'
     });
   };
+
+  // 过滤服务器列表
+  const filteredServers = mockServers.filter(server => {
+    if (serverFilter !== 'all' && server.serverType !== serverFilter) return false;
+    if (locationFilter !== 'all' && server.location !== locationFilter) return false;
+    if (statusFilter !== 'all') {
+      if (statusFilter === 'online' && server.status !== 'online') return false;
+      if (statusFilter === 'busy' && server.status !== 'busy') return false;
+      if (statusFilter === 'maintenance' && server.status !== 'maintenance') return false;
+    }
+    return true;
+  });
+  
+  // 服务器状态标签颜色
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'online': return 'bg-green-500 text-white';
+      case 'busy': return 'bg-amber-500 text-white';
+      case 'maintenance': return 'bg-red-500 text-white';
+      default: return 'bg-gray-500 text-white';
+    }
+  };
+  
+  // 获取负载颜色
+  const getLoadColor = (load: number) => {
+    if (load < 30) return 'bg-green-500';
+    if (load < 70) return 'bg-amber-500';
+    return 'bg-red-500';
+  };
   
   return (
     <Layout>
       <div className="space-y-6">
         <div className="bg-background p-4 rounded-md shadow-sm">
-          <h1 className="text-2xl font-medium">API & SDK 接入</h1>
+          <h1 className="text-2xl font-medium">算力接入</h1>
           <p className="text-muted-foreground mt-1">
-            通过API和SDK灵活调用算力资源
+            通过API和SDK灵活调用全球分布式算力资源
           </p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-3">
+            <Card>
+              <CardHeader className="bg-muted/30">
+                <CardTitle className="flex items-center">
+                  <Server className="h-5 w-5 mr-2 text-primary" />
+                  全球算力服务器
+                </CardTitle>
+                <CardDescription>
+                  查看和接入全球分布式计算资源
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent className="pt-6">
+                <div className="flex flex-col lg:flex-row gap-4 mb-6">
+                  <div className="flex-1">
+                    <div className="text-sm font-medium mb-2">服务器类型</div>
+                    <Select value={serverFilter} onValueChange={setServerFilter}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="全部服务器类型" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">全部类型</SelectItem>
+                        <SelectItem value="GPU">GPU 服务器</SelectItem>
+                        <SelectItem value="CPU">CPU 服务器</SelectItem>
+                        <SelectItem value="TPU">TPU 服务器</SelectItem>
+                        <SelectItem value="ASIC">ASIC 专用芯片</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="text-sm font-medium mb-2">地理位置</div>
+                    <Select value={locationFilter} onValueChange={setLocationFilter}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="全部地区" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">全部地区</SelectItem>
+                        <SelectItem value="Asia">亚洲</SelectItem>
+                        <SelectItem value="Europe">欧洲</SelectItem>
+                        <SelectItem value="Americas">美洲</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="text-sm font-medium mb-2">服务器状态</div>
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="全部状态" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">全部状态</SelectItem>
+                        <SelectItem value="online">在线可用</SelectItem>
+                        <SelectItem value="busy">高负载</SelectItem>
+                        <SelectItem value="maintenance">维护中</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="rounded-md border overflow-auto">
+                  <Table>
+                    <TableHeader className="bg-muted/20">
+                      <TableRow>
+                        <TableHead className="w-[180px]">位置</TableHead>
+                        <TableHead>服务器类型</TableHead>
+                        <TableHead>规格</TableHead>
+                        <TableHead>状态</TableHead>
+                        <TableHead>负载</TableHead>
+                        <TableHead>延迟</TableHead>
+                        <TableHead className="text-right">操作</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredServers.map(server => (
+                        <TableRow key={server.id}>
+                          <TableCell>
+                            <div className="flex items-center">
+                              <Globe className="h-4 w-4 mr-2 text-muted-foreground" />
+                              <div>
+                                <div className="font-medium">{server.city}</div>
+                                <div className="text-xs text-muted-foreground">{server.country} · {server.provider}</div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center">
+                              {server.serverType === 'GPU' && <Cpu className="h-4 w-4 mr-1.5 text-purple-500" />}
+                              {server.serverType === 'CPU' && <Cpu className="h-4 w-4 mr-1.5 text-blue-500" />}
+                              {server.serverType === 'TPU' && <Cpu className="h-4 w-4 mr-1.5 text-green-500" />}
+                              {server.serverType === 'ASIC' && <Cpu className="h-4 w-4 mr-1.5 text-amber-500" />}
+                              <span>{server.serverType}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="text-sm">
+                              <div className="font-medium">{server.specs.model}</div>
+                              <div className="text-xs text-muted-foreground">
+                                {server.specs.cores} 核心 · {server.specs.memory} · {server.specs.bandwidth}
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge className={getStatusColor(server.status)}>
+                              {server.status === 'online' && '在线可用'}
+                              {server.status === 'busy' && '高负载'}
+                              {server.status === 'maintenance' && '维护中'}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div className="w-full flex items-center gap-2">
+                              <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
+                                <div 
+                                  className={`h-full rounded-full ${getLoadColor(server.load)}`} 
+                                  style={{ width: `${server.load}%` }}
+                                ></div>
+                              </div>
+                              <span className="text-xs">{server.load}%</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center">
+                              <Activity className="h-3 w-3 mr-1.5 text-muted-foreground" />
+                              <span>{server.ping} ms</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              disabled={!server.available || server.status === 'maintenance'}
+                            >
+                              接入
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                
+                <div className="flex justify-between items-center mt-4 text-sm text-muted-foreground">
+                  <div>显示 {filteredServers.length} 个服务器，共 {mockServers.length} 个</div>
+                  <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                      <span>低负载</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                      <span>中负载</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                      <span>高负载</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
           <div className="lg:col-span-2 space-y-6">
             <Card>
               <CardHeader className="bg-muted/30">
                 <CardTitle className="flex items-center">
-                  <Terminal className="h-5 w-5 mr-2 text-primary" />
+                  <Key className="h-5 w-5 mr-2 text-primary" />
                   API 访问凭证
                 </CardTitle>
                 <CardDescription>
-                  管理您的API密钥以访问平台功能
+                  管理您的API密钥以访问平台算力资源
                 </CardDescription>
               </CardHeader>
               
@@ -114,12 +486,6 @@ const ApiAccess = () => {
                           <TableCell>5次调用</TableCell>
                           <TableCell className="text-right">¥125.00</TableCell>
                         </TableRow>
-                        <TableRow>
-                          <TableCell>2023-05-09</TableCell>
-                          <TableCell>/v1/models/inference</TableCell>
-                          <TableCell>952次调用</TableCell>
-                          <TableCell className="text-right">¥28.56</TableCell>
-                        </TableRow>
                       </TableBody>
                     </Table>
                   </div>
@@ -181,31 +547,6 @@ else:
     print(response.text)`}</code>
                       </pre>
                     </div>
-                    
-                    <div className="bg-zinc-950 text-zinc-100 p-4 rounded-lg overflow-x-auto">
-                      <pre className="text-sm font-mono">
-                        <code>{`# 检查任务状态
-task_id = "task_12345"
-response = requests.get(
-    f"https://api.tengu.ai/v1/compute/tasks/{task_id}",
-    headers={
-        "Authorization": f"Bearer {api_key}"
-    }
-)
-
-if response.status_code == 200:
-    task_info = response.json()
-    print(f"任务状态: {task_info['status']}")
-    print(f"进度: {task_info['progress']}%")
-    print(f"已用算力: {task_info['compute_used']} 小时")
-    
-    # 下载任务结果（如果已完成）
-    if task_info['status'] == 'completed':
-        result_url = task_info['result_url']
-        print(f"结果下载链接: {result_url}")
-`}</code>
-                      </pre>
-                    </div>
                   </TabsContent>
                   
                   <TabsContent value="nodejs" className="space-y-4">
@@ -262,28 +603,7 @@ curl -X POST \\
     "task_type": "training",
     "duration_hours": 24,
     "priority": "high"
-  }'
-
-# 响应示例:
-# {
-#   "task_id": "task_12345",
-#   "status": "queued",
-#   "estimated_completion": "2023-05-12T10:30:00Z"
-# }
-
-# 检查任务状态
-curl -X GET \\
-  https://api.tengu.ai/v1/compute/tasks/task_12345 \\
-  -H "Authorization: Bearer sk-1234567890abcdefghijklmnopqrstuvwxyz"
-
-# 响应示例:
-# {
-#   "task_id": "task_12345",
-#   "status": "running",
-#   "progress": 45,
-#   "compute_used": "10.5",
-#   "estimated_completion": "2023-05-12T10:30:00Z"
-# }`}</code>
+  }'`}</code>
                       </pre>
                     </div>
                   </TabsContent>
@@ -345,50 +665,6 @@ curl -X GET \\
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="rounded-md overflow-hidden border">
-                    <div className="bg-muted/30 p-3">
-                      <h3 className="font-medium">集成示例</h3>
-                    </div>
-                    <div className="p-4 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <div className="w-8 h-8 rounded bg-muted flex items-center justify-center mr-3">
-                            <Code className="h-5 w-5" />
-                          </div>
-                          <span>企业集成方案</span>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          详情
-                        </Button>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <div className="w-8 h-8 rounded bg-muted flex items-center justify-center mr-3">
-                            <Terminal className="h-5 w-5" />
-                          </div>
-                          <span>命令行工具</span>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          安装
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="p-4 bg-primary/5 rounded-lg border border-primary/10">
-                    <h3 className="font-medium mb-2 flex items-center">
-                      <Shield className="h-4 w-4 mr-1.5 text-primary" />
-                      企业级支持
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      提供专属技术支持和定制化SDK解决方案，满足企业特定需求。
-                    </p>
-                    <Button variant="default" className="w-full">
-                      申请企业支持
-                    </Button>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -448,4 +724,4 @@ curl -X GET \\
   );
 };
 
-export default ApiAccess;
+export default ComputingAccess;
