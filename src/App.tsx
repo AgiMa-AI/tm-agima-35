@@ -12,6 +12,7 @@ import Billing from "./pages/Billing";
 import Storage from "./pages/Storage";
 import Settings from "./pages/Settings";
 import MobileApp from "./pages/MobileApp";
+import Charts from "./pages/Charts";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import { AuthProvider } from "./hooks/useAuth";
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/storage" element={<Storage />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/mobile-app" element={<MobileApp />} />
+            <Route path="/charts" element={<Charts />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

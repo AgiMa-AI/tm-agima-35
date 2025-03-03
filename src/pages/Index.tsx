@@ -4,9 +4,14 @@ import Layout from '@/components/layout/Layout';
 import MetricCard from '@/components/ui/MetricCard';
 import InstanceCard from '@/components/dashboard/InstanceCard';
 import FilterBar from '@/components/dashboard/FilterBar';
+import HostMap from '@/components/charts/HostMap';
+import StatsMultiple from '@/components/charts/StatsMultiple';
+import GpuComparison from '@/components/charts/GpuComparison';
 import { useInstances } from '@/hooks/useInstances';
+import { useChartData } from '@/hooks/useChartData';
 import { Server, Clock, CreditCard, Database } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Index = () => {
   const { 
@@ -19,6 +24,13 @@ const Index = () => {
     totalCount,
     filteredCount
   } = useInstances();
+  
+  const {
+    hostMapData,
+    statsData,
+    gpuComparisonData,
+    loading: chartsLoading
+  } = useChartData();
   
   const handleSearch = (query: string) => {
     updateFilters({ search: query || undefined });
@@ -64,6 +76,33 @@ const Index = () => {
             description="所有实例总计"
             icon={<Database className="h-4 w-4" />}
           />
+        </div>
+        
+        {/* Charts Section */}
+        <div className="space-y-6">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
+            Vast.ai 数据分析
+          </h2>
+          
+          <Tabs defaultValue="map" className="space-y-4">
+            <TabsList className="mb-2">
+              <TabsTrigger value="map">主机地图</TabsTrigger>
+              <TabsTrigger value="stats">性能统计</TabsTrigger>
+              <TabsTrigger value="comparison">GPU 对比</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="map">
+              <HostMap data={hostMapData} loading={chartsLoading} />
+            </TabsContent>
+            
+            <TabsContent value="stats">
+              <StatsMultiple data={statsData} loading={chartsLoading} />
+            </TabsContent>
+            
+            <TabsContent value="comparison">
+              <GpuComparison data={gpuComparisonData} loading={chartsLoading} />
+            </TabsContent>
+          </Tabs>
         </div>
         
         <div className="space-y-3 sm:space-y-4">

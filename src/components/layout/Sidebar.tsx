@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Home, Server, CreditCard, Clock, Settings, Plus, Database, Smartphone } from 'lucide-react';
+import { Home, Server, CreditCard, Clock, Settings, Plus, Database, Smartphone, BarChart } from 'lucide-react';
 
 interface SidebarProps {
   collapsed?: boolean;
@@ -75,6 +74,12 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 icon={<Server className="h-4 w-4" />}
                 title="所有实例"
                 isActive={isActive('/instances')}
+              />
+              <NavItem 
+                href="/charts" 
+                icon={<BarChart className="h-4 w-4" />}
+                title="数据分析"
+                isActive={isActive('/charts')}
               />
               <NavItem 
                 href="/billing" 
