@@ -140,7 +140,10 @@ export const useChartData = () => {
     // Fallback function to use mock data when API calls fail
     const useMockData = () => {
       console.log('Using mock data as fallback');
-      sonnerToast("使用模拟数据", "无法连接到实时数据源，已切换到模拟数据");
+      // Fix: Update the sonner toast call to use the correct format
+      sonnerToast("使用模拟数据", {
+        description: "无法连接到实时数据源，已切换到模拟数据"
+      });
       
       // Mock host map data
       const mockHostMapData: HostMapData[] = [
