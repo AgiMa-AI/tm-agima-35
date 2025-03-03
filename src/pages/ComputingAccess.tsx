@@ -258,7 +258,7 @@ const ComputingAccess = () => {
                 curl -X POST https://api.computing.example.com/v1/tasks \<br />
                 {'  '}-H "Authorization: Bearer YOUR_API_KEY" \<br />
                 {'  '}-H "Content-Type: application/json" \<br />
-                {'  '}-d '{"model": "gpt-4", "task_type": "inference", ...}'
+                {'  '}-d {"{'"}\"model\": \"gpt-4\", \"task_type\": \"inference\", ...{"}"}
               </pre>
             </CardContent>
           </Card>
@@ -276,7 +276,7 @@ const ComputingAccess = () => {
                 client = ComputingClient(api_key="YOUR_API_KEY")<br />
                 task = client.create_task(<br />
                 {'  '}model="stable-diffusion",<br />
-                {'  '}params={"prompt": "未来城市", ...}<br />
+                {'  '}params={"{'"}\"prompt\": \"未来城市\", ...{"}"}<br />
                 )
               </pre>
             </CardContent>
