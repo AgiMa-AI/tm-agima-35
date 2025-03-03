@@ -13,6 +13,7 @@ export const useChartData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [dataMode, setDataMode] = useState<'live' | 'mock'>('mock'); // Default to mock data
 
   useEffect(() => {
     // Function to refresh all data
@@ -27,10 +28,12 @@ export const useChartData = () => {
         setStatsData(statsData);
         setGpuComparisonData(gpuData);
         setLastUpdated(new Date());
+        setDataMode('mock'); // Always use mock data as per user request
         
       } catch (error) {
         console.error("Error in useChartData:", error);
         setError("Failed to fetch data. Please try again later.");
+        setDataMode('mock');
         sonnerToast.error("数据加载失败", {
           description: "无法连接到实时数据源，已切换到模拟数据"
         });
@@ -42,7 +45,7 @@ export const useChartData = () => {
     // Initial fetch
     refreshData();
     
-    // Set up polling for real-time data updates (every 15 seconds)
+    // Set up polling for data updates (every 15 seconds)
     const intervalId = setInterval(() => {
       console.log('Polling for new data...');
       refreshData();
@@ -57,6 +60,7 @@ export const useChartData = () => {
     gpuComparisonData,
     loading,
     error,
-    lastUpdated
+    lastUpdated,
+    dataMode
   };
 };
