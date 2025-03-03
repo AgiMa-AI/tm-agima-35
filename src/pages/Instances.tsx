@@ -31,7 +31,7 @@ const Instances = () => {
     <Layout searchHandler={handleSearch}>
       <div className="space-y-4 sm:space-y-6">
         <div className="text-center sm:text-left">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">所有 GPU 实例</h1>
+          <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">所有 GPU 实例</h1>
           <p className="text-muted-foreground mt-1 text-sm sm:text-base">
             浏览和筛选可用的 GPU 实例
           </p>
@@ -65,7 +65,7 @@ const Instances = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-6 sm:py-8 md:py-12 text-center">
+          <div className="flex flex-col items-center justify-center py-6 sm:py-8 md:py-12 text-center font-display">
             <Server className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground/50 mb-3 sm:mb-4" />
             <h3 className="text-base sm:text-lg font-medium">未找到实例</h3>
             <p className="text-sm text-muted-foreground mt-1 max-w-md px-4">

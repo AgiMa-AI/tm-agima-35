@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -9,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge'; // Fixed the casing
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
 import { Server, Clock, Database, CreditCard, Download, BarChart, Shield, Terminal } from 'lucide-react';
@@ -34,7 +33,6 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
   const [rentalPeriod, setRentalPeriod] = useState(1);
   const [isRentDialogOpen, setIsRentDialogOpen] = useState(false);
   
-  // Define badge styles based on availability
   const availabilityBadge = {
     available: <Badge className="bg-green-500 hover:bg-green-600">可用</Badge>,
     rented: <Badge className="bg-yellow-500 hover:bg-yellow-600">使用中</Badge>,
@@ -42,9 +40,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
   };
   
   const handleRentNow = () => {
-    // Here we would handle the rental process
     setIsRentDialogOpen(false);
-    // In a real app, you would call an API to initiate the rental
     console.log(`租用实例 ${instance.id}，时长 ${rentalPeriod} 小时，价格 ¥${(instance.price * rentalPeriod).toFixed(2)}`);
   };
   
@@ -56,7 +52,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
             <CardHeader className="pb-3">
               <div className="flex justify-between flex-col sm:flex-row gap-4">
                 <div>
-                  <CardTitle className="text-2xl font-bold">{instance.name}</CardTitle>
+                  <CardTitle className="font-display text-2xl font-bold">{instance.name}</CardTitle>
                   <CardDescription className="flex items-center gap-2 mt-1">
                     {availabilityBadge[instance.availability]}
                     <span className="text-muted-foreground">{instance.location}</span>
@@ -64,7 +60,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                 </div>
                 <div className="flex items-center">
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-primary">¥{instance.price}</p>
+                    <p className="text-2xl font-bold text-primary font-display">¥{instance.price}</p>
                     <p className="text-sm text-muted-foreground">每小时</p>
                   </div>
                 </div>
@@ -124,7 +120,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                         <span className="text-xs font-medium">{instance.performance}/100</span>
                       </div>
                       
-                      <p className="text-sm mt-6 mb-2">
+                      <p className="text-sm mt-6 mb-2 font-display">
                         这款 {instance.gpuModel} 实例适用于:
                       </p>
                       <ul className="list-disc list-inside text-sm text-muted-foreground">
@@ -140,7 +136,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                 <TabsContent value="specifications" className="pt-4">
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-lg font-medium mb-3">详细规格</h3>
+                      <h3 className="text-lg font-medium font-display mb-3">详细规格</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {Object.entries(instance.specs).map(([key, value]) => (
                           <div key={key} className="flex justify-between py-2 border-b">
@@ -152,7 +148,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                     </div>
                     
                     <div>
-                      <h3 className="text-lg font-medium mb-3">配置</h3>
+                      <h3 className="text-lg font-medium font-display mb-3">配置</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex justify-between py-2 border-b">
                           <span className="text-muted-foreground">实例类型</span>
@@ -178,7 +174,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                 <TabsContent value="performance" className="pt-4">
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-lg font-medium mb-3">性能指标</h3>
+                      <h3 className="text-lg font-medium font-display mb-3">性能指标</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Card>
                           <CardHeader className="pb-2">
@@ -253,7 +249,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                     </div>
                     
                     <div>
-                      <h3 className="text-lg font-medium mb-3">基准测试结果</h3>
+                      <h3 className="text-lg font-medium font-display mb-3">基准测试结果</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <Card>
                           <CardContent className="p-4">
@@ -292,7 +288,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                 <TabsContent value="usage" className="pt-4">
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-lg font-medium mb-3">快速开始指南</h3>
+                      <h3 className="text-lg font-medium font-display mb-3">快速开始指南</h3>
                       <div className="space-y-4">
                         <div className="flex items-start gap-3">
                           <div className="flex items-center justify-center h-6 w-6 rounded-full bg-primary text-white text-sm font-medium shrink-0">1</div>
@@ -337,7 +333,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                     </div>
                     
                     <div>
-                      <h3 className="text-lg font-medium mb-3">常用命令</h3>
+                      <h3 className="text-lg font-medium font-display mb-3">常用命令</h3>
                       <div className="space-y-3">
                         <Card>
                           <CardHeader className="py-2 px-4">
@@ -398,7 +394,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
         <div className="w-full md:w-1/3 lg:w-1/4">
           <Card className="h-full">
             <CardHeader>
-              <CardTitle>租用选项</CardTitle>
+              <CardTitle className="font-display">租用选项</CardTitle>
               <CardDescription>配置并租用这个实例</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

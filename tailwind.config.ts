@@ -19,6 +19,11 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif'],
+				display: ['Playfair Display', 'serif'],
+				mono: ['JetBrains Mono', 'monospace'],
+			},
 			screens: {
 				'xs': '480px',
 			},
