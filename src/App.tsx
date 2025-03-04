@@ -31,6 +31,7 @@ import Invitation from "./pages/Invitation";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminUsers from "./pages/admin/Users";
 import AdminTasks from "./pages/admin/Tasks";
+import TaskDetail from "./pages/admin/TaskDetail";
 import AdminApiKeys from "./pages/admin/ApiKeys";
 
 // Create a new QueryClient instance with extended caching for our chart data
@@ -78,7 +79,12 @@ const App = () => (
             {/* 管理后台路由 */}
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsers />} />
-            <Route path="/admin/tasks" element={<AdminTasks />} />
+            
+            {/* 任务管理路由 - 使用嵌套路由结构 */}
+            <Route path="/admin/tasks" element={<AdminTasks />}>
+              <Route path=":id" element={<TaskDetail />} />
+            </Route>
+            
             <Route path="/admin/api-keys" element={<AdminApiKeys />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
