@@ -7,7 +7,7 @@ const mockAGIModels: AGIModel[] = [
   {
     id: 'gpt-4',
     name: 'GPT-4',
-    description: 'OpenAI's flagship model, excels in complex reasoning.',
+    description: 'OpenAI\'s flagship model, excels in complex reasoning.',
     status: 'available',
     type: 'text',
     architecture: 'Transformer',
@@ -85,7 +85,7 @@ const mockAGIModels: AGIModel[] = [
   {
     id: 'claude-v2',
     name: 'Claude v2',
-    description: 'Anthropic's model focused on safety and reliability.',
+    description: 'Anthropic\'s model focused on safety and reliability.',
     status: 'available',
     type: 'text',
     architecture: 'Transformer',
