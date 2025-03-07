@@ -1,10 +1,12 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Globe, Cpu, Wifi, Server, Clock } from 'lucide-react';
+import { Globe, Cpu, Wifi, Server, Clock, Smartphone, ChevronRight } from 'lucide-react';
 
 interface ServerNode {
   id: string;
@@ -182,6 +184,41 @@ const ComputingAccess = () => {
             </CardContent>
           </Card>
         </div>
+
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border-indigo-200 overflow-hidden">
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div className="md:col-span-2">
+                  <h3 className="text-2xl font-bold mb-2">移动设备算力共享</h3>
+                  <p className="text-muted-foreground mb-4">
+                    将闲置的手机、平板电脑贡献给AGI模型训练与推理，加入分布式算力网络，每天获得稳定收益。
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <Badge variant="mobile">移动算力</Badge>
+                    <Badge variant="outline">低功耗</Badge>
+                    <Badge variant="outline">零门槛</Badge>
+                    <Badge variant="outline">安全可靠</Badge>
+                  </div>
+                  <Link to="/mobile-computing">
+                    <Button>
+                      立即接入移动算力
+                      <ChevronRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+                <div className="hidden md:flex justify-center">
+                  <div className="relative">
+                    <Smartphone className="h-32 w-32 text-indigo-500" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Cpu className="h-12 w-12 text-indigo-300" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
         
         <h2 className="text-2xl font-bold mb-4">可用算力节点</h2>
         <div className="bg-card rounded-lg border shadow-sm overflow-hidden mb-8">
@@ -211,7 +248,8 @@ const ComputingAccess = () => {
                       <Badge variant={
                         node.type === 'GPU' ? 'default' : 
                         node.type === 'TPU' ? 'destructive' : 
-                        node.type === 'CPU' ? 'secondary' : 'outline'
+                        node.type === 'CPU' ? 'secondary' :
+                        node.type === 'Mobile' ? 'mobile' : 'outline'
                       }>
                         {node.type}
                       </Badge>
