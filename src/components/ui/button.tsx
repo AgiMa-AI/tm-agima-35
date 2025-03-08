@@ -20,7 +20,10 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         tiffany: "bg-tiffany-gradient text-white hover:opacity-90 shadow-md",
-        "tiffany-outline": "border-2 border-tiffany text-tiffany hover:bg-tiffany/10"
+        "tiffany-outline": "border-2 border-tiffany text-tiffany hover:bg-tiffany-lightest",
+        "tiffany-soft": "bg-tiffany-lightest text-tiffany-darker hover:bg-tiffany-lighter/50",
+        "tiffany-ghost": "text-tiffany-dark hover:bg-tiffany-lightest",
+        "tiffany-link": "text-tiffany underline-offset-4 hover:underline"
       },
       size: {
         default: "h-10 px-4 py-2",
