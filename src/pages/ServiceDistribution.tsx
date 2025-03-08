@@ -12,7 +12,6 @@ import {
   Shield, Truck, Zap
 } from 'lucide-react';
 
-// 模拟企业客户数据
 interface EnterpriseClient {
   id: string;
   name: string;
@@ -30,7 +29,7 @@ const mockEnterpriseClients: EnterpriseClient[] = [
   {
     id: 'aitech-01',
     name: '智联科技',
-    logo: '/logos/aitech.svg', // 实际项目中需要提供这些图片
+    logo: '/logos/aitech.svg',
     industry: '金融科技',
     location: '上海',
     country: '中国',
@@ -173,7 +172,6 @@ const mockEnterpriseClients: EnterpriseClient[] = [
   }
 ];
 
-// 获取行业图标
 const getIndustryIcon = (industry: string) => {
   switch (industry) {
     case '金融科技':
@@ -205,7 +203,6 @@ const getIndustryIcon = (industry: string) => {
   }
 };
 
-// 获取部署类型徽章
 const getDeploymentBadge = (type: string) => {
   switch (type) {
     case 'cloud':
@@ -225,10 +222,8 @@ const ServiceDistribution = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [industryFilter, setIndustryFilter] = useState<string | null>(null);
   
-  // 提取所有行业类型
   const industries = [...new Set(mockEnterpriseClients.map(client => client.industry))];
   
-  // 过滤企业
   const filteredClients = mockEnterpriseClients.filter(client => {
     const matchesSearch = client.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          client.industry.toLowerCase().includes(searchTerm.toLowerCase());

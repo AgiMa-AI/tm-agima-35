@@ -24,6 +24,7 @@ import AGIRental from "./pages/AGIRental";
 // New pages for the updated business logic
 import AGILeasing from "./pages/AGILeasing";
 import ServiceDistribution from "./pages/ServiceDistribution";
+import CaseStudy from "./pages/CaseStudy";
 import MobileComputing from "./pages/MobileComputing";
 import Earnings from "./pages/Earnings";
 import Invitation from "./pages/Invitation";
@@ -74,6 +75,7 @@ const App = () => (
             {/* 新增业务路由 */}
             <Route path="/agi-leasing" element={<AGILeasing />} />
             <Route path="/service-distribution" element={<ServiceDistribution />} />
+            <Route path="/case-studies/:id" element={<CaseStudy />} />
             <Route path="/mobile-computing" element={<MobileComputing />} />
             <Route path="/earnings" element={<Earnings />} />
             <Route path="/invitation" element={<Invitation />} />
