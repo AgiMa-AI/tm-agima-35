@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
@@ -15,6 +16,7 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   label: string;
   isActive: boolean;
+  children?: React.ReactNode; // Added children prop here
 }
 
 function SidebarLink({ to, icon, label, isActive }: SidebarLinkProps) {
