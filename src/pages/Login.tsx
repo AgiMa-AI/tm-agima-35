@@ -6,12 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Eye, EyeOff, User, Key, Github, Mail } from 'lucide-react';
+import { Eye, EyeOff, User, Key } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { Separator } from '@/components/ui/separator';
+import { useAuth } from '@/hooks/useAuth';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login, register, isLoading: authLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loginForm, setLoginForm] = useState({
@@ -20,28 +22,27 @@ const Login = () => {
   });
   const [registerForm, setRegisterForm] = useState({
     username: '',
-    email: '',
+    inviteCode: '',
     password: '',
     confirmPassword: '',
     userType: 'renter', // 默认为租赁者
   });
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // 模拟登录请求
-    setTimeout(() => {
+    try {
+      const success = await login(loginForm.username, loginForm.password);
+      if (success) {
+        navigate('/');
+      }
+    } finally {
       setIsLoading(false);
-      toast({
-        title: "登录成功",
-        description: "欢迎回到 GPU 计算资源租赁平台",
-      });
-      navigate('/');
-    }, 1500);
+    }
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (registerForm.password !== registerForm.confirmPassword) {
@@ -55,14 +56,24 @@ const Login = () => {
     
     setIsLoading(true);
     
-    // 模拟注册请求
-    setTimeout(() => {
+    try {
+      // 邀请码用作email的替代
+      const success = await register(
+        registerForm.username, 
+        registerForm.inviteCode + "@agima.io", // 使用邀请码作为临时email域
+        registerForm.password, 
+        registerForm.userType as 'renter' | 'provider'
+      );
+      
+      if (success) {
+        toast({
+          title: "注册成功",
+          description: "欢迎加入 Agi-Ma 平台",
+        });
+      }
+    } finally {
       setIsLoading(false);
-      toast({
-        title: "注册成功",
-        description: "您的账户已创建，请登录",
-      });
-    }, 1500);
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -72,14 +83,20 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary">GPU 计算资源租赁平台</h1>
-          <p className="text-muted-foreground mt-2">高性能计算资源，随时随地可用</p>
+        <div className="text-center mb-8 sm:mb-10">
+          <h1 className="text-3xl sm:text-4xl font-bold text-primary">腾目科技</h1>
+          <h2 className="text-xl sm:text-2xl font-medium text-gray-700 mt-1">Agi-Ma 平台</h2>
+          <p className="text-muted-foreground mt-3 italic max-w-xs mx-auto">
+            "所有伟大的创新 都是对现状'不合理'的拆解"
+          </p>
+          <p className="text-xs text-muted-foreground mt-1 max-w-xs mx-auto">
+            All great innovations are a dismantling of the status quo that is 'unreasonable.'
+          </p>
         </div>
         
         <Card className="w-full shadow-lg border-blue-100 animate-fade-in">
           <CardHeader className="space-y-1 px-4 py-5 sm:px-6">
-            <CardTitle className="text-xl text-center">欢迎使用</CardTitle>
+            <CardTitle className="text-xl text-center">欢迎使用 Agi-Ma</CardTitle>
             <CardDescription className="text-center">
               登录您的账户以继续使用服务
             </CardDescription>
@@ -147,35 +164,11 @@ const Login = () => {
                   <Button 
                     type="submit" 
                     className="w-full" 
-                    disabled={isLoading}
+                    disabled={isLoading || authLoading}
                   >
                     {isLoading ? "登录中..." : "登录"}
                   </Button>
                 </form>
-                
-                <div className="mt-4">
-                  <div className="relative">
-                    <div className="absolute inset-0 flex items-center">
-                      <Separator className="w-full" />
-                    </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-background px-2 text-muted-foreground">
-                        或通过其他方式登录
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-3 mt-4">
-                    <Button variant="outline" className="flex items-center gap-2">
-                      <Mail className="h-4 w-4" />
-                      <span className="hidden xs:inline">Google</span>
-                    </Button>
-                    <Button variant="outline" className="flex items-center gap-2">
-                      <Github className="h-4 w-4" />
-                      <span className="hidden xs:inline">GitHub</span>
-                    </Button>
-                  </div>
-                </div>
               </TabsContent>
               
               <TabsContent value="register">
@@ -192,13 +185,12 @@ const Login = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="register-email">电子邮箱</Label>
+                    <Label htmlFor="invite-code">邀请码</Label>
                     <Input 
-                      id="register-email" 
-                      type="email" 
-                      placeholder="您的电子邮箱地址" 
-                      value={registerForm.email}
-                      onChange={(e) => setRegisterForm({...registerForm, email: e.target.value})}
+                      id="invite-code" 
+                      placeholder="请输入您的邀请码" 
+                      value={registerForm.inviteCode}
+                      onChange={(e) => setRegisterForm({...registerForm, inviteCode: e.target.value})}
                       required
                     />
                   </div>
@@ -270,7 +262,7 @@ const Login = () => {
                   <Button 
                     type="submit" 
                     className="w-full" 
-                    disabled={isLoading}
+                    disabled={isLoading || authLoading}
                   >
                     {isLoading ? "注册中..." : "创建账户"}
                   </Button>

@@ -46,6 +46,17 @@ const mockUsers = [
     avatar: '',
     balance: 5000,
     credits: 200
+  },
+  // 添加腾目科技/Agi-Ma的演示账户
+  {
+    id: '3',
+    username: 'agima',
+    email: 'admin@agima.io',
+    password: 'agima123',
+    role: 'admin' as const,
+    avatar: '',
+    balance: 10000,
+    credits: 1000
   }
 ];
 
@@ -85,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('user', JSON.stringify(userWithoutPassword));
         toast({
           title: "登录成功",
-          description: `欢迎回来，${userWithoutPassword.username}！`,
+          description: `欢迎回到 Agi-Ma，${userWithoutPassword.username}！`,
         });
         return true;
       } else {
@@ -111,7 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (
     username: string, 
-    email: string, 
+    inviteCodeOrEmail: string, 
     password: string, 
     role: 'renter' | 'provider'
   ): Promise<boolean> => {
@@ -121,15 +132,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      // 检查邀请码是否有效 (实际应用中，这里应该验证邀请码)
+      // 这里使用简单逻辑：检查邀请码不为空并且至少有3个字符
+      if (!inviteCodeOrEmail.includes('@')) {
+        toast({
+          variant: "destructive",
+          title: "注册失败",
+          description: "邀请码格式无效",
+        });
+        return false;
+      }
+      
       const userExists = mockUsers.some(
-        u => u.username === username || u.email === email
+        u => u.username === username || u.email === inviteCodeOrEmail
       );
       
       if (userExists) {
         toast({
           variant: "destructive",
           title: "注册失败",
-          description: "用户名或邮箱已被使用",
+          description: "用户名已被使用",
         });
         return false;
       }
@@ -138,7 +160,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const newUser = {
         id: `${mockUsers.length + 1}`,
         username,
-        email,
+        email: inviteCodeOrEmail,
         role,
         avatar: '',
         balance: 0,
@@ -150,7 +172,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       toast({
         title: "注册成功",
-        description: "欢迎加入我们的平台！",
+        description: "欢迎加入 Agi-Ma 平台！",
       });
       
       return true;

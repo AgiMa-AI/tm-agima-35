@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, LogIn, LogOut, Search, Settings, User } from 'lucide-react';
+import { Bell, LogOut, Search, Settings, User } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,15 +13,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
 }
 
 const Header = ({ onSearch }: HeaderProps) => {
-  // 这里模拟用户登录状态，实际开发中应该使用真实的认证状态
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,16 +33,6 @@ const Header = ({ onSearch }: HeaderProps) => {
     navigate('/login');
   };
 
-  const handleLogout = () => {
-    // 模拟退出登录
-    setIsLoggedIn(false);
-    toast({
-      title: "已退出登录",
-      description: "您已成功退出登录",
-    });
-    navigate('/login');
-  };
-
   return (
     <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 sm:px-6">
@@ -52,7 +41,8 @@ const Header = ({ onSearch }: HeaderProps) => {
             to="/"
             className="flex items-center space-x-2 font-semibold text-xl transition-colors hover:text-primary"
           >
-            <span className="hidden sm:inline-block">GPU云算力</span>
+            <span className="hidden sm:inline-block">腾目科技 | Agi-Ma</span>
+            <span className="sm:hidden">Agi-Ma</span>
           </Link>
         </div>
 
@@ -78,7 +68,7 @@ const Header = ({ onSearch }: HeaderProps) => {
             <Bell className="h-5 w-5" />
           </Button>
 
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -89,7 +79,7 @@ const Header = ({ onSearch }: HeaderProps) => {
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="/placeholder.svg" alt="用户头像" />
-                    <AvatarFallback>US</AvatarFallback>
+                    <AvatarFallback>{user?.username.slice(0, 2).toUpperCase() || 'U'}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
@@ -108,7 +98,7 @@ const Header = ({ onSearch }: HeaderProps) => {
                   <span>设置</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
+                <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>退出登录</span>
                 </DropdownMenuItem>
@@ -121,8 +111,7 @@ const Header = ({ onSearch }: HeaderProps) => {
               className="flex items-center gap-1"
               onClick={handleLogin}
             >
-              <LogIn className="h-4 w-4" />
-              <span>登录</span>
+              登录
             </Button>
           )}
         </div>
