@@ -70,14 +70,14 @@ const Layout = ({
             />
             {/* Sidebar */}
             <Sidebar collapsed={sidebarCollapsed} className={cn(
-              "absolute z-50 h-full lg:relative transition-transform duration-300",
+              "absolute z-50 h-full lg:relative transition-transform duration-300 shadow-lg",
               sidebarCollapsed && isMobile ? "-translate-x-full" : "translate-x-0"
             )} />
             {/* Mobile toggle button */}
             <Button 
               variant="outline" 
               size="icon" 
-              className="fixed bottom-4 left-4 z-50 rounded-full shadow-md lg:hidden"
+              className="fixed bottom-4 left-4 z-50 rounded-full shadow-lg lg:hidden"
               onClick={toggleSidebar}
             >
               <Menu className="h-4 w-4" />
@@ -88,7 +88,7 @@ const Layout = ({
           "flex-1 overflow-y-auto transition-all duration-300 ease-in-out",
           !hideSidebar && !sidebarCollapsed && !isMobile ? 'lg:ml-[240px]' : 'ml-0'
         )}>
-          <div className="container mx-auto py-4 sm:py-8 px-3 sm:px-4 md:px-8 animate-fade-in">
+          <div className="container mx-auto py-3 sm:py-6 px-2 sm:px-4 animate-fade-in">
             {children}
           </div>
         </main>

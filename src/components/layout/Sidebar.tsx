@@ -8,7 +8,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { 
   LayoutDashboard, Server, Clock, CreditCard, 
   FileText, Settings, Puzzle, Package, Upload,
-  Shield, Users, Key, ListTodo
+  Shield, Users, Key, ListTodo, ChevronDown, ChevronUp
 } from "lucide-react";
 
 interface SidebarLinkProps {
@@ -25,20 +25,20 @@ function SidebarLink({ to, icon, label, isActive }: SidebarLinkProps) {
       asChild
       variant="ghost"
       className={cn(
-        "w-full justify-start text-sm font-medium",
+        "w-full justify-start text-sm font-medium h-10",
         isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
       )}
     >
       <Link to={to} className="flex items-center w-full">
         {icon}
-        <span>{label}</span>
+        <span className="ml-2">{label}</span>
       </Link>
     </Button>
   );
 }
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  collapsed?: boolean; // Add collapsed prop here
+  collapsed?: boolean;
 }
 
 export function Sidebar({ className, collapsed }: SidebarProps) {
@@ -69,76 +69,84 @@ export function Sidebar({ className, collapsed }: SidebarProps) {
   ];
   
   return (
-    <div className={cn("pb-12", className)}>
-      <div className="space-y-4 py-4">
-        <div className="px-4 py-2">
-          <div className="space-y-1">
-            {/* Main links */}
-            {mainLinks.map((link) => (
-              <SidebarLink
-                key={link.to}
-                to={link.to}
-                icon={link.icon}
-                label={link.label} // Add label prop here
-                isActive={location.pathname === link.to}
-              />
-            ))}
-          </div>
-        </div>
-        
-        {/* New Admin Section with Collapsible */}
-        <div className="px-4 py-2">
-          <Collapsible
-            open={openAdmin}
-            onOpenChange={setOpenAdmin}
-            className="space-y-1"
-          >
-            <CollapsibleTrigger asChild>
-              <Button
-                variant="ghost"
-                className={cn(
-                  "w-full justify-start text-sm font-medium",
-                  adminLinks.some(link => location.pathname.startsWith(link.to)) 
-                    ? "bg-accent text-accent-foreground" 
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                )}
-              >
-                <Shield className="mr-2 h-4 w-4" />
-                <span>管理后台</span>
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1 pt-1 pl-6">
-              {adminLinks.map((link) => (
+    <div className={cn("pb-12 bg-white dark:bg-gray-950 border-r w-[240px]", className)}>
+      <ScrollArea className="h-full">
+        <div className="space-y-1 py-4">
+          <div className="px-3 py-2">
+            <div className="space-y-1">
+              {/* Main links */}
+              {mainLinks.map((link) => (
                 <SidebarLink
                   key={link.to}
                   to={link.to}
                   icon={link.icon}
-                  label={link.label} // Add label prop here
+                  label={link.label}
                   isActive={location.pathname === link.to}
                 />
               ))}
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
-        
-        {/* Services links */}
-        <div className="px-4 py-2">
-          <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
-            服务
-          </h2>
-          <div className="space-y-1">
-            {servicesLinks.map((link) => (
-              <SidebarLink
-                key={link.to}
-                to={link.to}
-                icon={link.icon}
-                label={link.label} // Add label prop here
-                isActive={location.pathname === link.to}
-              />
-            ))}
+            </div>
+          </div>
+          
+          {/* New Admin Section with Collapsible */}
+          <div className="px-3 py-2">
+            <Collapsible
+              open={openAdmin}
+              onOpenChange={setOpenAdmin}
+              className="space-y-1"
+            >
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-between text-sm font-medium h-10",
+                    adminLinks.some(link => location.pathname.startsWith(link.to)) 
+                      ? "bg-accent text-accent-foreground" 
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  )}
+                >
+                  <div className="flex items-center">
+                    <Shield className="mr-2 h-4 w-4" />
+                    <span>管理后台</span>
+                  </div>
+                  {openAdmin ? 
+                    <ChevronUp className="h-4 w-4" /> : 
+                    <ChevronDown className="h-4 w-4" />
+                  }
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-1 pt-1 pl-6">
+                {adminLinks.map((link) => (
+                  <SidebarLink
+                    key={link.to}
+                    to={link.to}
+                    icon={link.icon}
+                    label={link.label}
+                    isActive={location.pathname === link.to}
+                  />
+                ))}
+              </CollapsibleContent>
+            </Collapsible>
+          </div>
+          
+          {/* Services links */}
+          <div className="px-3 py-2">
+            <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
+              服务
+            </h2>
+            <div className="space-y-1">
+              {servicesLinks.map((link) => (
+                <SidebarLink
+                  key={link.to}
+                  to={link.to}
+                  icon={link.icon}
+                  label={link.label}
+                  isActive={location.pathname === link.to}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }
