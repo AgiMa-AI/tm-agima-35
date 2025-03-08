@@ -6,7 +6,7 @@ export interface AGIModel {
   longDescription?: string;
   version: string;
   creator: string;
-  type: 'text' | 'vision' | 'multimodal' | 'audio';
+  type: 'text' | 'vision' | 'multimodal' | 'audio' | 'image';
   parameters: string;
   contextWindow: string;
   costPerToken: number;
@@ -16,11 +16,21 @@ export interface AGIModel {
   maxInputTokens?: string;
   maxOutputTokens?: string;
   tags?: string[];
-  features?: string[];  // 新增：主要功能
-  useCases?: string[];  // 新增：适用场景
+  features?: string[];
+  useCases?: string[];
   architecture?: string;
   trainingData?: string;
   cutoffDate?: string;
   quantization?: string;
   supportedLanguages?: string[];
+  // 添加旧AGI模型类型中的字段
+  status?: 'available' | 'beta' | 'deprecated';
+  provider?: string;
+  capabilities?: string[];
+  license?: string;
+  cost?: number;
+  performance?: {
+    speed: string;
+    accuracy: string;
+  };
 }

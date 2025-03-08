@@ -84,7 +84,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 href="/agi-models" 
                 icon={<Bot className="h-4 w-4" />}
                 title="AGI 模型"
-                isActive={isActive('/agi-models')}
+                isActive={isActive('/agi-models') || location.pathname.startsWith('/agi/')}
               />
               <NavItem 
                 href="/charts" 

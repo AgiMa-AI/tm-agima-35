@@ -17,7 +17,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import { AuthProvider } from "./hooks/useAuth";
 import AGIModels from "./pages/AGIModels";
-import AGIDetails from "./pages/AGIDetails";
+import AGIDetailView from "./pages/AGIDetailView";
 import AGIHosting from "./pages/AGIHosting";
 import AGIRental from "./pages/AGIRental";
 
@@ -67,7 +67,7 @@ const App = () => (
             
             {/* AGI模型相关路由 */}
             <Route path="/agi-models" element={<AGIModels />} />
-            <Route path="/agi/:id" element={<AGIDetails />} />
+            <Route path="/agi/:id" element={<AGIDetailView />} />
             <Route path="/agi-hosting" element={<AGIHosting />} />
             <Route path="/agi-rental/:id" element={<AGIRental />} />
             

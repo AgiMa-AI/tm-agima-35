@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Search, MoreVertical, Filter, Check,
+  Search, MoreVertical, Filter, Check, ArrowRight
 } from 'lucide-react';
 
 interface AGIModel {
@@ -314,6 +316,14 @@ const AGIModels = () => {
                   ))}
                 </div>
               </CardContent>
+              <CardFooter className="pt-0">
+                <Link to={`/agi/${model.id}`} className="w-full">
+                  <Button variant="outline" className="w-full">
+                    查看详情
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardFooter>
             </Card>
           ))}
         </div>
