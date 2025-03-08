@@ -16,7 +16,7 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   label: string;
   isActive: boolean;
-  children?: React.ReactNode; // Added children prop here
+  children?: React.ReactNode;
 }
 
 function SidebarLink({ to, icon, label, isActive }: SidebarLinkProps) {
@@ -37,9 +37,11 @@ function SidebarLink({ to, icon, label, isActive }: SidebarLinkProps) {
   );
 }
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  collapsed?: boolean; // Add collapsed prop here
+}
 
-export function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ className, collapsed }: SidebarProps) {
   const location = useLocation();
   const [openAdmin, setOpenAdmin] = useState(false);
   
@@ -77,10 +79,9 @@ export function Sidebar({ className }: SidebarProps) {
                 key={link.to}
                 to={link.to}
                 icon={link.icon}
+                label={link.label} // Add label prop here
                 isActive={location.pathname === link.to}
-              >
-                {link.label}
-              </SidebarLink>
+              />
             ))}
           </div>
         </div>
@@ -112,10 +113,9 @@ export function Sidebar({ className }: SidebarProps) {
                   key={link.to}
                   to={link.to}
                   icon={link.icon}
+                  label={link.label} // Add label prop here
                   isActive={location.pathname === link.to}
-                >
-                  {link.label}
-                </SidebarLink>
+                />
               ))}
             </CollapsibleContent>
           </Collapsible>
@@ -132,10 +132,9 @@ export function Sidebar({ className }: SidebarProps) {
                 key={link.to}
                 to={link.to}
                 icon={link.icon}
+                label={link.label} // Add label prop here
                 isActive={location.pathname === link.to}
-              >
-                {link.label}
-              </SidebarLink>
+              />
             ))}
           </div>
         </div>
