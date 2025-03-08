@@ -29,9 +29,6 @@ const InstanceCard = ({ instance, onRent }: InstanceCardProps) => {
     "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80", // circuit board
     "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=80", // laptop on surface
     "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80", // matrix screen
-    "https://images.unsplash.com/photo-1563313089-1b52e9f831b8?auto=format&fit=crop&w=800&q=80", // server room
-    "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&q=80", // gpu close-up
-    "/lovable-uploads/761eacd2-90e8-44c2-b8c9-62add84d0180.png", // uploaded image
   ];
   
   // If no image is provided, select one based on the instance ID to ensure consistency
