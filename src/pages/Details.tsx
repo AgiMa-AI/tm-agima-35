@@ -45,7 +45,7 @@ const Details = () => {
             onClick={handleGoBack}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            返回实例列表
+            返回主机列表
           </Button>
           <h1 className="text-3xl font-bold tracking-tight">{instance.name}</h1>
           <p className="text-muted-foreground mt-1">

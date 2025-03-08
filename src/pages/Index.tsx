@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/layout/Layout';
 import MetricCard from '@/components/ui/MetricCard';
@@ -44,7 +43,6 @@ const Index = () => {
     updateFilters(newFilters);
   };
   
-  // Function to format the last updated time
   const formatLastUpdated = () => {
     if (!lastUpdated) return '未更新';
     
@@ -66,7 +64,7 @@ const Index = () => {
         <div className="bg-background p-4 rounded-md shadow-sm">
           <h1 className="text-2xl font-medium">控制面板</h1>
           <p className="text-muted-foreground mt-1">
-            监控和管理您的 GPU 实例
+            监控和管理您的主机实例
           </p>
         </div>
         
@@ -74,7 +72,7 @@ const Index = () => {
           <MetricCard
             title="可用实例"
             value={instances.filter(i => i.availability === 'available').length}
-            description="可立即租用的 GPU 实例"
+            description="可立即租用的主机实例"
             icon={<Server className="h-4 w-4" />}
           />
           <MetricCard
@@ -98,7 +96,6 @@ const Index = () => {
           />
         </div>
         
-        {/* Charts Section */}
         <div className="bg-background p-4 rounded-md shadow-sm space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-medium flex items-center gap-2">
@@ -147,7 +144,7 @@ const Index = () => {
         
         <div className="bg-background p-4 rounded-md shadow-sm space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <h2 className="text-xl font-medium">GPU 实例</h2>
+            <h2 className="text-xl font-medium">主机实例</h2>
             <p className="text-sm text-muted-foreground">
               显示 {filteredCount} 个，共 {totalCount} 个实例
             </p>

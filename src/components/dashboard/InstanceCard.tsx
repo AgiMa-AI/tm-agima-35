@@ -52,12 +52,19 @@ const InstanceCard = ({ instance, className, onRent }: InstanceCardProps) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <p className="text-base sm:text-lg font-bold text-primary whitespace-nowrap">
-                  ¥{instance.price}<span className="text-xs text-muted-foreground">/小时</span>
-                </p>
+                <div className="flex flex-col items-end">
+                  <p className="text-base sm:text-lg font-bold text-primary whitespace-nowrap">
+                    ¥{instance.price}<span className="text-xs text-muted-foreground">/小时</span>
+                  </p>
+                  {instance.dailyPrice && (
+                    <p className="text-sm font-medium text-primary/80 whitespace-nowrap">
+                      ¥{instance.dailyPrice}<span className="text-xs text-muted-foreground">/天</span>
+                    </p>
+                  )}
+                </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p>约 ¥{(instance.price * 24).toFixed(2)}/天 或 ¥{(instance.price * 24 * 30).toFixed(2)}/月</p>
+                <p>按天租赁更优惠，约 ¥{instance.dailyPrice || (instance.price * 24).toFixed(2)}/天</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

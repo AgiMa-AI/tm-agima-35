@@ -78,7 +78,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
               <NavItem 
                 href="/instances" 
                 icon={<Server className="h-4 w-4" />}
-                title="GPU 实例"
+                title="主机实例"
                 isActive={isActive('/instances')}
               />
               <NavItem 
@@ -111,7 +111,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
               <NavItem 
                 href="/agi-leasing" 
                 icon={<LineChart className="h-4 w-4" />}
-                title="算力租赁"
+                title="按天租赁"
                 isActive={isActive('/agi-leasing')}
               />
               <NavItem 

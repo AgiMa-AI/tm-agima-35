@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +14,7 @@ const AGILeasing = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>('daily');
   const [selectedGpuCount, setSelectedGpuCount] = useState<string>('1');
   const [selectedTask, setSelectedTask] = useState<string>('training');
+  const [leaseDays, setLeaseDays] = useState<string>('1');
   
   const handleLease = () => {
     toast.success('租赁申请已提交', {
@@ -22,13 +22,28 @@ const AGILeasing = () => {
     });
   };
   
+  const calculateCost = () => {
+    const baseDailyPrice = 980;
+    const days = parseInt(leaseDays) || 1;
+    const gpuCount = parseInt(selectedGpuCount) || 1;
+    
+    let discount = 1.0;
+    if (days >= 7) {
+      discount = 0.85;
+    } else if (days >= 3) {
+      discount = 0.95;
+    }
+    
+    return (baseDailyPrice * days * gpuCount * discount).toFixed(0);
+  };
+  
   return (
     <Layout>
       <div className="space-y-6">
         <div className="bg-background p-4 rounded-md shadow-sm">
-          <h1 className="text-2xl font-medium">算力租赁</h1>
+          <h1 className="text-2xl font-medium">主机租赁</h1>
           <p className="text-muted-foreground mt-1">
-            为您的AI项目租赁高性能计算资源
+            为您的AI项目租赁高性能计算主机
           </p>
         </div>
         
@@ -74,7 +89,13 @@ const AGILeasing = () => {
                           
                           <div>
                             <label className="text-sm font-medium mb-1.5 block">租赁天数</label>
-                            <Input type="number" min="1" max="30" defaultValue="1" />
+                            <Input 
+                              type="number" 
+                              min="1" 
+                              max="30" 
+                              defaultValue="1" 
+                              onChange={(e) => setLeaseDays(e.target.value)}
+                            />
                           </div>
                         </div>
                         
@@ -113,6 +134,9 @@ const AGILeasing = () => {
                             <span className="text-xs text-muted-foreground">系统内存</span>
                             <span className="font-medium">512GB DDR4</span>
                           </div>
+                        </div>
+                        <div className="mt-2 p-3 bg-primary/5 rounded-lg border border-primary/10">
+                          <p className="text-sm text-primary font-medium">按天租赁，超过3天享受优惠折扣</p>
                         </div>
                       </div>
                     </div>
@@ -369,11 +393,11 @@ const AGILeasing = () => {
                     </div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">GPU 数量</span>
-                      <span className="font-medium">1 × A100 80GB</span>
+                      <span className="font-medium">{selectedGpuCount} × A100 80GB</span>
                     </div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">租赁时长</span>
-                      <span className="font-medium">1 天</span>
+                      <span className="font-medium">{leaseDays} 天</span>
                     </div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">单价</span>
@@ -384,7 +408,7 @@ const AGILeasing = () => {
                     
                     <div className="flex items-center justify-between">
                       <span className="text-base font-medium">总计费用</span>
-                      <span className="text-xl font-bold text-primary">¥980</span>
+                      <span className="text-xl font-bold text-primary">¥{calculateCost()}</span>
                     </div>
                   </div>
                   

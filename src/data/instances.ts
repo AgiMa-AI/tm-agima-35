@@ -15,6 +15,8 @@ export interface GPUInstance {
   specs: {
     [key: string]: string | number;
   };
+  // Add daily price for leasing by day
+  dailyPrice?: number;
 }
 
 export const instances: GPUInstance[] = [
@@ -27,6 +29,7 @@ export const instances: GPUInstance[] = [
     ramSize: 128,
     storageSize: 2000,
     price: 0.95,
+    dailyPrice: 21.5, // Daily price (hourly * 24 with some discount)
     location: "US-East",
     availability: "available",
     performance: 95,

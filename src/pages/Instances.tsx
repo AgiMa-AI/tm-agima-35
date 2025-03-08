@@ -31,9 +31,9 @@ const Instances = () => {
     <Layout searchHandler={handleSearch}>
       <div className="space-y-4 sm:space-y-6">
         <div className="text-center sm:text-left">
-          <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">所有 GPU 实例</h1>
+          <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">所有主机实例</h1>
           <p className="text-muted-foreground mt-1 text-sm sm:text-base">
-            浏览和筛选可用的 GPU 实例
+            浏览和筛选可用的主机实例
           </p>
         </div>
         
