@@ -8,7 +8,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Home, Server, CreditCard, Clock, Settings, Database, 
   Smartphone, BarChart, Bot, Cpu, Globe, Users, Key, 
-  Puzzle, Shield, LineChart, PieChart, Share2, Wifi, Zap
+  Puzzle, Shield, LineChart, PieChart, Share2, Wifi, Zap,
+  Network
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -114,10 +115,10 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 isActive={isActive('/agi-leasing')}
               />
               <NavItem 
-                href="/computing-access" 
-                icon={<Wifi className="h-4 w-4" />}
-                title="算力接入"
-                isActive={isActive('/computing-access')}
+                href="/service-distribution" 
+                icon={<Network className="h-4 w-4" />}
+                title="服务分布"
+                isActive={isActive('/service-distribution')}
               />
               <NavItem 
                 href="/mobile-computing" 
