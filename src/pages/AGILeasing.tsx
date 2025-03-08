@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,22 +8,35 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { toast } from 'sonner';
-import { Server, Clock, CreditCard, Calendar, Cpu, LineChart, Shield, Key } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
+import { Server, Clock, CreditCard, Calendar, Cpu, LineChart, Shield, Key, Gpu } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 const AGILeasing = () => {
+  const [selectedResourceType, setSelectedResourceType] = useState<string>('gpu');
   const [selectedPlan, setSelectedPlan] = useState<string>('daily');
   const [selectedGpuCount, setSelectedGpuCount] = useState<string>('1');
+  const [selectedCpuCount, setSelectedCpuCount] = useState<string>('32');
   const [selectedTask, setSelectedTask] = useState<string>('training');
   const [leaseDays, setLeaseDays] = useState<string>('1');
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('wechat');
   
   const handleLease = () => {
-    toast.success('租赁申请已提交', {
-      description: '我们将很快联系您提供SSH密钥和使用指南'
+    setIsPaymentDialogOpen(true);
+  };
+
+  const handlePayment = () => {
+    setIsPaymentDialogOpen(false);
+    toast({
+      title: "租赁申请已提交",
+      description: "我们将很快联系您提供SSH密钥和使用指南"
     });
   };
   
-  const calculateCost = () => {
+  const calculateGpuCost = () => {
     const baseDailyPrice = 980;
     const days = parseInt(leaseDays) || 1;
     const gpuCount = parseInt(selectedGpuCount) || 1;
@@ -36,16 +50,81 @@ const AGILeasing = () => {
     
     return (baseDailyPrice * days * gpuCount * discount).toFixed(0);
   };
+
+  const calculateCpuCost = () => {
+    const baseDailyPrice = 120;
+    const days = parseInt(leaseDays) || 1;
+    const cpuCount = parseInt(selectedCpuCount) || 32;
+    const cpuMultiplier = cpuCount / 32; // Base is 32 cores
+    
+    let discount = 1.0;
+    if (days >= 7) {
+      discount = 0.85;
+    } else if (days >= 3) {
+      discount = 0.95;
+    }
+    
+    return (baseDailyPrice * days * cpuMultiplier * discount).toFixed(0);
+  };
+
+  const calculateCost = () => {
+    return selectedResourceType === 'gpu' ? calculateGpuCost() : calculateCpuCost();
+  };
+
+  const paymentMethods = [
+    {
+      id: 'wechat',
+      name: '微信支付',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" /><path d="M17 11.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" /><path d="M15 8c2.7 0 5.5 2.5 2.5 5.5a4 4 0 0 1-2.15 1.61A3 3 0 0 1 12 17.98V21" /><path d="M8 11c-2.5 0-5-3-3-6.5a4 4 0 0 1 1.9-1.64A3 3 0 0 1 10 1" /></svg>,
+    },
+    {
+      id: 'alipay',
+      name: '支付宝',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 9.5C22 5.36 18.64 2 14.5 2h-5C5.36 2 2 5.36 2 9.5v5c0 4.14 3.36 7.5 7.5 7.5h5c4.14 0 7.5-3.36 7.5-7.5v-5Z"/><path d="M18.5 4.5c-1 0-1.5.5-1.5 1.5v4.53L9.5 9M16.53 12h-4.17c-2.95 4.61-4.87 5.5-4.87 5.5h7.04c4 0 5.47-.54 5.47-2.5 0-1.96-1.97-3-3.47-3Z"/></svg>,
+    },
+    {
+      id: 'bank',
+      name: '公户转账',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M6 9h12M6 13h2M6 17h6"/></svg>,
+    },
+    {
+      id: 'unionpay',
+      name: '云闪付',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>,
+    },
+    {
+      id: 'quickpay',
+      name: '银联快捷',
+      icon: <CreditCard className="h-4 w-4" />,
+    },
+  ];
   
   return (
     <Layout>
       <div className="space-y-6">
         <div className="bg-background p-4 rounded-md shadow-sm">
-          <h1 className="text-2xl font-medium">主机租赁</h1>
+          <h1 className="text-2xl font-medium">算力资源租赁</h1>
           <p className="text-muted-foreground mt-1">
-            为您的AI项目租赁高性能计算主机
+            为您的AI项目租赁高性能GPU或CPU计算资源
           </p>
         </div>
+
+        {/* Resource Type Selection */}
+        <Tabs 
+          defaultValue="gpu" 
+          value={selectedResourceType}
+          onValueChange={setSelectedResourceType}
+          className="mb-4"
+        >
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="gpu" className="flex items-center gap-2">
+              <Gpu className="h-4 w-4" /> GPU 租赁
+            </TabsTrigger>
+            <TabsTrigger value="cpu" className="flex items-center gap-2">
+              <Cpu className="h-4 w-4" /> CPU 租赁
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
@@ -72,20 +151,37 @@ const AGILeasing = () => {
                     <div className="grid gap-6">
                       <div className="grid gap-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="text-sm font-medium mb-1.5 block">GPU 数量</label>
-                            <Select defaultValue="1" onValueChange={setSelectedGpuCount}>
-                              <SelectTrigger>
-                                <SelectValue placeholder="选择GPU数量" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="1">1 GPU</SelectItem>
-                                <SelectItem value="2">2 GPU</SelectItem>
-                                <SelectItem value="4">4 GPU</SelectItem>
-                                <SelectItem value="8">8 GPU</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
+                          {selectedResourceType === 'gpu' ? (
+                            <div>
+                              <label className="text-sm font-medium mb-1.5 block">GPU 数量</label>
+                              <Select defaultValue="1" value={selectedGpuCount} onValueChange={setSelectedGpuCount}>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="选择GPU数量" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="1">1 GPU</SelectItem>
+                                  <SelectItem value="2">2 GPU</SelectItem>
+                                  <SelectItem value="4">4 GPU</SelectItem>
+                                  <SelectItem value="8">8 GPU</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          ) : (
+                            <div>
+                              <label className="text-sm font-medium mb-1.5 block">CPU 核心数</label>
+                              <Select defaultValue="32" value={selectedCpuCount} onValueChange={setSelectedCpuCount}>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="选择CPU核心数" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="16">16 核心</SelectItem>
+                                  <SelectItem value="32">32 核心</SelectItem>
+                                  <SelectItem value="64">64 核心</SelectItem>
+                                  <SelectItem value="128">128 核心</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          )}
                           
                           <div>
                             <label className="text-sm font-medium mb-1.5 block">租赁天数</label>
@@ -93,7 +189,8 @@ const AGILeasing = () => {
                               type="number" 
                               min="1" 
                               max="30" 
-                              defaultValue="1" 
+                              defaultValue="1"
+                              value={leaseDays}
                               onChange={(e) => setLeaseDays(e.target.value)}
                             />
                           </div>
@@ -101,7 +198,7 @@ const AGILeasing = () => {
                         
                         <div>
                           <label className="text-sm font-medium mb-1.5 block">任务类型</label>
-                          <Select defaultValue="training" onValueChange={setSelectedTask}>
+                          <Select defaultValue="training" value={selectedTask} onValueChange={setSelectedTask}>
                             <SelectTrigger>
                               <SelectValue placeholder="选择任务类型" />
                             </SelectTrigger>
@@ -118,22 +215,45 @@ const AGILeasing = () => {
                       <div className="bg-muted/20 p-4 rounded-lg space-y-3">
                         <h3 className="font-medium">计算资源配置</h3>
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">GPU 型号</span>
-                            <span className="font-medium">NVIDIA A100</span>
-                          </div>
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">单GPU内存</span>
-                            <span className="font-medium">80GB HBM2e</span>
-                          </div>
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">CPU 配置</span>
-                            <span className="font-medium">64核 AMD EPYC</span>
-                          </div>
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">系统内存</span>
-                            <span className="font-medium">512GB DDR4</span>
-                          </div>
+                          {selectedResourceType === 'gpu' ? (
+                            <>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">GPU 型号</span>
+                                <span className="font-medium">NVIDIA A100</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">单GPU内存</span>
+                                <span className="font-medium">80GB HBM2e</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">CPU 配置</span>
+                                <span className="font-medium">64核 AMD EPYC</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">系统内存</span>
+                                <span className="font-medium">512GB DDR4</span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">CPU 型号</span>
+                                <span className="font-medium">AMD EPYC 7763</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">单核频率</span>
+                                <span className="font-medium">2.45 GHz (3.5 GHz加速)</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">系统内存</span>
+                                <span className="font-medium">256GB DDR4</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">存储配置</span>
+                                <span className="font-medium">2TB NVMe SSD</span>
+                              </div>
+                            </>
+                          )}
                         </div>
                         <div className="mt-2 p-3 bg-primary/5 rounded-lg border border-primary/10">
                           <p className="text-sm text-primary font-medium">按天租赁，超过3天享受优惠折扣</p>
@@ -146,20 +266,37 @@ const AGILeasing = () => {
                     <div className="grid gap-6">
                       <div className="grid gap-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="text-sm font-medium mb-1.5 block">GPU 数量</label>
-                            <Select defaultValue="1">
-                              <SelectTrigger>
-                                <SelectValue placeholder="选择GPU数量" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="1">1 GPU</SelectItem>
-                                <SelectItem value="2">2 GPU</SelectItem>
-                                <SelectItem value="4">4 GPU</SelectItem>
-                                <SelectItem value="8">8 GPU</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
+                          {selectedResourceType === 'gpu' ? (
+                            <div>
+                              <label className="text-sm font-medium mb-1.5 block">GPU 数量</label>
+                              <Select defaultValue="1">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="选择GPU数量" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="1">1 GPU</SelectItem>
+                                  <SelectItem value="2">2 GPU</SelectItem>
+                                  <SelectItem value="4">4 GPU</SelectItem>
+                                  <SelectItem value="8">8 GPU</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          ) : (
+                            <div>
+                              <label className="text-sm font-medium mb-1.5 block">CPU 核心数</label>
+                              <Select defaultValue="32">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="选择CPU核心数" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="16">16 核心</SelectItem>
+                                  <SelectItem value="32">32 核心</SelectItem>
+                                  <SelectItem value="64">64 核心</SelectItem>
+                                  <SelectItem value="128">128 核心</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          )}
                           
                           <div>
                             <label className="text-sm font-medium mb-1.5 block">租赁周数</label>
@@ -186,22 +323,45 @@ const AGILeasing = () => {
                       <div className="bg-muted/20 p-4 rounded-lg space-y-3">
                         <h3 className="font-medium">计算资源配置</h3>
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">GPU 型号</span>
-                            <span className="font-medium">NVIDIA A100</span>
-                          </div>
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">单GPU内存</span>
-                            <span className="font-medium">80GB HBM2e</span>
-                          </div>
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">CPU 配置</span>
-                            <span className="font-medium">64核 AMD EPYC</span>
-                          </div>
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">系统内存</span>
-                            <span className="font-medium">512GB DDR4</span>
-                          </div>
+                          {selectedResourceType === 'gpu' ? (
+                            <>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">GPU 型号</span>
+                                <span className="font-medium">NVIDIA A100</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">单GPU内存</span>
+                                <span className="font-medium">80GB HBM2e</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">CPU 配置</span>
+                                <span className="font-medium">64核 AMD EPYC</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">系统内存</span>
+                                <span className="font-medium">512GB DDR4</span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">CPU 型号</span>
+                                <span className="font-medium">AMD EPYC 7763</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">单核频率</span>
+                                <span className="font-medium">2.45 GHz (3.5 GHz加速)</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">系统内存</span>
+                                <span className="font-medium">256GB DDR4</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">存储配置</span>
+                                <span className="font-medium">2TB NVMe SSD</span>
+                              </div>
+                            </>
+                          )}
                         </div>
                         <div className="mt-2 p-3 bg-primary/5 rounded-lg border border-primary/10">
                           <p className="text-sm text-primary font-medium">周付方案享受85折优惠</p>
@@ -262,14 +422,29 @@ const AGILeasing = () => {
                       <div className="bg-muted/20 p-4 rounded-lg space-y-3">
                         <h3 className="font-medium">任务资源配置</h3>
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">自动分配GPU</span>
-                            <span className="font-medium">最高8个 A100/H100</span>
-                          </div>
-                          <div className="bg-background rounded p-3 flex flex-col">
-                            <span className="text-xs text-muted-foreground">存储空间</span>
-                            <span className="font-medium">2TB NVMe SSD</span>
-                          </div>
+                          {selectedResourceType === 'gpu' ? (
+                            <>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">自动分配GPU</span>
+                                <span className="font-medium">最高8个 A100/H100</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">存储空间</span>
+                                <span className="font-medium">2TB NVMe SSD</span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">自动分配CPU</span>
+                                <span className="font-medium">最高128核 EPYC</span>
+                              </div>
+                              <div className="bg-background rounded p-3 flex flex-col">
+                                <span className="text-xs text-muted-foreground">存储空间</span>
+                                <span className="font-medium">2TB NVMe SSD</span>
+                              </div>
+                            </>
+                          )}
                           <div className="bg-background rounded p-3 flex flex-col">
                             <span className="text-xs text-muted-foreground">网络带宽</span>
                             <span className="font-medium">10Gbps专线</span>
@@ -392,8 +567,17 @@ const AGILeasing = () => {
                       <span className="font-medium">按天租赁</span>
                     </div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium">GPU 数量</span>
-                      <span className="font-medium">{selectedGpuCount} × A100 80GB</span>
+                      {selectedResourceType === 'gpu' ? (
+                        <>
+                          <span className="text-sm font-medium">GPU 数量</span>
+                          <span className="font-medium">{selectedGpuCount} × A100 80GB</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-sm font-medium">CPU 核心数</span>
+                          <span className="font-medium">{selectedCpuCount} 核心</span>
+                        </>
+                      )}
                     </div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">租赁时长</span>
@@ -401,7 +585,11 @@ const AGILeasing = () => {
                     </div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">单价</span>
-                      <span className="font-medium">¥980 / 天</span>
+                      {selectedResourceType === 'gpu' ? (
+                        <span className="font-medium">¥980 / 天</span>
+                      ) : (
+                        <span className="font-medium">¥120 / 天</span>
+                      )}
                     </div>
                     
                     <Separator className="my-4" />
@@ -466,6 +654,70 @@ const AGILeasing = () => {
             </Card>
           </div>
         </div>
+
+        {/* Payment Dialog */}
+        <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>请选择支付方式</DialogTitle>
+              <DialogDescription>
+                选择您偏好的支付方式完成订单
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4 py-4">
+              <div className="rounded-md border p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <div>
+                    <p className="font-medium">
+                      {selectedResourceType === 'gpu' ? 'GPU租赁订单' : 'CPU租赁订单'}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {selectedResourceType === 'gpu' 
+                        ? `${selectedGpuCount} × A100 80GB - ${leaseDays}天` 
+                        : `${selectedCpuCount}核心 - ${leaseDays}天`}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-lg">¥{calculateCost()}</p>
+                  </div>
+                </div>
+                
+                <Separator className="my-4" />
+                
+                <RadioGroup 
+                  value={selectedPaymentMethod}
+                  onValueChange={setSelectedPaymentMethod}
+                  className="space-y-3"
+                >
+                  {paymentMethods.map(method => (
+                    <div key={method.id} className="flex items-center space-x-2">
+                      <RadioGroupItem value={method.id} id={`list-${method.id}`} />
+                      <Label htmlFor={`list-${method.id}`} className="flex items-center cursor-pointer">
+                        <span className="flex items-center justify-center w-8 h-8 rounded-md bg-muted mr-2">
+                          {method.icon}
+                        </span>
+                        {method.name}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </div>
+            </div>
+            
+            <DialogFooter className="sm:justify-between">
+              <Button 
+                variant="outline" 
+                onClick={() => setIsPaymentDialogOpen(false)}
+              >
+                返回
+              </Button>
+              <Button onClick={handlePayment}>
+                确认支付
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );

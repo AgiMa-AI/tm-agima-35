@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -11,6 +11,10 @@ import { Slider } from '@/components/ui/slider';
 import { toast } from '@/components/ui/use-toast';
 import { Smartphone, ChevronRight, Clock, CreditCard, TrendingUp, Award, Battery, Cpu, Wifi } from 'lucide-react';
 import { useAGIModels } from '@/hooks/useAGIModels';
+import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 // Interface for mobile device
 interface MobileDevice {
@@ -64,7 +68,12 @@ const MobileComputing = () => {
   const [selectedDevice, setSelectedDevice] = useState<string>(mockMobileDevices[0].id);
   const [computeAllocation, setComputeAllocation] = useState<number>(70);
   const [selectedModel, setSelectedModel] = useState<string>('');
+  const [isHardwareDialogOpen, setIsHardwareDialogOpen] = useState(false);
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('wechat');
+  const [selectedHardware, setSelectedHardware] = useState('basic');
   const { models, loading } = useAGIModels();
+  const navigate = useNavigate();
   
   const device = mockMobileDevices.find(d => d.id === selectedDevice);
   
@@ -94,9 +103,24 @@ const MobileComputing = () => {
       return;
     }
     
+    // Open hardware selection dialog
+    setIsHardwareDialogOpen(true);
+  };
+
+  const handleHardwareSelect = (hardware: string) => {
+    setSelectedHardware(hardware);
+  };
+  
+  const handleHardwareConfirm = () => {
+    setIsHardwareDialogOpen(false);
+    setIsPaymentDialogOpen(true);
+  };
+
+  const handlePayment = () => {
+    setIsPaymentDialogOpen(false);
     toast({
-      title: "连接成功",
-      description: `您的设备已成功连接到算力网络，贡献算力给 ${models.find(m => m.id === selectedModel)?.name || selectedModel}`,
+      title: "支付成功",
+      description: `您已成功租用算力硬件，并贡献算力给 ${models.find(m => m.id === selectedModel)?.name || selectedModel}`,
     });
   };
   
@@ -106,6 +130,58 @@ const MobileComputing = () => {
       description: "您的设备已断开与算力网络的连接",
     });
   };
+
+  const paymentMethods = [
+    {
+      id: 'wechat',
+      name: '微信支付',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" /><path d="M17 11.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" /><path d="M15 8c2.7 0 5.5 2.5 2.5 5.5a4 4 0 0 1-2.15 1.61A3 3 0 0 1 12 17.98V21" /><path d="M8 11c-2.5 0-5-3-3-6.5a4 4 0 0 1 1.9-1.64A3 3 0 0 1 10 1" /></svg>,
+    },
+    {
+      id: 'alipay',
+      name: '支付宝',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 9.5C22 5.36 18.64 2 14.5 2h-5C5.36 2 2 5.36 2 9.5v5c0 4.14 3.36 7.5 7.5 7.5h5c4.14 0 7.5-3.36 7.5-7.5v-5Z"/><path d="M18.5 4.5c-1 0-1.5.5-1.5 1.5v4.53L9.5 9M16.53 12h-4.17c-2.95 4.61-4.87 5.5-4.87 5.5h7.04c4 0 5.47-.54 5.47-2.5 0-1.96-1.97-3-3.47-3Z"/></svg>,
+    },
+    {
+      id: 'bank',
+      name: '公户转账',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M6 9h12M6 13h2M6 17h6"/></svg>,
+    },
+    {
+      id: 'unionpay',
+      name: '云闪付',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>,
+    },
+    {
+      id: 'quickpay',
+      name: '银联快捷',
+      icon: <CreditCard className="h-4 w-4" />,
+    },
+  ];
+
+  const hardwareOptions = [
+    {
+      id: 'basic',
+      name: '基础算力包',
+      price: 19.9,
+      specs: '8核CPU + 16GB内存',
+      description: '适合日常小型模型训练和推理',
+    },
+    {
+      id: 'advanced',
+      name: '高级算力包',
+      price: 49.9,
+      specs: '16核CPU + 32GB内存 + 基础GPU',
+      description: '适合中等规模模型训练和推理',
+    },
+    {
+      id: 'premium',
+      name: '旗舰算力包',
+      price: 99.9,
+      specs: '32核CPU + 64GB内存 + 高性能GPU',
+      description: '适合大规模模型训练和复杂推理任务',
+    }
+  ];
 
   return (
     <Layout>
@@ -376,6 +452,111 @@ const MobileComputing = () => {
             </Card>
           </div>
         </div>
+
+        {/* Hardware Selection Dialog */}
+        <Dialog open={isHardwareDialogOpen} onOpenChange={setIsHardwareDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>选择算力硬件</DialogTitle>
+              <DialogDescription>
+                选择适合您需要的算力硬件配置
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4 py-4">
+              <RadioGroup value={selectedHardware} onValueChange={handleHardwareSelect} className="space-y-4">
+                {hardwareOptions.map(option => (
+                  <div key={option.id} className="flex items-start space-x-3 border rounded-md p-3 hover:bg-muted/50 transition-colors">
+                    <RadioGroupItem value={option.id} id={option.id} className="mt-1" />
+                    <div className="flex-1">
+                      <Label htmlFor={option.id} className="flex items-center justify-between cursor-pointer">
+                        <span className="font-medium">{option.name}</span>
+                        <span className="text-primary font-bold">¥{option.price}/月</span>
+                      </Label>
+                      <p className="text-sm text-muted-foreground mt-1">{option.specs}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{option.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+            
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsHardwareDialogOpen(false)}>
+                取消
+              </Button>
+              <Button onClick={handleHardwareConfirm}>
+                确认选择
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Payment Dialog */}
+        <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>请选择支付方式</DialogTitle>
+              <DialogDescription>
+                选择您偏好的支付方式完成订单
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4 py-4">
+              <div className="rounded-md border p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <div>
+                    <p className="font-medium">算力硬件租用</p>
+                    <p className="text-sm text-muted-foreground">
+                      {hardwareOptions.find(h => h.id === selectedHardware)?.name} - 
+                      {hardwareOptions.find(h => h.id === selectedHardware)?.specs}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-lg">
+                      ¥{hardwareOptions.find(h => h.id === selectedHardware)?.price}
+                    </p>
+                  </div>
+                </div>
+                
+                <Separator className="my-4" />
+                
+                <RadioGroup 
+                  value={selectedPaymentMethod}
+                  onValueChange={setSelectedPaymentMethod}
+                  className="space-y-3"
+                >
+                  {paymentMethods.map(method => (
+                    <div key={method.id} className="flex items-center space-x-2">
+                      <RadioGroupItem value={method.id} id={`list-${method.id}`} />
+                      <Label htmlFor={`list-${method.id}`} className="flex items-center cursor-pointer">
+                        <span className="flex items-center justify-center w-8 h-8 rounded-md bg-muted mr-2">
+                          {method.icon}
+                        </span>
+                        {method.name}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </div>
+            </div>
+            
+            <DialogFooter className="sm:justify-between">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setIsPaymentDialogOpen(false);
+                  setIsHardwareDialogOpen(true);
+                }}
+              >
+                返回
+              </Button>
+              <Button onClick={handlePayment}>
+                确认支付
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );
