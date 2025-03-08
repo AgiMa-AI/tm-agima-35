@@ -183,7 +183,7 @@
 @layer utilities {
   /* Mobile friendly touch targets */
   .touch-target {
-    @apply min-h-[44px] min-w-[44px];
+    @apply min-h-[48px] min-w-[48px];
   }
   
   /* Responsive spacing for mobile */
@@ -214,7 +214,7 @@
   
   /* Mobile-first buttons */
   .mobile-btn {
-    @apply w-full sm:w-auto text-center py-3 px-4 rounded-xl text-base font-medium;
+    @apply w-full sm:w-auto text-center py-3 px-5 rounded-xl text-base font-medium;
   }
   
   /* Mobile floating action button */
@@ -224,7 +224,7 @@
   
   /* Mobile navigation */
   .mobile-nav-item {
-    @apply flex items-center gap-3 py-3 px-4 rounded-lg;
+    @apply flex items-center gap-3 py-3 px-4 rounded-xl;
   }
   
   /* Mobile cards */
@@ -234,7 +234,7 @@
   
   /* Mobile form inputs */
   .mobile-input {
-    @apply w-full p-3 text-base rounded-lg;
+    @apply w-full p-4 text-base rounded-xl;
   }
   
   /* Bottom sheet for mobile */
@@ -244,7 +244,7 @@
   
   /* Bottom sheet handle */
   .bottom-sheet-handle {
-    @apply w-10 h-1 bg-muted-foreground/40 rounded-full mx-auto my-3;
+    @apply w-12 h-1.5 bg-muted-foreground/40 rounded-full mx-auto my-3;
   }
   
   /* Mobile-friendly animation */
@@ -259,12 +259,12 @@
   
   /* Mobile list item */
   .mobile-list-item {
-    @apply flex items-center justify-between py-3 border-b last:border-b-0;
+    @apply flex items-center justify-between py-4 border-b last:border-b-0;
   }
   
   /* Mobile badge */
   .mobile-badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-medium;
   }
 }
 
@@ -288,7 +288,7 @@
   }
   
   .mobile-card-grid {
-    @apply grid grid-cols-1 gap-3;
+    @apply grid grid-cols-1 gap-4;
   }
   
   .mobile-full-height {
@@ -297,7 +297,7 @@
   
   /* For fixed mobile nav */
   .has-bottom-nav {
-    padding-bottom: 60px !important;
+    padding-bottom: 64px !important;
   }
   
   .bottom-nav {

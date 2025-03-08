@@ -76,19 +76,19 @@ const PaymentDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`sm:max-w-md rounded-2xl p-0 overflow-hidden ${isMobile ? 'w-[calc(100%-32px)] mx-auto' : ''}`}>
-        <DialogHeader className="bg-tiffany-lightest/70 p-6 border-b border-tiffany-light/20">
-          <DialogTitle className="text-lg text-tiffany-dark">请选择支付方式</DialogTitle>
+      <DialogContent className={`max-w-md rounded-2xl p-0 overflow-hidden ${isMobile ? 'w-[calc(100%-32px)] mx-auto' : ''}`}>
+        <DialogHeader className="bg-[#E0F5F4]/70 p-6 border-b border-[#81D8D0]/20">
+          <DialogTitle className="text-lg text-[#006664]">请选择支付方式</DialogTitle>
           <DialogDescription>
             选择您偏好的支付方式完成订单
           </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4 p-6 bg-white">
-          <div className="rounded-xl border border-tiffany-lighter/50 p-4 bg-white shadow-sm">
+          <div className="rounded-xl border border-[#81D8D0]/30 p-4 bg-white shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <p className="font-medium text-tiffany-darker">
+                <p className="font-medium text-[#006664]">
                   {selectedResourceType === 'gpu' ? 'GPU租赁订单' : 'CPU租赁订单'}
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -98,11 +98,11 @@ const PaymentDialog = ({
                 </p>
               </div>
               <div className="text-right">
-                <p className="font-bold text-lg text-tiffany-dark">¥{totalCost}</p>
+                <p className="font-bold text-lg text-[#006664]">¥{totalCost}</p>
               </div>
             </div>
             
-            <Separator className="my-3 bg-tiffany-lightest" />
+            <Separator className="my-3 bg-[#E0F5F4]" />
             
             <RadioGroup 
               value={selectedPaymentMethod}
@@ -112,22 +112,22 @@ const PaymentDialog = ({
               {paymentMethods.map(method => (
                 <div 
                   key={method.id} 
-                  className={`flex items-center p-3 rounded-lg border-2 transition-all ${
+                  className={`flex items-center p-3 rounded-xl border-2 transition-all ${
                     selectedPaymentMethod === method.id 
-                      ? 'border-tiffany bg-tiffany-lightest' 
-                      : 'border-transparent hover:border-tiffany-lighter'
+                      ? 'border-[#81D8D0] bg-[#E0F5F4]' 
+                      : 'border-transparent hover:border-[#81D8D0]/50'
                   }`}
                   onClick={() => setSelectedPaymentMethod(method.id)}
                 >
-                  <RadioGroupItem value={method.id} id={`list-${method.id}`} className="mr-2 text-tiffany border-tiffany" />
+                  <RadioGroupItem value={method.id} id={`list-${method.id}`} className="mr-2 text-[#81D8D0] border-[#81D8D0]" />
                   <Label htmlFor={`list-${method.id}`} className="flex items-center cursor-pointer flex-1">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-md bg-tiffany-lightest mr-2 text-tiffany-dark">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#E0F5F4] mr-2 text-[#006664]">
                       {method.icon}
                     </span>
                     <span>{method.name}</span>
                   </Label>
                   {selectedPaymentMethod === method.id && (
-                    <Check className="h-4 w-4 text-tiffany" />
+                    <Check className="h-4 w-4 text-[#81D8D0]" />
                   )}
                 </div>
               ))}
@@ -139,13 +139,14 @@ const PaymentDialog = ({
               variant="tiffany" 
               onClick={onPayment} 
               className="w-full rounded-full h-12"
+              size="mobile"
             >
               确认支付
             </Button>
             <Button 
               variant="outline" 
               onClick={() => onOpenChange(false)} 
-              className="w-full rounded-full border-tiffany-light text-tiffany-dark h-10"
+              className="w-full rounded-full border-[#81D8D0] text-[#006664] h-10"
             >
               取消
             </Button>

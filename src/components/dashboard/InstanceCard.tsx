@@ -39,14 +39,14 @@ const InstanceCard = ({ instance, onRent }: InstanceCardProps) => {
   };
   
   return (
-    <Card className="h-full flex flex-col overflow-hidden transition-all hover:shadow-md cursor-pointer" onClick={handleViewDetails}>
+    <Card className="h-full flex flex-col overflow-hidden transition-all hover:shadow-md cursor-pointer rounded-xl" onClick={handleViewDetails}>
       <div className="relative">
         <img 
           src={getInstanceImage()} 
           alt={instance.name}
-          className="w-full h-32 sm:h-40 object-cover object-center"
+          className="w-full h-32 sm:h-40 object-cover object-center rounded-t-xl"
         />
-        <Badge className="absolute top-2 right-2" variant={
+        <Badge className="absolute top-2 right-2 text-sm px-3 py-1 shadow-sm" variant={
           instance.availability === 'available' ? 'default' : 
           instance.availability === 'rented' ? 'secondary' : 'destructive'
         }>
@@ -80,9 +80,9 @@ const InstanceCard = ({ instance, onRent }: InstanceCardProps) => {
           </div>
         </div>
         
-        <div className="h-2 bg-secondary rounded-full">
+        <div className="h-2 bg-secondary rounded-full overflow-hidden">
           <div 
-            className="h-2 bg-primary rounded-full" 
+            className="h-2 bg-primary rounded-full shadow-sm" 
             style={{ width: `${instance.performance}%` }}
           ></div>
         </div>
@@ -97,10 +97,10 @@ const InstanceCard = ({ instance, onRent }: InstanceCardProps) => {
         
         {instance.availability === 'available' && (
           <div className="flex gap-2 w-full">
-            <Button variant="outline" size="sm" className="flex-1" onClick={handleViewDetails}>
+            <Button variant="outline" size="mobile" className="flex-1 rounded-xl" onClick={handleViewDetails}>
               详情
             </Button>
-            <Button size="sm" className="flex-1" onClick={handleRent}>
+            <Button size="mobile" className="flex-1 rounded-xl" onClick={handleRent}>
               租用
               <ArrowRight className="ml-1 h-3 w-3" />
             </Button>
@@ -108,7 +108,7 @@ const InstanceCard = ({ instance, onRent }: InstanceCardProps) => {
         )}
         
         {instance.availability !== 'available' && (
-          <Button variant="outline" size="sm" className="w-full" onClick={handleViewDetails}>
+          <Button variant="outline" size="mobile" className="w-full rounded-xl" onClick={handleViewDetails}>
             查看详情
             <ArrowRight className="ml-1 h-3 w-3" />
           </Button>

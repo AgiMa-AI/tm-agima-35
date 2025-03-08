@@ -24,7 +24,7 @@ const MetricCard = ({
   className
 }: MetricCardProps) => {
   return (
-    <Card className={cn("h-full overflow-hidden transition-all duration-300 hover:shadow-md", className)}>
+    <Card className={cn("h-full overflow-hidden transition-all duration-300 hover:shadow-md rounded-xl", className)}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
