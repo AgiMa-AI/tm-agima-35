@@ -81,11 +81,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-primary/10 to-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8 sm:mb-10">
           <h1 className="text-3xl sm:text-4xl font-bold text-primary">腾目科技</h1>
-          <h2 className="text-xl sm:text-2xl font-medium text-gray-700 mt-1">Agi-Ma 平台</h2>
           <p className="text-muted-foreground mt-3 italic max-w-xs mx-auto">
             "所有伟大的创新 都是对现状'不合理'的拆解"
           </p>
@@ -94,9 +93,9 @@ const Login = () => {
           </p>
         </div>
         
-        <Card className="w-full shadow-lg border-blue-100 animate-fade-in">
+        <Card className="w-full shadow-lg border-primary/20 animate-fade-in">
           <CardHeader className="space-y-1 px-4 py-5 sm:px-6">
-            <CardTitle className="text-xl text-center">欢迎使用 Agi-Ma</CardTitle>
+            <CardTitle className="text-xl text-center">欢迎使用</CardTitle>
             <CardDescription className="text-center">
               登录您的账户以继续使用服务
             </CardDescription>

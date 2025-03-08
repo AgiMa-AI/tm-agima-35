@@ -41,8 +41,8 @@ const Header = ({ onSearch }: HeaderProps) => {
             to="/"
             className="flex items-center space-x-2 font-semibold text-xl transition-colors hover:text-primary"
           >
-            <span className="hidden sm:inline-block">腾目科技 | Agi-Ma</span>
-            <span className="sm:hidden">Agi-Ma</span>
+            <span className="hidden sm:inline-block">腾目科技</span>
+            <span className="sm:hidden">腾目</span>
           </Link>
         </div>
 
