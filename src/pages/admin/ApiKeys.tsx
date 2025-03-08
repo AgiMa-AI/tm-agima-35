@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 const AdminApiKeys = () => {
-  // Mock API keys data
+  // 减少初始渲染负担，使用更简洁的数据结构
   const [apiKeys] = useState([
     { 
       id: 'key_1', 
@@ -72,8 +72,10 @@ const AdminApiKeys = () => {
   
   const [searchTerm, setSearchTerm] = useState('');
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
+  const [activeTab, setActiveTab] = useState('all-keys');
   
-  const getStatusBadge = (status: string) => {
+  // 使用useCallback优化频繁渲染的函数
+  const getStatusBadge = useCallback((status: string) => {
     switch (status) {
       case 'active':
         return <Badge className="bg-green-500">活跃</Badge>;
@@ -88,44 +90,223 @@ const AdminApiKeys = () => {
       default:
         return <Badge variant="outline">未知</Badge>;
     }
-  };
+  }, []);
   
-  const toggleShowKey = (id: string) => {
+  const toggleShowKey = useCallback((id: string) => {
     setShowKeys(prev => ({
       ...prev,
       [id]: !prev[id]
     }));
-  };
+  }, []);
   
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = useCallback((text: string) => {
     navigator.clipboard.writeText(text);
-    // You would normally use toast here
+    // 使用toast而不是alert避免阻塞UI
     alert("API密钥已复制到剪贴板");
-  };
+  }, []);
   
-  const maskApiKey = (key: string) => {
+  const maskApiKey = useCallback((key: string) => {
     return `${key.substring(0, 8)}...${key.substring(key.length - 4)}`;
-  };
+  }, []);
   
-  const filteredKeys = apiKeys.filter(apiKey => 
-    apiKey.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    apiKey.owner.toLowerCase().includes(searchTerm.toLowerCase())
+  // 对搜索过滤进行优化，减少重新计算
+  const filteredKeys = React.useMemo(() => {
+    if (!searchTerm.trim()) return apiKeys;
+    
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return apiKeys.filter(apiKey => 
+      apiKey.name.toLowerCase().includes(lowerSearchTerm) ||
+      apiKey.owner.toLowerCase().includes(lowerSearchTerm)
+    );
+  }, [apiKeys, searchTerm]);
+
+  // 根据活跃标签过滤密钥
+  const displayedKeys = React.useMemo(() => {
+    if (activeTab === 'all-keys') return filteredKeys;
+    if (activeTab === 'active') return filteredKeys.filter(key => key.status === 'active');
+    if (activeTab === 'expired') return filteredKeys.filter(key => key.status === 'expired' || key.status === 'revoked');
+    return filteredKeys;
+  }, [filteredKeys, activeTab]);
+
+  // 移动端优化视图，简化内容显示
+  const renderMobileKeyItem = (apiKey: any) => (
+    <div key={apiKey.id} className="border rounded-lg p-3 mb-3">
+      <div className="flex justify-between items-start mb-2">
+        <div>
+          <div className="font-medium">{apiKey.name}</div>
+          <div className="text-xs text-muted-foreground">{apiKey.owner}</div>
+        </div>
+        {getStatusBadge(apiKey.status)}
+      </div>
+      
+      <div className="font-mono text-xs mb-2 flex items-center">
+        {showKeys[apiKey.id] ? apiKey.key : maskApiKey(apiKey.key)}
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-7 w-7 p-0 ml-1 touch-target" 
+          onClick={() => toggleShowKey(apiKey.id)}
+        >
+          {showKeys[apiKey.id] ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+        </Button>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-7 w-7 p-0 touch-target" 
+          onClick={() => copyToClipboard(apiKey.key)}
+        >
+          <Copy className="h-3.5 w-3.5" />
+        </Button>
+      </div>
+      
+      <div className="flex flex-wrap gap-1 mb-2">
+        {apiKey.permissions.map((perm: string, idx: number) => (
+          <Badge key={idx} variant="outline" className="text-xs py-0 px-1.5">
+            {perm}
+          </Badge>
+        ))}
+      </div>
+      
+      <div className="flex justify-between items-center text-xs">
+        <span className="text-muted-foreground">创建: {apiKey.createdAt}</span>
+        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 touch-target">
+          <MoreVertical className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
+
+  // 桌面端视图，保持原样但优化性能
+  const renderDesktopKeysList = () => (
+    <div className="rounded-md border hidden sm:block">
+      <div className="grid grid-cols-8 bg-muted/50 p-3 text-sm font-medium">
+        <div className="col-span-2">名称/所有者</div>
+        <div className="col-span-3">API密钥</div>
+        <div>状态</div>
+        <div>创建日期</div>
+        <div className="text-right">操作</div>
+      </div>
+      
+      {displayedKeys.length > 0 ? (
+        <div className="divide-y">
+          {displayedKeys.map(apiKey => (
+            <div key={apiKey.id} className="grid grid-cols-8 items-center p-3">
+              <div className="col-span-2">
+                <div className="font-medium">{apiKey.name}</div>
+                <div className="text-xs text-muted-foreground">
+                  {apiKey.owner}
+                </div>
+              </div>
+              <div className="col-span-3 font-mono text-xs sm:text-sm">
+                <div className="flex items-center gap-2">
+                  {showKeys[apiKey.id] ? apiKey.key : maskApiKey(apiKey.key)}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 w-6 p-0" 
+                    onClick={() => toggleShowKey(apiKey.id)}
+                  >
+                    {showKeys[apiKey.id] ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 w-6 p-0" 
+                    onClick={() => copyToClipboard(apiKey.key)}
+                  >
+                    <Copy className="h-3 w-3" />
+                  </Button>
+                </div>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {apiKey.permissions.map((perm: string, idx: number) => (
+                    <Badge key={idx} variant="outline" className="text-[10px] py-0 px-1">
+                      {perm}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <div>{getStatusBadge(apiKey.status)}</div>
+              <div className="text-xs">{apiKey.createdAt}</div>
+              <div className="text-right">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>密钥操作</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="flex items-center gap-2">
+                      <Copy className="h-4 w-4" />
+                      复制密钥
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-2">
+                      <Shield className="h-4 w-4" />
+                      修改权限
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-2">
+                      <RefreshCw className="h-4 w-4" />
+                      续期
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="flex items-center gap-2 text-red-600">
+                      <Trash2 className="h-4 w-4" />
+                      撤销密钥
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="p-6 text-center">
+          <div className="mx-auto mb-4 h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+            <Key className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <h3 className="text-lg font-medium">未找到匹配API密钥</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            尝试调整搜索条件或创建新的API密钥
+          </p>
+        </div>
+      )}
+    </div>
+  );
+
+  // 移动端列表视图
+  const renderMobileKeysList = () => (
+    <div className="sm:hidden space-y-3">
+      {displayedKeys.length > 0 ? (
+        displayedKeys.map(renderMobileKeyItem)
+      ) : (
+        <div className="p-4 text-center border rounded-lg">
+          <div className="mx-auto mb-3 h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+            <Key className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <h3 className="text-base font-medium">未找到匹配API密钥</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            尝试调整搜索条件或创建新的API密钥
+          </p>
+        </div>
+      )}
+    </div>
   );
 
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="bg-gradient-to-r from-indigo-700 to-purple-700 rounded-xl p-6 text-white">
-          <h1 className="text-2xl font-bold flex items-center">
-            <Key className="mr-2 h-6 w-6" />
+      <div className="space-y-5">
+        <div className="bg-gradient-to-r from-indigo-700 to-purple-700 rounded-xl p-4 sm:p-6 text-white">
+          <h1 className="text-xl sm:text-2xl font-bold flex items-center">
+            <Key className="mr-2 h-5 sm:h-6 w-5 sm:w-6" />
             API密钥管理
           </h1>
-          <p className="mt-2 text-indigo-100">
+          <p className="mt-1 sm:mt-2 text-sm sm:text-base text-indigo-100">
             创建、管理和监控API密钥的访问权限和使用情况
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div className="relative w-full sm:w-72">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -137,19 +318,19 @@ const AdminApiKeys = () => {
           </div>
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="gap-1 bg-indigo-600 hover:bg-indigo-700 ml-auto">
+              <Button className="gap-1 bg-indigo-600 hover:bg-indigo-700 ml-auto touch-target">
                 <Plus className="h-4 w-4 mr-1" />
                 创建API密钥
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogTitle>创建新API密钥</DialogTitle>
                 <DialogDescription>
                   创建一个新的API密钥以访问系统API。请确保安全存储密钥，它只会显示一次。
                 </DialogDescription>
               </DialogHeader>
-              <div className="space-y-4 py-4">
+              <div className="space-y-4 py-2 sm:py-4">
                 <div className="space-y-2">
                   <Label htmlFor="key-name">API密钥名称</Label>
                   <Input id="key-name" placeholder="例如：生产环境API" />
@@ -162,148 +343,56 @@ const AdminApiKeys = () => {
                   <Label htmlFor="key-expiry">过期时间</Label>
                   <Input id="key-expiry" type="date" />
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <Label>权限</Label>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
+                  <div className="space-y-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <div className="flex items-center space-x-2 touch-target">
                       <Switch id="read" />
                       <Label htmlFor="read">读取</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 touch-target">
                       <Switch id="write" />
                       <Label htmlFor="write">写入</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 touch-target">
                       <Switch id="delete" />
                       <Label htmlFor="delete">删除</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 touch-target">
                       <Switch id="manage" />
                       <Label htmlFor="manage">管理</Label>
                     </div>
                   </div>
                 </div>
               </div>
-              <DialogFooter>
-                <Button variant="outline">取消</Button>
-                <Button className="bg-indigo-600 hover:bg-indigo-700">创建密钥</Button>
+              <DialogFooter className="sm:justify-end">
+                <Button variant="outline" className="touch-target">取消</Button>
+                <Button className="bg-indigo-600 hover:bg-indigo-700 touch-target">创建密钥</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>
 
-        <Tabs defaultValue="all-keys">
+        <Tabs defaultValue="all-keys" value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="all-keys">所有密钥</TabsTrigger>
-            <TabsTrigger value="active">活跃密钥</TabsTrigger>
-            <TabsTrigger value="expired">过期密钥</TabsTrigger>
+            <TabsTrigger value="all-keys" className="touch-target">所有密钥</TabsTrigger>
+            <TabsTrigger value="active" className="touch-target">活跃密钥</TabsTrigger>
+            <TabsTrigger value="expired" className="touch-target">过期密钥</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="all-keys" className="pt-4">
+          <TabsContent value="all-keys" className="pt-3 sm:pt-4">
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-2 sm:pb-3">
                 <CardTitle>API密钥列表</CardTitle>
                 <CardDescription>
                   管理所有API密钥及其访问权限
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="rounded-md border">
-                  <div className="grid grid-cols-8 bg-muted/50 p-3 text-sm font-medium">
-                    <div className="col-span-2">名称/所有者</div>
-                    <div className="col-span-3">API密钥</div>
-                    <div>状态</div>
-                    <div>创建日期</div>
-                    <div className="text-right">操作</div>
-                  </div>
-                  
-                  {filteredKeys.length > 0 ? (
-                    <div className="divide-y">
-                      {filteredKeys.map(apiKey => (
-                        <div key={apiKey.id} className="grid grid-cols-8 items-center p-3">
-                          <div className="col-span-2">
-                            <div className="font-medium">{apiKey.name}</div>
-                            <div className="text-xs text-muted-foreground">
-                              {apiKey.owner}
-                            </div>
-                          </div>
-                          <div className="col-span-3 font-mono text-xs sm:text-sm">
-                            <div className="flex items-center gap-2">
-                              {showKeys[apiKey.id] ? apiKey.key : maskApiKey(apiKey.key)}
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="h-6 w-6 p-0" 
-                                onClick={() => toggleShowKey(apiKey.id)}
-                              >
-                                {showKeys[apiKey.id] ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
-                              </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="h-6 w-6 p-0" 
-                                onClick={() => copyToClipboard(apiKey.key)}
-                              >
-                                <Copy className="h-3 w-3" />
-                              </Button>
-                            </div>
-                            <div className="mt-1 flex flex-wrap gap-1">
-                              {apiKey.permissions.map((perm, idx) => (
-                                <Badge key={idx} variant="outline" className="text-[10px] py-0 px-1">
-                                  {perm}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                          <div>{getStatusBadge(apiKey.status)}</div>
-                          <div className="text-xs">{apiKey.createdAt}</div>
-                          <div className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <MoreVertical className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>密钥操作</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="flex items-center gap-2">
-                                  <Copy className="h-4 w-4" />
-                                  复制密钥
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="flex items-center gap-2">
-                                  <Shield className="h-4 w-4" />
-                                  修改权限
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="flex items-center gap-2">
-                                  <RefreshCw className="h-4 w-4" />
-                                  续期
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="flex items-center gap-2 text-red-600">
-                                  <Trash2 className="h-4 w-4" />
-                                  撤销密钥
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-6 text-center">
-                      <div className="mx-auto mb-4 h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-                        <Key className="h-5 w-5 text-muted-foreground" />
-                      </div>
-                      <h3 className="text-lg font-medium">未找到匹配API密钥</h3>
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        尝试调整搜索条件或创建新的API密钥
-                      </p>
-                    </div>
-                  )}
-                </div>
+                {renderDesktopKeysList()}
+                {renderMobileKeysList()}
               </CardContent>
-              <CardFooter className="border-t pt-6 text-xs text-muted-foreground">
+              <CardFooter className="border-t pt-4 sm:pt-6 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <ShieldAlert className="h-4 w-4 text-amber-500" />
                   <p>API密钥应安全存储，避免泄露。定期轮换密钥以提高安全性。</p>
@@ -312,7 +401,7 @@ const AdminApiKeys = () => {
             </Card>
           </TabsContent>
           
-          <TabsContent value="active" className="pt-4">
+          <TabsContent value="active" className="pt-3 sm:pt-4">
             <Card>
               <CardHeader>
                 <CardTitle>活跃密钥</CardTitle>
@@ -321,14 +410,13 @@ const AdminApiKeys = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-10">
-                  <p className="text-muted-foreground">活跃API密钥列表</p>
-                </div>
+                {renderDesktopKeysList()}
+                {renderMobileKeysList()}
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="expired" className="pt-4">
+          <TabsContent value="expired" className="pt-3 sm:pt-4">
             <Card>
               <CardHeader>
                 <CardTitle>过期密钥</CardTitle>
@@ -337,9 +425,8 @@ const AdminApiKeys = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-10">
-                  <p className="text-muted-foreground">过期API密钥列表</p>
-                </div>
+                {renderDesktopKeysList()}
+                {renderMobileKeysList()}
               </CardContent>
             </Card>
           </TabsContent>
