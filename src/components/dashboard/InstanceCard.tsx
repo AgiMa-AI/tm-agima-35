@@ -9,7 +9,7 @@ import { ArrowRight } from 'lucide-react';
 
 interface InstanceCardProps {
   instance: GPUInstance;
-  onRent?: () => void; // Add optional onRent prop
+  onRent?: () => void;
 }
 
 const InstanceCard = ({ instance, onRent }: InstanceCardProps) => {
@@ -19,17 +19,30 @@ const InstanceCard = ({ instance, onRent }: InstanceCardProps) => {
     navigate(`/details/${instance.id}`);
   };
   
-  // Handle rent button click
   const handleRent = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigating to details
+    e.stopPropagation();
     if (onRent) onRent();
+  };
+  
+  // Array of high-quality server/GPU images to use as placeholders
+  const serverImages = [
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80", // circuit board
+    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=80", // laptop on surface
+    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80", // matrix screen
+  ];
+  
+  // If no image is provided, select one based on the instance ID to ensure consistency
+  const getInstanceImage = () => {
+    if (instance.image) return instance.image;
+    const imageIndex = parseInt(instance.id.replace(/[^0-9]/g, '0')) % serverImages.length;
+    return serverImages[imageIndex];
   };
   
   return (
     <Card className="h-full flex flex-col overflow-hidden transition-all hover:shadow-md cursor-pointer" onClick={handleViewDetails}>
       <div className="relative">
         <img 
-          src={instance.image || '/placeholder.svg'} 
+          src={getInstanceImage()} 
           alt={instance.name}
           className="w-full h-32 sm:h-40 object-cover object-center"
         />

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -7,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,9 +14,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Search, Filter, ArrowRight, Bot, Cpu, Server
+  Search, Filter, ArrowRight, Bot, Cpu, Server, 
+  MessageCircle, Users, HelpCircle, Phone, Mail, ShieldCheck
 } from 'lucide-react';
 import { useAGIModels, FilterRecord } from '@/hooks/useAGIModels';
+import { toast } from '@/components/ui/use-toast';
 
 const AGIModels = () => {
   const { 
@@ -30,6 +32,8 @@ const AGIModels = () => {
     filterOptions
   } = useAGIModels();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [consultFormOpen, setConsultFormOpen] = useState(false);
+  const [consultType, setConsultType] = useState('general');
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -56,6 +60,15 @@ const AGIModels = () => {
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
+  };
+
+  const handleConsultSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "咨询请求已提交",
+      description: "我们的专家团队将在24小时内与您联系",
+    });
+    setConsultFormOpen(false);
   };
 
   return (
@@ -162,6 +175,92 @@ const AGIModels = () => {
             </CardContent>
           </Card>
         )}
+
+        <Card className="mb-6 bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-950/40 dark:to-blue-950/40 border-0 shadow-md overflow-hidden">
+          <div className="md:grid md:grid-cols-5 items-stretch">
+            <div className="p-6 md:col-span-3 flex flex-col justify-center">
+              <h2 className="text-2xl font-bold mb-2">不确定选择哪个模型？</h2>
+              <p className="text-muted-foreground mb-4">
+                我们的AGI专家团队可以为您提供定制化的模型推荐和实施方案，满足您的特定需求。
+              </p>
+              <div className="flex flex-wrap gap-3 mb-6">
+                <div className="flex items-center">
+                  <ShieldCheck className="h-5 w-5 text-primary mr-2" />
+                  <span className="text-sm">专家团队支持</span>
+                </div>
+                <div className="flex items-center">
+                  <Users className="h-5 w-5 text-primary mr-2" />
+                  <span className="text-sm">定制化解决方案</span>
+                </div>
+                <div className="flex items-center">
+                  <HelpCircle className="h-5 w-5 text-primary mr-2" />
+                  <span className="text-sm">全程技术指导</span>
+                </div>
+              </div>
+              
+              {consultFormOpen ? (
+                <form onSubmit={handleConsultSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">咨询类型</label>
+                      <select 
+                        className="w-full rounded-md border border-input p-2 text-sm"
+                        value={consultType}
+                        onChange={(e) => setConsultType(e.target.value)}
+                      >
+                        <option value="general">通用咨询</option>
+                        <option value="technical">技术实施</option>
+                        <option value="pricing">定价与方案</option>
+                        <option value="enterprise">企业定制</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">联系方式</label>
+                      <Input placeholder="电话 / 邮箱" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">简要描述您的需求</label>
+                    <Textarea placeholder="请描述您的项目需求和目标..." rows={3} />
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" onClick={() => setConsultFormOpen(false)}>取消</Button>
+                    <Button type="submit">提交咨询</Button>
+                  </div>
+                </form>
+              ) : (
+                <div className="flex gap-4">
+                  <Button onClick={() => setConsultFormOpen(true)}>
+                    <MessageCircle className="mr-2 h-4 w-4" />
+                    在线咨询
+                  </Button>
+                  <Button variant="outline">
+                    <Phone className="mr-2 h-4 w-4" />
+                    联系专家
+                  </Button>
+                </div>
+              )}
+            </div>
+            
+            <div className="hidden md:block md:col-span-2 bg-gradient-to-br from-blue-500 to-indigo-600">
+              <div className="h-full flex items-center justify-center p-6">
+                <div className="max-w-xs">
+                  <div className="text-white mb-4">
+                    <Users className="h-12 w-12 mb-3" />
+                    <h3 className="text-xl font-bold mb-2">专业顾问团队</h3>
+                    <p className="opacity-90 text-sm">
+                      我们的团队由AGI领域资深专家组成，拥有丰富的行业经验，能够帮助您选择最适合的模型和解决方案。
+                    </p>
+                  </div>
+                  <div className="p-4 bg-white bg-opacity-10 rounded-lg text-white text-sm">
+                    <p className="italic">"通过定制模型咨询，我们成功将模型性能提升了40%，同时降低了30%的运行成本。"</p>
+                    <p className="mt-2 font-semibold">— 某科技公司CTO</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
 
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

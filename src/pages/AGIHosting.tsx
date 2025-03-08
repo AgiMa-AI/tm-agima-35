@@ -19,14 +19,18 @@ import {
   HelpCircle, 
   Plus, 
   Server, 
-  Settings
+  Settings,
+  CheckCircle2,
+  TrendingUp,
+  Shield,
+  Globe,
+  Lock
 } from 'lucide-react';
 
 const AGIHosting = () => {
   const { user } = useAuth();
   const [selectedHardware, setSelectedHardware] = useState<string | null>(null);
   
-  // 模拟的赚取收益数据
   const earnings = {
     daily: 78.25,
     weekly: 547.80,
@@ -34,20 +38,45 @@ const AGIHosting = () => {
     pending: 125.60
   };
   
-  // 模拟的硬件选项
   const hardwareOptions = [
     { id: 'gpu-basic', name: 'GPU 基础套餐', specs: '4x NVIDIA RTX 4080', price: 1200, earnings: '每月 ¥550-750' },
     { id: 'gpu-pro', name: 'GPU 专业套餐', specs: '2x NVIDIA RTX 4090', price: 2400, earnings: '每月 ¥1100-1500' },
     { id: 'gpu-enterprise', name: 'GPU 企业套餐', specs: '4x NVIDIA RTX 4090', price: 4800, earnings: '每月 ¥2200-3000' }
   ];
   
-  // 模拟的托管记录
   const hostingHistory = [
     { id: 1, hardware: 'GPU 专业套餐', startDate: '2023-11-15', status: 'active', earnings: 1285.50 },
     { id: 2, hardware: 'GPU 基础套餐', startDate: '2023-10-01', endDate: '2023-11-01', status: 'completed', earnings: 650.75 }
   ];
   
-  // Fix the type error by using a different approach to handle tab switching
+  const benefits = [
+    {
+      icon: <TrendingUp className="h-10 w-10 text-primary" />,
+      title: "最大化闲置算力价值",
+      description: "通过我们的平台，您可以轻松将闲置的高性能GPU/CPU资源转化为稳定的被动收入来源。"
+    },
+    {
+      icon: <Shield className="h-10 w-10 text-primary" />,
+      title: "安全可靠的资源管理",
+      description: "我们采用企业级安全措施和先进的隔离技术，确保您的硬件资源得到安全、高效的使用。"
+    },
+    {
+      icon: <Globe className="h-10 w-10 text-primary" />,
+      title: "加入全球AGI网络",
+      description: "您的算力将支持全球研究者和开发者推动AI技术的发展，成为AGI技术进步的重要一环。"
+    },
+    {
+      icon: <Lock className="h-10 w-10 text-primary" />,
+      title: "灵活的控制与透明度",
+      description: "随时查看您的算力使用情况、收益数据和性能指标，完全掌控您的托管体验。"
+    }
+  ];
+  
+  const pricingComparison = [
+    { provider: "传统云服务", pricePerDay: "¥2400", utilization: "60%", monthlyRevenue: "不适用" },
+    { provider: "我们的平台", pricePerDay: "¥980", utilization: "95%", monthlyRevenue: "¥27,930" }
+  ];
+  
   const switchToHardwareTab = () => {
     const hardwareTab = document.querySelector('button[value="hardware"]') as HTMLButtonElement;
     if (hardwareTab) {
@@ -58,14 +87,52 @@ const AGIHosting = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight font-display">AGI 算力托管</h1>
-          <p className="text-muted-foreground mt-1">
-            提供您的算力资源，支持AGI模型运行，获取稳定收益
-          </p>
+        <div className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg p-8 shadow-lg overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M0,0 L100,0 L100,100 L0,100 Z" fill="url(#grid)" />
+            </svg>
+            <defs>
+              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+          </div>
+          
+          <div className="relative z-10 max-w-3xl">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight font-display mb-3">
+              让闲置算力创造价值
+            </h1>
+            <p className="text-lg opacity-90 mb-6 max-w-2xl">
+              托管您的高性能GPU和CPU资源，支持全球AGI模型运行，获取长期稳定的被动收入。
+              我们的平台提供高达95%的资源利用率，为您带来最大化的收益。
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
+                立即开始托管
+              </Button>
+              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+                了解更多
+              </Button>
+            </div>
+            
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                <div className="font-bold text-3xl">95%</div>
+                <div className="text-sm opacity-80">平均资源利用率</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                <div className="font-bold text-3xl">¥28K+</div>
+                <div className="text-sm opacity-80">单GPU月均收益</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                <div className="font-bold text-3xl">5000+</div>
+                <div className="text-sm opacity-80">全球托管节点</div>
+              </div>
+            </div>
+          </div>
         </div>
         
-        {/* 收益概览卡片 */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="pb-2">
@@ -115,6 +182,70 @@ const AGIHosting = () => {
           </Card>
         </div>
         
+        <Card className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/70 dark:to-slate-900 border-0">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">为什么选择我们的算力托管平台？</CardTitle>
+            <CardDescription className="text-center">最大化您的硬件投资回报，同时为AGI技术发展做出贡献</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="bg-background rounded-lg p-6 border shadow-sm hover:shadow-md transition-shadow">
+                  <div className="mb-4">{benefit.icon}</div>
+                  <h3 className="text-lg font-medium mb-2">{benefit.title}</h3>
+                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>收益比较</CardTitle>
+            <CardDescription>与传统云服务提供商相比，我们的平台能为您提供更高的收益</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[180px]">平台</TableHead>
+                    <TableHead>价格/天</TableHead>
+                    <TableHead>平均利用率</TableHead>
+                    <TableHead>月度收益（单GPU）</TableHead>
+                    <TableHead>对比</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {pricingComparison.map((pricing, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="font-medium">{pricing.provider}</TableCell>
+                      <TableCell>{pricing.pricePerDay}</TableCell>
+                      <TableCell>{pricing.utilization}</TableCell>
+                      <TableCell>{pricing.monthlyRevenue}</TableCell>
+                      <TableCell>
+                        {index === 1 && (
+                          <Badge className="bg-green-500">推荐</Badge>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            
+            <div className="mt-6 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-900/30">
+              <div className="flex">
+                <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 flex-shrink-0" />
+                <p className="text-sm text-green-800 dark:text-green-300">
+                  通过我们的平台，同样的硬件资源可以获得<span className="font-bold">多达2倍</span>的收益，归功于我们优化的利用率和智能任务调度。
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
         <Tabs defaultValue="overview">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="overview">概览</TabsTrigger>
@@ -122,7 +253,6 @@ const AGIHosting = () => {
             <TabsTrigger value="history">托管记录</TabsTrigger>
           </TabsList>
           
-          {/* 概览标签页 */}
           <TabsContent value="overview" className="mt-6">
             <Card>
               <CardHeader>
@@ -200,7 +330,6 @@ const AGIHosting = () => {
             </Card>
           </TabsContent>
           
-          {/* 选择硬件标签页 */}
           <TabsContent value="hardware" className="mt-6">
             <Card>
               <CardHeader>
@@ -300,7 +429,6 @@ const AGIHosting = () => {
             </Card>
           </TabsContent>
           
-          {/* 托管记录标签页 */}
           <TabsContent value="history" className="mt-6">
             <Card>
               <CardHeader>
