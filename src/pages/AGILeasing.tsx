@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/components/ui/use-toast';
-import { Server, Clock, CreditCard, Calendar, Cpu, LineChart, Shield, Key, Gpu } from 'lucide-react';
+import { Server, Clock, CreditCard, Calendar, Cpu, LineChart, Shield, Key, HardDrive } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
@@ -118,10 +117,10 @@ const AGILeasing = () => {
         >
           <TabsList className="grid w-full grid-cols-2 mb-6">
             <TabsTrigger value="gpu" className="flex items-center gap-2">
-              <Gpu className="h-4 w-4" /> GPU 租赁
+              <HardDrive className="h-4 w-4" /> GPU 租赁 
             </TabsTrigger>
             <TabsTrigger value="cpu" className="flex items-center gap-2">
-              <Cpu className="h-4 w-4" /> CPU 租赁
+              <Cpu className="h-4 w-4" /> CPU 租赁 
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -699,28 +698,3 @@ const AGILeasing = () => {
                         </span>
                         {method.name}
                       </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </div>
-            </div>
-            
-            <DialogFooter className="sm:justify-between">
-              <Button 
-                variant="outline" 
-                onClick={() => setIsPaymentDialogOpen(false)}
-              >
-                返回
-              </Button>
-              <Button onClick={handlePayment}>
-                确认支付
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-    </Layout>
-  );
-};
-
-export default AGILeasing;
