@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
@@ -15,35 +16,35 @@
     --popover: 0 0% 100%;
     --popover-foreground: 180 84% 4.9%;
 
-    --primary: 174 88% 36%;
+    --primary: 174 50% 67%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 174 70% 95%;
-    --secondary-foreground: 174 88% 30%;
+    --secondary-foreground: 174 50% 30%;
 
     --muted: 174 70% 95%;
     --muted-foreground: 180 16.3% 46.9%;
 
     --accent: 174 70% 95%;
-    --accent-foreground: 174 88% 30%;
+    --accent-foreground: 174 50% 30%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 174 70% 90%;
     --input: 174 70% 90%;
-    --ring: 174 88% 36%;
+    --ring: 174 50% 67%;
 
     --radius: 1rem;
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 180 84% 4.9%;
-    --sidebar-primary: 174 88% 36%;
+    --sidebar-primary: 174 50% 67%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 180 40% 96.1%;
     --sidebar-accent-foreground: 180 47.4% 11.2%;
     --sidebar-border: 180 31.8% 91.4%;
-    --sidebar-ring: 174 88% 36%;
+    --sidebar-ring: 174 50% 67%;
   }
 
   .dark {
@@ -56,7 +57,7 @@
     --popover: 180 84% 4.9%;
     --popover-foreground: 180 40% 98%;
 
-    --primary: 174 91.2% 36.8%;
+    --primary: 174 50% 67%;
     --primary-foreground: 180 47.4% 11.2%;
 
     --secondary: 174 32.6% 17.5%;
@@ -150,18 +151,18 @@
   
   /* Tiffany Blue Gradients */
   .bg-tiffany-gradient {
-    background: linear-gradient(135deg, #81D8D0 0%, #0ABAB5 50%, #00827E 100%);
+    background: linear-gradient(135deg, #81D8D0 0%, #81D8D0 50%, #81D8D0 100%);
   }
   
   .text-tiffany-gradient {
-    background: linear-gradient(135deg, #0ABAB5 0%, #00827E 100%);
+    background: linear-gradient(135deg, #81D8D0 0%, #81D8D0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .border-tiffany-gradient {
-    border-image: linear-gradient(to right, #B2F0EC, #0ABAB5) 1;
+    border-image: linear-gradient(to right, #B2F0EC, #81D8D0) 1;
   }
   
   .btn-tiffany-gradient {

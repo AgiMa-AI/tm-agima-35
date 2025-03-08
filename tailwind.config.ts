@@ -75,7 +75,7 @@ export default {
 					lightest: '#E0F5F4',
 					lighter: '#B2F0EC',
 					light: '#81D8D0',
-					DEFAULT: '#0ABAB5',
+					DEFAULT: '#81D8D0',
 					dark: '#00A5A0',
 					darker: '#00827E',
 					darkest: '#006664'
@@ -130,10 +130,10 @@ export default {
 				'spacing': 'margin, padding'
 			},
 			backgroundImage: {
-				'tiffany-gradient': 'linear-gradient(135deg, #81D8D0 0%, #0ABAB5 50%, #00827E 100%)',
+				'tiffany-gradient': 'linear-gradient(135deg, #81D8D0 0%, #81D8D0 50%, #81D8D0 100%)',
 				'tiffany-light': 'linear-gradient(135deg, #B2F0EC 0%, #81D8D0 100%)',
 				'tiffany-soft': 'linear-gradient(135deg, #E0F5F4 0%, #B2F0EC 100%)',
-				'tiffany-overlay': 'linear-gradient(to right, rgba(10, 186, 181, 0.05), rgba(10, 186, 181, 0.2))',
+				'tiffany-overlay': 'linear-gradient(to right, rgba(129, 216, 208, 0.05), rgba(129, 216, 208, 0.2))',
 				'tiffany-card': 'linear-gradient(135deg, rgba(224, 245, 244, 0.8) 0%, rgba(178, 240, 236, 0.4) 100%)',
 				'white-tiffany': 'linear-gradient(135deg, #FFFFFF 0%, #E0F5F4 100%)',
 			}
