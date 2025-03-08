@@ -70,6 +70,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				tiffany: {
+					light: '#81D8D0',
+					DEFAULT: '#0abab5',
+					dark: '#00827E'
 				}
 			},
 			borderRadius: {
@@ -119,6 +124,12 @@ export default {
 			transitionProperty: {
 				'height': 'height',
 				'spacing': 'margin, padding'
+			},
+			backgroundImage: {
+				'tiffany-gradient': 'linear-gradient(135deg, #81D8D0 0%, #0abab5 50%, #00827E 100%)',
+				'tiffany-light': 'linear-gradient(135deg, #B2F0EC 0%, #81D8D0 100%)',
+				'tiffany-overlay': 'linear-gradient(to right, rgba(0, 178, 178, 0.1), rgba(0, 178, 178, 0.4))',
+				'tiffany-card': 'linear-gradient(135deg, rgba(129, 216, 208, 0.1) 0%, rgba(10, 186, 181, 0.1) 100%)',
 			}
 		}
 	},
