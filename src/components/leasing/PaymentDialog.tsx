@@ -1,11 +1,11 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { CreditCard } from 'lucide-react';
+import { CreditCard, Check } from 'lucide-react';
 
 interface PaymentMethod {
   id: string;
@@ -33,6 +33,18 @@ const PaymentDialog = ({
   leaseDays
 }: PaymentDialogProps) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState('wechat');
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const paymentMethods: PaymentMethod[] = [
     {
@@ -64,16 +76,16 @@ const PaymentDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>请选择支付方式</DialogTitle>
+      <DialogContent className={`sm:max-w-md rounded-2xl p-0 overflow-hidden ${isMobile ? 'w-[calc(100%-32px)] mx-auto' : ''}`}>
+        <DialogHeader className="bg-primary/5 p-6">
+          <DialogTitle className="text-lg">请选择支付方式</DialogTitle>
           <DialogDescription>
             选择您偏好的支付方式完成订单
           </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-4 py-4">
-          <div className="rounded-md border p-4">
+        <div className="space-y-4 p-6">
+          <div className="rounded-xl border p-4 bg-card">
             <div className="flex justify-between items-center mb-4">
               <div>
                 <p className="font-medium">
@@ -90,7 +102,7 @@ const PaymentDialog = ({
               </div>
             </div>
             
-            <Separator className="my-4" />
+            <Separator className="my-3" />
             
             <RadioGroup 
               value={selectedPaymentMethod}
@@ -98,22 +110,43 @@ const PaymentDialog = ({
               className="space-y-3"
             >
               {paymentMethods.map(method => (
-                <div key={method.id} className="flex items-center space-x-2">
-                  <RadioGroupItem value={method.id} id={`list-${method.id}`} />
-                  <Label htmlFor={`list-${method.id}`} className="flex items-center cursor-pointer">
+                <div 
+                  key={method.id} 
+                  className={`flex items-center p-3 rounded-lg border-2 transition-all ${
+                    selectedPaymentMethod === method.id 
+                      ? 'border-primary bg-primary/5' 
+                      : 'border-transparent hover:border-muted'
+                  }`}
+                  onClick={() => setSelectedPaymentMethod(method.id)}
+                >
+                  <RadioGroupItem value={method.id} id={`list-${method.id}`} className="mr-2" />
+                  <Label htmlFor={`list-${method.id}`} className="flex items-center cursor-pointer flex-1">
                     <span className="flex items-center justify-center w-8 h-8 rounded-md bg-muted mr-2">
                       {method.icon}
                     </span>
-                    {method.name}
+                    <span>{method.name}</span>
                   </Label>
+                  {selectedPaymentMethod === method.id && (
+                    <Check className="h-4 w-4 text-primary" />
+                  )}
                 </div>
               ))}
             </RadioGroup>
           </div>
           
-          <DialogFooter>
-            <Button onClick={onPayment} className="w-full">
+          <DialogFooter className="flex flex-col sm:flex-col gap-2 sm:space-x-0">
+            <Button 
+              onClick={onPayment} 
+              className="w-full rounded-full bg-primary hover:bg-primary/90 h-12"
+            >
               确认支付
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => onOpenChange(false)} 
+              className="w-full rounded-full border-muted h-10"
+            >
+              取消
             </Button>
           </DialogFooter>
         </div>

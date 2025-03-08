@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import ResourceConfiguration from './ResourceConfiguration';
@@ -27,15 +27,28 @@ const LeaseOptions = ({
   taskType,
   setTaskType
 }: LeaseOptionsProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className="grid gap-6">
       <div className="grid gap-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-4'}`}>
           {resourceType === 'gpu' ? (
             <div>
-              <label className="text-sm font-medium mb-1.5 block">GPU 数量</label>
+              <label className="text-sm font-medium mb-2 block">GPU 数量</label>
               <Select value={gpuCount} onValueChange={setGpuCount}>
-                <SelectTrigger>
+                <SelectTrigger className="rounded-lg bg-background border border-input hover:border-primary/50 transition-colors">
                   <SelectValue placeholder="选择GPU数量" />
                 </SelectTrigger>
                 <SelectContent>
@@ -48,9 +61,9 @@ const LeaseOptions = ({
             </div>
           ) : (
             <div>
-              <label className="text-sm font-medium mb-1.5 block">CPU 核心数</label>
+              <label className="text-sm font-medium mb-2 block">CPU 核心数</label>
               <Select value={cpuCount} onValueChange={setCpuCount}>
-                <SelectTrigger>
+                <SelectTrigger className="rounded-lg bg-background border border-input hover:border-primary/50 transition-colors">
                   <SelectValue placeholder="选择CPU核心数" />
                 </SelectTrigger>
                 <SelectContent>
@@ -64,21 +77,22 @@ const LeaseOptions = ({
           )}
           
           <div>
-            <label className="text-sm font-medium mb-1.5 block">租赁天数</label>
+            <label className="text-sm font-medium mb-2 block">租赁天数</label>
             <Input 
               type="number" 
               min="1" 
               max="30" 
               value={leaseDays}
               onChange={(e) => setLeaseDays(e.target.value)}
+              className="rounded-lg bg-background border border-input hover:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary transition-all"
             />
           </div>
         </div>
         
         <div>
-          <label className="text-sm font-medium mb-1.5 block">任务类型</label>
+          <label className="text-sm font-medium mb-2 block">任务类型</label>
           <Select value={taskType} onValueChange={setTaskType}>
-            <SelectTrigger>
+            <SelectTrigger className="rounded-lg bg-background border border-input hover:border-primary/50 transition-colors">
               <SelectValue placeholder="选择任务类型" />
             </SelectTrigger>
             <SelectContent>
