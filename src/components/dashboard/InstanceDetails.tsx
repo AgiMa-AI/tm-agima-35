@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -11,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
-import { Server, Clock, Database, CreditCard, Download, BarChart, Shield, Terminal } from 'lucide-react';
+import { Server, Clock, Database, CreditCard, Download, BarChart, Shield, Terminal, Wechat, CreditCard as CreditCardIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Dialog,
@@ -24,6 +25,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useToast } from '@/components/ui/use-toast';
 
 interface InstanceDetailsProps {
   instance: GPUInstance;
@@ -32,6 +35,9 @@ interface InstanceDetailsProps {
 const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
   const [rentalPeriod, setRentalPeriod] = useState(1);
   const [isRentDialogOpen, setIsRentDialogOpen] = useState(false);
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('wechat');
+  const { toast } = useToast();
   
   const availabilityBadge = {
     available: <Badge className="bg-green-500 hover:bg-green-600">可用</Badge>,
@@ -41,8 +47,45 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
   
   const handleRentNow = () => {
     setIsRentDialogOpen(false);
-    console.log(`租用实例 ${instance.id}，时长 ${rentalPeriod} 小时，价格 ¥${(instance.price * rentalPeriod).toFixed(2)}`);
+    setIsPaymentDialogOpen(true);
   };
+  
+  const handlePayment = () => {
+    setIsPaymentDialogOpen(false);
+    toast({
+      title: "付款成功",
+      description: `您已成功租用 ${instance.name}，时长 ${rentalPeriod} ${rentalPeriod === 1 ? '天' : '天'}`,
+    });
+    console.log(`租用实例 ${instance.id}，时长 ${rentalPeriod} 天，价格 ¥${(instance.dailyPrice || instance.price * 24) * rentalPeriod}，支付方式 ${selectedPaymentMethod}`);
+  };
+  
+  const paymentMethods = [
+    {
+      id: 'wechat',
+      name: '微信支付',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-wechat"><path d="M9.5 9.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h.5c1.1 0 2-.9 2-2s-.9-2-2-2H5C3.34 3 2 4.34 2 6v8c0 1.66 1.34 3 3 3h9c1.66 0 3-1.34 3-3v-3c0-1.66-1.34-3-3-3h-4.5Z"/><path d="M19 9h-2c-1.65 0-3 1.35-3 3v3c0 1.65 1.35 3 3 3h4c1.65 0 3-1.35 3-3v-1c0-1.1-.9-2-2-2h-1c-.83 0-1.5-.67-1.5-1.5S20.17 9 21 9h.5c.83 0 1.5.67 1.5 1.5"/></svg>,
+    },
+    {
+      id: 'alipay',
+      name: '支付宝',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 9.5C22 5.36 18.64 2 14.5 2h-5C5.36 2 2 5.36 2 9.5v5c0 4.14 3.36 7.5 7.5 7.5h5c4.14 0 7.5-3.36 7.5-7.5v-5Z"/><path d="M18.5 4.5c-1 0-1.5.5-1.5 1.5v4.53L9.5 9M16.53 12h-4.17c-2.95 4.61-4.87 5.5-4.87 5.5h7.04c4 0 5.47-.54 5.47-2.5 0-1.96-1.97-3-3.47-3Z"/></svg>,
+    },
+    {
+      id: 'bank',
+      name: '公户转账',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M6 9h12M6 13h2M6 17h6"/></svg>,
+    },
+    {
+      id: 'unionpay',
+      name: '云闪付',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>,
+    },
+    {
+      id: 'quickpay',
+      name: '银联快捷',
+      icon: <CreditCardIcon className="h-4 w-4" />,
+    },
+  ];
   
   return (
     <div className="space-y-8 animate-fade-in">
@@ -60,8 +103,8 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                 </div>
                 <div className="flex items-center">
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-primary font-display">¥{instance.price}</p>
-                    <p className="text-sm text-muted-foreground">每小时</p>
+                    <p className="text-2xl font-bold text-primary font-display">¥{instance.dailyPrice || (instance.price * 24).toFixed(2)}</p>
+                    <p className="text-sm text-muted-foreground">每天</p>
                   </div>
                 </div>
               </div>
@@ -403,11 +446,11 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                   <div className="space-y-2">
                     <p className="text-sm font-medium">价格</p>
                     <div className="flex items-baseline">
-                      <span className="text-2xl font-bold text-primary">¥{instance.price}</span>
-                      <span className="text-sm text-muted-foreground ml-1">每小时</span>
+                      <span className="text-2xl font-bold text-primary">¥{instance.dailyPrice || (instance.price * 24).toFixed(2)}</span>
+                      <span className="text-sm text-muted-foreground ml-1">每天</span>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      预估月费: ¥{(instance.price * 24 * 30).toFixed(2)}
+                      预估月费: ¥{((instance.dailyPrice || instance.price * 24) * 30).toFixed(2)}
                     </p>
                   </div>
                   
@@ -429,13 +472,13 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                       <DialogHeader>
                         <DialogTitle>租用 {instance.name}</DialogTitle>
                         <DialogDescription>
-                          配置您的租用时长和付款方式。
+                          配置您的租用时长
                         </DialogDescription>
                       </DialogHeader>
                       
                       <div className="space-y-4 py-4">
                         <div className="space-y-2">
-                          <Label htmlFor="rental-period">租用时长（小时）</Label>
+                          <Label htmlFor="rental-period">租用时长（天）</Label>
                           <Input
                             id="rental-period"
                             type="number"
@@ -449,10 +492,10 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                           <p className="text-sm font-medium">费用摘要</p>
                           <div className="flex justify-between mt-2">
                             <span className="text-muted-foreground">
-                              {rentalPeriod} {rentalPeriod === 1 ? '小时' : '小时'} @ ¥{instance.price}/小时
+                              {rentalPeriod} {rentalPeriod === 1 ? '天' : '天'} @ ¥{instance.dailyPrice || (instance.price * 24).toFixed(2)}/天
                             </span>
                             <span className="font-medium">
-                              ¥{(instance.price * rentalPeriod).toFixed(2)}
+                              ¥{((instance.dailyPrice || instance.price * 24) * rentalPeriod).toFixed(2)}
                             </span>
                           </div>
                         </div>
@@ -464,6 +507,67 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
                         </Button>
                         <Button onClick={handleRentNow}>
                           确认租用
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                  
+                  {/* Payment Method Dialog */}
+                  <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+                    <DialogContent className="sm:max-w-md">
+                      <DialogHeader>
+                        <DialogTitle>请选择支付方式</DialogTitle>
+                        <DialogDescription>
+                          选择您偏好的支付方式完成订单
+                        </DialogDescription>
+                      </DialogHeader>
+                      
+                      <div className="space-y-4 py-4">
+                        <div className="rounded-md border p-4">
+                          <div className="flex justify-between items-center mb-4">
+                            <div>
+                              <p className="font-medium">租用订单</p>
+                              <p className="text-sm text-muted-foreground">{instance.name} - {rentalPeriod}天</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-bold text-lg">¥{((instance.dailyPrice || instance.price * 24) * rentalPeriod).toFixed(2)}</p>
+                            </div>
+                          </div>
+                          
+                          <Separator className="my-4" />
+                          
+                          <RadioGroup 
+                            value={selectedPaymentMethod}
+                            onValueChange={setSelectedPaymentMethod}
+                            className="space-y-3"
+                          >
+                            {paymentMethods.map(method => (
+                              <div key={method.id} className="flex items-center space-x-2">
+                                <RadioGroupItem value={method.id} id={method.id} />
+                                <Label htmlFor={method.id} className="flex items-center cursor-pointer">
+                                  <span className="flex items-center justify-center w-8 h-8 rounded-md bg-muted mr-2">
+                                    {method.icon}
+                                  </span>
+                                  {method.name}
+                                </Label>
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        </div>
+                      </div>
+                      
+                      <DialogFooter className="sm:justify-between">
+                        <Button 
+                          variant="outline" 
+                          onClick={() => {
+                            setIsPaymentDialogOpen(false);
+                            setIsRentDialogOpen(true);
+                          }}
+                        >
+                          返回
+                        </Button>
+                        <Button onClick={handlePayment}>
+                          确认支付
                         </Button>
                       </DialogFooter>
                     </DialogContent>
