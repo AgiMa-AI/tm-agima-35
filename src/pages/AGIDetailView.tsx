@@ -29,9 +29,12 @@ import {
   Layers,
   Code,
   BarChart,
-  Globe
+  Globe,
+  Zap,
+  Shield
 } from 'lucide-react';
 import { useAGIModels } from '@/hooks/useAGIModels';
+import { AGIModel } from '@/types/agi';
 
 const AGIDetailView = () => {
   const { id } = useParams<{ id: string }>();
@@ -70,6 +73,27 @@ const AGIDetailView = () => {
     });
   };
 
+  const renderPerformanceBar = (value: string, type: 'speed' | 'accuracy') => {
+    const getColorClass = () => {
+      if (type === 'speed') {
+        return value === 'fast' ? 'bg-green-500' : 
+               value === 'medium' ? 'bg-amber-500' : 'bg-red-500';
+      } else {
+        return value === 'high' ? 'bg-green-500' : 
+               value === 'medium' ? 'bg-amber-500' : 'bg-red-500';
+      }
+    };
+    
+    return (
+      <div className="h-2 rounded-full w-full">
+        <div className={`h-full rounded-full ${getColorClass()}`} 
+          style={{ width: value === 'high' || value === 'fast' ? '90%' : 
+                         value === 'medium' ? '60%' : '30%' }}>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <Layout>
       <div className="container py-6">
@@ -91,34 +115,39 @@ const AGIDetailView = () => {
                     <CardTitle className="text-2xl">{model.name}</CardTitle>
                     <CardDescription className="mt-2">{model.description}</CardDescription>
                   </div>
-                  <Badge variant={model.type === 'text' ? 'default' : model.type === 'image' ? 'secondary' : model.type === 'audio' ? 'destructive' : 'outline'}>
+                  <Badge variant={model.type === 'text' ? 'default' : 
+                                 model.type === 'image' ? 'secondary' : 
+                                 model.type === 'audio' ? 'destructive' : 'outline'}>
                     {model.type}
                   </Badge>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {model.capabilities && model.capabilities.map((capability) => (
-                    <Badge key={capability} variant="secondary" className="mr-1">{capability}</Badge>
+                  {model.capabilities && model.capabilities.map((capability, index) => (
+                    <Badge key={index} variant="secondary" className="mr-1">{capability}</Badge>
+                  ))}
+                  {model.tags && model.tags.map((tag, index) => (
+                    <Badge key={`tag-${index}`} variant="outline" className="mr-1">{tag}</Badge>
                   ))}
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-muted/30 p-3 rounded-md">
                     <div className="text-sm text-muted-foreground">架构</div>
-                    <div className="font-medium">{model.architecture}</div>
+                    <div className="font-medium">{model.architecture || "通用架构"}</div>
                   </div>
                   <div className="bg-muted/30 p-3 rounded-md">
                     <div className="text-sm text-muted-foreground">提供商</div>
-                    <div className="font-medium">{model.provider}</div>
+                    <div className="font-medium">{model.provider || model.creator}</div>
                   </div>
                   <div className="bg-muted/30 p-3 rounded-md">
                     <div className="text-sm text-muted-foreground">许可证</div>
-                    <div className="font-medium">{model.license}</div>
+                    <div className="font-medium">{model.license || "专有"}</div>
                   </div>
                   <div className="bg-muted/30 p-3 rounded-md">
                     <div className="text-sm text-muted-foreground">使用成本</div>
-                    <div className="font-medium">${model.cost}/次</div>
+                    <div className="font-medium">${model.cost || model.costPerToken}/次</div>
                   </div>
                 </div>
               </CardContent>
@@ -145,7 +174,7 @@ const AGIDetailView = () => {
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center">
-                    <Cpu className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <Zap className="h-4 w-4 mr-2 text-muted-foreground" />
                     <span>低能耗，不影响日常使用</span>
                   </div>
                   <div className="flex items-center">
@@ -153,8 +182,8 @@ const AGIDetailView = () => {
                     <span>高度优化的任务分配</span>
                   </div>
                   <div className="flex items-center">
-                    <BarChart className="h-4 w-4 mr-2 text-muted-foreground" />
-                    <span>实时收益统计</span>
+                    <Shield className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <span>安全加密数据传输</span>
                   </div>
                 </div>
               </CardContent>
@@ -189,21 +218,24 @@ const AGIDetailView = () => {
                     <Layers className="h-8 w-8 text-primary mb-2" />
                     <h3 className="font-medium mb-1">架构优势</h3>
                     <p className="text-sm text-muted-foreground">
-                      {model.architecture} 架构设计，平衡性能与效率
+                      {model.architecture || "先进"} 架构设计，平衡性能与效率
                     </p>
                   </div>
                   <div className="flex flex-col items-center p-4 bg-muted/30 rounded-md text-center">
                     <Code className="h-8 w-8 text-primary mb-2" />
                     <h3 className="font-medium mb-1">核心能力</h3>
                     <p className="text-sm text-muted-foreground">
-                      {model.capabilities && model.capabilities.slice(0, 2).join('、')} 等多种能力
+                      {model.capabilities?.slice(0, 2).join('、') || 
+                       model.features?.slice(0, 2).join('、') || 
+                       "多功能处理"} 等多种能力
                     </p>
                   </div>
                   <div className="flex flex-col items-center p-4 bg-muted/30 rounded-md text-center">
                     <Globe className="h-8 w-8 text-primary mb-2" />
                     <h3 className="font-medium mb-1">适用领域</h3>
                     <p className="text-sm text-muted-foreground">
-                      广泛应用于科研、内容创作、商业分析等场景
+                      {model.useCases ? `适用于${model.useCases.slice(0, 2).join('、')}等场景` : 
+                       "广泛应用于科研、内容创作、商业分析等场景"}
                     </p>
                   </div>
                 </div>
@@ -214,22 +246,20 @@ const AGIDetailView = () => {
                     <div>
                       <div className="flex justify-between mb-1">
                         <span className="text-sm">速度</span>
-                        <span className="text-sm font-medium">{model.performance?.speed}</span>
+                        <span className="text-sm font-medium">
+                          {model.performance?.speed || "medium"}
+                        </span>
                       </div>
-                      <div className={`h-2 rounded-full ${
-                        model.performance?.speed === 'fast' ? 'bg-green-500' :
-                        model.performance?.speed === 'medium' ? 'bg-amber-500' : 'bg-red-500'
-                      }`}></div>
+                      {renderPerformanceBar(model.performance?.speed || "medium", "speed")}
                     </div>
                     <div>
                       <div className="flex justify-between mb-1">
                         <span className="text-sm">准确率</span>
-                        <span className="text-sm font-medium">{model.performance?.accuracy}</span>
+                        <span className="text-sm font-medium">
+                          {model.performance?.accuracy || "medium"}
+                        </span>
                       </div>
-                      <div className={`h-2 rounded-full ${
-                        model.performance?.accuracy === 'high' ? 'bg-green-500' :
-                        model.performance?.accuracy === 'medium' ? 'bg-amber-500' : 'bg-red-500'
-                      }`}></div>
+                      {renderPerformanceBar(model.performance?.accuracy || "medium", "accuracy")}
                     </div>
                   </div>
                 </div>
@@ -253,16 +283,16 @@ const AGIDetailView = () => {
                         <span>{model.type}</span>
                       </li>
                       <li className="flex justify-between">
+                        <span className="text-muted-foreground">参数规模</span>
+                        <span>{model.parameters || "未知"}</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span className="text-muted-foreground">上下文窗口</span>
+                        <span>{model.contextWindow || "未指定"}</span>
+                      </li>
+                      <li className="flex justify-between">
                         <span className="text-muted-foreground">架构</span>
-                        <span>{model.architecture}</span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-muted-foreground">提供商</span>
-                        <span>{model.provider}</span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-muted-foreground">许可证</span>
-                        <span>{model.license}</span>
+                        <span>{model.architecture || "未指定"}</span>
                       </li>
                     </ul>
                   </div>
@@ -272,15 +302,19 @@ const AGIDetailView = () => {
                     <ul className="space-y-2 text-sm">
                       <li className="flex justify-between">
                         <span className="text-muted-foreground">处理速度</span>
-                        <span>{model.performance?.speed}</span>
+                        <span>{model.performance?.speed || "未指定"}</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-muted-foreground">准确率</span>
-                        <span>{model.performance?.accuracy}</span>
+                        <span>{model.performance?.accuracy || "未指定"}</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-muted-foreground">每次调用成本</span>
-                        <span>${model.cost}</span>
+                        <span>${model.cost || model.costPerToken || "未指定"}</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span className="text-muted-foreground">量化精度</span>
+                        <span>{model.quantization || "未指定"}</span>
                       </li>
                     </ul>
                   </div>
@@ -292,15 +326,31 @@ const AGIDetailView = () => {
                     <ul className="space-y-2 text-sm">
                       <li className="flex justify-between">
                         <span className="text-muted-foreground">最小GPU内存</span>
-                        <span>8 GB</span>
+                        <span>{
+                          model.parameters ? 
+                            (parseInt(model.parameters) > 1000000000000 ? "32 GB" : 
+                             parseInt(model.parameters) > 500000000000 ? "16 GB" : 
+                             parseInt(model.parameters) > 100000000000 ? "8 GB" : "4 GB") : 
+                            "8 GB"
+                        }</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-muted-foreground">推荐GPU型号</span>
-                        <span>NVIDIA A10 或更高</span>
+                        <span>{
+                          model.parameters ? 
+                            (parseInt(model.parameters) > 1000000000000 ? "NVIDIA A100 或更高" : 
+                             parseInt(model.parameters) > 500000000000 ? "NVIDIA A10 或更高" : 
+                             "NVIDIA T4 或更高") : 
+                            "NVIDIA A10 或更高"
+                        }</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-muted-foreground">批处理能力</span>
-                        <span>16-32 请求/秒</span>
+                        <span>{
+                          model.type === 'vision' ? "8-16 请求/秒" : 
+                          model.type === 'text' ? "16-32 请求/秒" : 
+                          "12-24 请求/秒"
+                        }</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-muted-foreground">分布式训练</span>
@@ -327,9 +377,19 @@ const AGIDetailView = () => {
                       在科学研究领域，该模型能够加速数据分析、辅助文献综述、提供复杂问题的解决方案。
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      <Badge variant="outline">数据分析</Badge>
-                      <Badge variant="outline">模式识别</Badge>
-                      <Badge variant="outline">自动化研究</Badge>
+                      {model.useCases?.filter(uc => 
+                        uc.toLowerCase().includes('研究') || 
+                        uc.toLowerCase().includes('分析') || 
+                        uc.toLowerCase().includes('科学')
+                      ).map((useCase, index) => (
+                        <Badge key={index} variant="outline">{useCase}</Badge>
+                      )) || (
+                        <>
+                          <Badge variant="outline">数据分析</Badge>
+                          <Badge variant="outline">模式识别</Badge>
+                          <Badge variant="outline">自动化研究</Badge>
+                        </>
+                      )}
                     </div>
                   </div>
                   
@@ -339,9 +399,19 @@ const AGIDetailView = () => {
                       在商业环境中，模型可以提供市场分析、客户洞察、自动化报告生成等多种功能。
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      <Badge variant="outline">市场分析</Badge>
-                      <Badge variant="outline">客户洞察</Badge>
-                      <Badge variant="outline">自动化报告</Badge>
+                      {model.useCases?.filter(uc => 
+                        uc.toLowerCase().includes('商业') || 
+                        uc.toLowerCase().includes('金融') || 
+                        uc.toLowerCase().includes('市场')
+                      ).map((useCase, index) => (
+                        <Badge key={index} variant="outline">{useCase}</Badge>
+                      )) || (
+                        <>
+                          <Badge variant="outline">市场分析</Badge>
+                          <Badge variant="outline">客户洞察</Badge>
+                          <Badge variant="outline">自动化报告</Badge>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
