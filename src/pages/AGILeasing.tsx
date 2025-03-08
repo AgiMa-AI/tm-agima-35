@@ -1,15 +1,24 @@
 
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import { toast } from '@/components/ui/use-toast';
-import { LineChart, HardDrive, Cpu } from 'lucide-react';
+import { Server, Clock, CreditCard, Calendar, Cpu, LineChart, Shield, Key, HardDrive } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import LeaseOptions from '@/components/leasing/LeaseOptions';
 import TaskManagement from '@/components/leasing/TaskManagement';
 import CostEstimate from '@/components/leasing/CostEstimate';
 import LeaseGuarantee from '@/components/leasing/LeaseGuarantee';
 import PaymentDialog from '@/components/leasing/PaymentDialog';
+import ResourceConfiguration from '@/components/leasing/ResourceConfiguration';
 
 const AGILeasing = () => {
   const [selectedResourceType, setSelectedResourceType] = useState<string>('gpu');
@@ -127,6 +136,7 @@ const AGILeasing = () => {
                       taskType={selectedTask}
                       setTaskType={setSelectedTask}
                     />
+                    <ResourceConfiguration resourceType={selectedResourceType} />
                   </TabsContent>
                   
                   <TabsContent value="weekly">
@@ -141,6 +151,7 @@ const AGILeasing = () => {
                       taskType={selectedTask}
                       setTaskType={setSelectedTask}
                     />
+                    <ResourceConfiguration resourceType={selectedResourceType} />
                   </TabsContent>
                   
                   <TabsContent value="task">
