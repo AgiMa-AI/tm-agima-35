@@ -57,17 +57,6 @@ const mockUsers = [
     avatar: '',
     balance: 10000,
     credits: 1000
-  },
-  // 添加管理员账户
-  {
-    id: '4',
-    username: 'admin',
-    email: 'admin@tenmu.tech',
-    password: 'admin',
-    role: 'admin' as const,
-    avatar: '',
-    balance: 50000,
-    credits: 5000
   }
 ];
 

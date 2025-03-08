@@ -73,7 +73,6 @@ const CostEstimate = ({
           <Button 
             onClick={onLease} 
             className="w-full rounded-full bg-primary hover:bg-primary/90 text-white font-medium py-6 h-auto"
-            size="mobile"
           >
             确认租赁
           </Button>

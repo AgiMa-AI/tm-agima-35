@@ -48,7 +48,7 @@ const LeaseOptions = ({
             <div>
               <label className="text-sm font-medium mb-2 block">GPU 数量</label>
               <Select value={gpuCount} onValueChange={setGpuCount}>
-                <SelectTrigger className="rounded-xl bg-background border border-input hover:border-primary/50 transition-colors h-12">
+                <SelectTrigger className="rounded-lg bg-background border border-input hover:border-primary/50 transition-colors">
                   <SelectValue placeholder="选择GPU数量" />
                 </SelectTrigger>
                 <SelectContent>
@@ -63,7 +63,7 @@ const LeaseOptions = ({
             <div>
               <label className="text-sm font-medium mb-2 block">CPU 核心数</label>
               <Select value={cpuCount} onValueChange={setCpuCount}>
-                <SelectTrigger className="rounded-xl bg-background border border-input hover:border-primary/50 transition-colors h-12">
+                <SelectTrigger className="rounded-lg bg-background border border-input hover:border-primary/50 transition-colors">
                   <SelectValue placeholder="选择CPU核心数" />
                 </SelectTrigger>
                 <SelectContent>
@@ -84,7 +84,7 @@ const LeaseOptions = ({
               max="30" 
               value={leaseDays}
               onChange={(e) => setLeaseDays(e.target.value)}
-              className="rounded-xl bg-background border border-input hover:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary transition-all h-12"
+              className="rounded-lg bg-background border border-input hover:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary transition-all"
             />
           </div>
         </div>
@@ -92,7 +92,7 @@ const LeaseOptions = ({
         <div>
           <label className="text-sm font-medium mb-2 block">任务类型</label>
           <Select value={taskType} onValueChange={setTaskType}>
-            <SelectTrigger className="rounded-xl bg-background border border-input hover:border-primary/50 transition-colors h-12">
+            <SelectTrigger className="rounded-lg bg-background border border-input hover:border-primary/50 transition-colors">
               <SelectValue placeholder="选择任务类型" />
             </SelectTrigger>
             <SelectContent>

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Eye, EyeOff, User, Key, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, User, Key } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks/useAuth';
@@ -68,7 +68,7 @@ const Login = () => {
       if (success) {
         toast({
           title: "注册成功",
-          description: "欢迎加入腾目科技",
+          description: "欢迎加入 Agi-Ma 平台",
         });
       }
     } finally {
@@ -81,61 +81,30 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row items-center justify-center overflow-hidden">
-      {/* Left side - Gradient Background with Logo */}
-      <div className="hidden md:flex md:w-1/2 h-full bg-tiffany-gradient items-center justify-center p-8">
-        <div className="max-w-md text-white flex flex-col items-center">
-          <div className="w-full max-w-xs animate-float mb-8">
-            <img 
-              src="/floating-device.apng" 
-              alt="Floating Device" 
-              className="w-full h-auto drop-shadow-2xl"
-            />
-          </div>
-          <h1 className="text-4xl font-bold mb-3">腾目科技</h1>
-          <p className="text-white/90 text-lg mb-4 text-center">
-            打破界限，创造未来
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8 sm:mb-10">
+          <h1 className="text-3xl sm:text-4xl font-bold text-primary">腾目科技</h1>
+          <h2 className="text-xl sm:text-2xl font-medium text-gray-700 mt-1">Agi-Ma 平台</h2>
+          <p className="text-muted-foreground mt-3 italic max-w-xs mx-auto">
+            "所有伟大的创新 都是对现状'不合理'的拆解"
           </p>
-          <div className="mt-6 p-4 bg-white/10 backdrop-blur-md rounded-xl">
-            <p className="text-white italic">
-              "所有伟大的创新 都是对现状'不合理'的拆解"
-            </p>
-            <p className="text-white/80 text-sm mt-1">
-              All great innovations are a dismantling of the status quo that is 'unreasonable.'
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground mt-1 max-w-xs mx-auto">
+            All great innovations are a dismantling of the status quo that is 'unreasonable.'
+          </p>
         </div>
-      </div>
-      
-      {/* Mobile header - visible only on small screens */}
-      <div className="w-full md:hidden bg-tiffany-gradient p-6 text-center">
-        <div className="w-40 h-40 mx-auto animate-float my-4">
-          <img 
-            src="/floating-device.apng" 
-            alt="Floating Device" 
-            className="w-full h-auto drop-shadow-xl"
-          />
-        </div>
-        <h1 className="text-3xl font-bold text-white mb-1">腾目科技</h1>
-        <p className="text-white/80 text-sm italic mb-2">
-          "所有伟大的创新 都是对现状'不合理'的拆解"
-        </p>
-      </div>
-      
-      {/* Right side - Login Form */}
-      <div className="w-full md:w-1/2 bg-white md:h-full p-6 flex items-center justify-center">
-        <Card className="w-full max-w-md shadow-xl border-0 overflow-hidden">
-          <div className="h-2 bg-tiffany-gradient w-full"></div>
-          <CardHeader className="space-y-1 pt-6">
-            <CardTitle className="text-2xl font-bold text-center">欢迎回来</CardTitle>
+        
+        <Card className="w-full shadow-lg border-blue-100 animate-fade-in">
+          <CardHeader className="space-y-1 px-4 py-5 sm:px-6">
+            <CardTitle className="text-xl text-center">欢迎使用 Agi-Ma</CardTitle>
             <CardDescription className="text-center">
-              登录您的账户以继续
+              登录您的账户以继续使用服务
             </CardDescription>
           </CardHeader>
           
-          <CardContent className="pb-3">
+          <CardContent className="px-4 sm:px-6">
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsList className="grid w-full grid-cols-2 mb-4">
                 <TabsTrigger value="login">登录</TabsTrigger>
                 <TabsTrigger value="register">注册</TabsTrigger>
               </TabsList>
@@ -145,11 +114,11 @@ const Login = () => {
                   <div className="space-y-2">
                     <Label htmlFor="username">用户名</Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input 
                         id="username" 
                         placeholder="输入您的用户名" 
-                        className="pl-10 h-12 text-base"
+                        className="pl-10"
                         value={loginForm.username}
                         onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
                         required
@@ -168,12 +137,12 @@ const Login = () => {
                       </Link>
                     </div>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                      <Key className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input 
                         id="password" 
                         type={showPassword ? "text" : "password"} 
                         placeholder="输入您的密码"
-                        className="pl-10 pr-10 h-12 text-base"
+                        className="pl-10 pr-10"
                         value={loginForm.password}
                         onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
                         required
@@ -184,9 +153,9 @@ const Login = () => {
                         onClick={togglePasswordVisibility}
                       >
                         {showPassword ? (
-                          <EyeOff className="h-5 w-5" />
+                          <EyeOff className="h-4 w-4" />
                         ) : (
-                          <Eye className="h-5 w-5" />
+                          <Eye className="h-4 w-4" />
                         )}
                       </button>
                     </div>
@@ -194,17 +163,11 @@ const Login = () => {
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-12 text-base bg-tiffany-gradient hover:opacity-95 transition-all"
+                    className="w-full" 
                     disabled={isLoading || authLoading}
                   >
                     {isLoading ? "登录中..." : "登录"}
                   </Button>
-                  
-                  <div className="text-center mt-6">
-                    <p className="text-sm text-muted-foreground">
-                      默认管理员账号: admin / admin
-                    </p>
-                  </div>
                 </form>
               </TabsContent>
               
@@ -212,64 +175,48 @@ const Login = () => {
                 <form onSubmit={handleRegisterSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="register-username">用户名</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                      <Input 
-                        id="register-username" 
-                        placeholder="创建您的用户名" 
-                        className="pl-10 h-12 text-base"
-                        value={registerForm.username}
-                        onChange={(e) => setRegisterForm({...registerForm, username: e.target.value})}
-                        required
-                      />
-                    </div>
+                    <Input 
+                      id="register-username" 
+                      placeholder="创建您的用户名" 
+                      value={registerForm.username}
+                      onChange={(e) => setRegisterForm({...registerForm, username: e.target.value})}
+                      required
+                    />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="invite-code">邀请码</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                      <Input 
-                        id="invite-code" 
-                        placeholder="请输入您的邀请码" 
-                        className="pl-10 h-12 text-base"
-                        value={registerForm.inviteCode}
-                        onChange={(e) => setRegisterForm({...registerForm, inviteCode: e.target.value})}
-                        required
-                      />
-                    </div>
+                    <Input 
+                      id="invite-code" 
+                      placeholder="请输入您的邀请码" 
+                      value={registerForm.inviteCode}
+                      onChange={(e) => setRegisterForm({...registerForm, inviteCode: e.target.value})}
+                      required
+                    />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="register-password">密码</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                      <Input 
-                        id="register-password" 
-                        type="password" 
-                        placeholder="创建您的密码" 
-                        className="pl-10 h-12 text-base"
-                        value={registerForm.password}
-                        onChange={(e) => setRegisterForm({...registerForm, password: e.target.value})}
-                        required
-                      />
-                    </div>
+                    <Input 
+                      id="register-password" 
+                      type="password" 
+                      placeholder="创建您的密码" 
+                      value={registerForm.password}
+                      onChange={(e) => setRegisterForm({...registerForm, password: e.target.value})}
+                      required
+                    />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="register-confirm-password">确认密码</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                      <Input 
-                        id="register-confirm-password" 
-                        type="password" 
-                        placeholder="再次输入您的密码" 
-                        className="pl-10 h-12 text-base"
-                        value={registerForm.confirmPassword}
-                        onChange={(e) => setRegisterForm({...registerForm, confirmPassword: e.target.value})}
-                        required
-                      />
-                    </div>
+                    <Input 
+                      id="register-confirm-password" 
+                      type="password" 
+                      placeholder="再次输入您的密码" 
+                      value={registerForm.confirmPassword}
+                      onChange={(e) => setRegisterForm({...registerForm, confirmPassword: e.target.value})}
+                      required
+                    />
                   </div>
                   
                   <div className="space-y-2">
@@ -278,7 +225,7 @@ const Login = () => {
                       <Button
                         type="button"
                         variant={registerForm.userType === 'renter' ? 'default' : 'outline'}
-                        className={`w-full h-12 ${registerForm.userType === 'renter' ? 'bg-tiffany-gradient' : ''}`}
+                        className="w-full"
                         onClick={() => setRegisterForm({...registerForm, userType: 'renter'})}
                       >
                         租赁者
@@ -286,7 +233,7 @@ const Login = () => {
                       <Button
                         type="button"
                         variant={registerForm.userType === 'provider' ? 'default' : 'outline'}
-                        className={`w-full h-12 ${registerForm.userType === 'provider' ? 'bg-tiffany-gradient' : ''}`}
+                        className="w-full"
                         onClick={() => setRegisterForm({...registerForm, userType: 'provider'})}
                       >
                         出租者
@@ -314,7 +261,7 @@ const Login = () => {
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-12 text-base bg-tiffany-gradient hover:opacity-95 transition-all"
+                    className="w-full" 
                     disabled={isLoading || authLoading}
                   >
                     {isLoading ? "注册中..." : "创建账户"}
@@ -324,7 +271,7 @@ const Login = () => {
             </Tabs>
           </CardContent>
           
-          <CardFooter className="flex flex-col space-y-4 pb-6 pt-2">
+          <CardFooter className="flex flex-col space-y-4 px-4 py-5 sm:px-6">
             <div className="text-xs sm:text-sm text-center text-muted-foreground">
               <span>登录即表示您同意我们的</span>
               <a href="#" className="text-primary hover:underline"> 服务条款 </a>

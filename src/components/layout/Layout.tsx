@@ -55,7 +55,7 @@ const Layout = ({
   };
 
   return (
-    <div className="flex h-full flex-col bg-white-tiffany">
+    <div className="flex h-full flex-col">
       {!hideHeader && <Header onSearch={searchHandler} />}
       <div className="flex flex-1 overflow-hidden">
         {!hideSidebar && (
@@ -63,7 +63,7 @@ const Layout = ({
             {/* Mobile sidebar overlay */}
             <div 
               className={cn(
-                "fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-all duration-300 lg:hidden",
+                "fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-all duration-300 lg:hidden",
                 sidebarCollapsed ? "opacity-0 pointer-events-none" : "opacity-100"
               )}
               onClick={() => setSidebarCollapsed(true)}
@@ -76,7 +76,7 @@ const Layout = ({
             )} />
             {/* Mobile toggle buttons */}
             <Button 
-              variant="tiffany" 
+              variant="outline" 
               size="icon" 
               className={cn(
                 "fixed bottom-4 left-4 z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300",
@@ -91,12 +91,12 @@ const Layout = ({
               variant="outline"
               size="icon"
               className={cn(
-                "fixed top-4 left-[260px] z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300 bg-white border-tiffany-light",
+                "fixed top-4 left-[260px] z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300",
                 sidebarCollapsed && "opacity-0 pointer-events-none"
               )}
               onClick={() => setSidebarCollapsed(true)}
             >
-              <X className="h-4 w-4 text-tiffany-dark" />
+              <X className="h-4 w-4" />
             </Button>
           </>
         )}

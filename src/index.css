@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
@@ -7,74 +6,74 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 180 84% 4.9%;
+    --background: 210 40% 98%;
+    --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 180 84% 4.9%;
+    --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 180 84% 4.9%;
+    --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 174 50% 67%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 174 70% 95%;
-    --secondary-foreground: 174 50% 30%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 174 70% 95%;
-    --muted-foreground: 180 16.3% 46.9%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 174 70% 95%;
-    --accent-foreground: 174 50% 30%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 174 70% 90%;
-    --input: 174 70% 90%;
-    --ring: 174 50% 67%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 180 84% 4.9%;
-    --sidebar-primary: 174 50% 67%;
+    --sidebar-foreground: 222.2 84% 4.9%;
+    --sidebar-primary: 221 83% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 180 40% 96.1%;
-    --sidebar-accent-foreground: 180 47.4% 11.2%;
-    --sidebar-border: 180 31.8% 91.4%;
-    --sidebar-ring: 174 50% 67%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 221 83% 53%;
   }
 
   .dark {
-    --background: 180 84% 4.9%;
-    --foreground: 180 40% 98%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 180 84% 4.9%;
-    --card-foreground: 180 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 180 84% 4.9%;
-    --popover-foreground: 180 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 174 50% 67%;
-    --primary-foreground: 180 47.4% 11.2%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 174 32.6% 17.5%;
-    --secondary-foreground: 180 40% 98%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 174 32.6% 17.5%;
-    --muted-foreground: 180 20.2% 65.1%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 174 32.6% 17.5%;
-    --accent-foreground: 180 40% 98%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 180 40% 98%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 174 32.6% 17.5%;
-    --input: 174 32.6% 17.5%;
-    --ring: 174 76.3% 48%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
   }
 }
 
@@ -119,11 +118,11 @@
   }
   
   ::-webkit-scrollbar-thumb {
-    @apply bg-tiffany-light/50 rounded-full;
+    @apply bg-muted-foreground/20 rounded-full;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-tiffany-light/80;
+    @apply bg-muted-foreground/40;
   }
   
   /* Transition classes */
@@ -148,169 +147,152 @@
     transform: translateY(-8px);
     transition: opacity 0.2s, transform 0.2s;
   }
-  
-  /* Tiffany Blue Gradients */
-  .bg-tiffany-gradient {
-    background: linear-gradient(135deg, #81D8D0 0%, #81D8D0 50%, #81D8D0 100%);
-  }
-  
-  .text-tiffany-gradient {
-    background: linear-gradient(135deg, #81D8D0 0%, #81D8D0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .border-tiffany-gradient {
-    border-image: linear-gradient(to right, #B2F0EC, #81D8D0) 1;
-  }
-  
-  .btn-tiffany-gradient {
-    @apply bg-tiffany-gradient text-white hover:opacity-90 transition-all duration-300;
-  }
-  
-  .card-tiffany {
-    @apply bg-white border border-tiffany-lighter shadow hover:shadow-md transition-all duration-300;
-  }
-
-  /* White background with subtle Tiffany hint */
-  .bg-white-tiffany {
-    background: linear-gradient(135deg, #FFFFFF 0%, #E0F5F4 100%);
-  }
 }
 
 /* Mobile Responsive Utilities */
 @layer utilities {
+  /* Extra small screen size */
+  .xs\:inline {
+    display: inline;
+  }
+  
+  .xs\:hidden {
+    display: none;
+  }
+  
+  .xs\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  /* Mobile spacing */
+  .sm-spacing {
+    @apply space-y-2 sm:space-y-4;
+  }
+  
+  /* Responsive text */
+  .responsive-text {
+    @apply text-sm sm:text-base;
+  }
+  
+  /* Responsive buttons */
+  .responsive-btn {
+    @apply px-3 py-1.5 sm:px-4 sm:py-2;
+  }
+  
   /* Mobile friendly touch targets */
   .touch-target {
-    @apply min-h-[48px] min-w-[48px];
+    @apply min-h-[44px] min-w-[44px];
   }
   
-  /* Responsive spacing for mobile */
-  .m-spacing {
-    @apply mx-4 my-3 sm:mx-6 sm:my-4;
+  /* Mobile animations */
+  .mobile-slide-in {
+    animation: slide-in 0.3s ease forwards;
   }
   
-  .p-spacing {
-    @apply px-4 py-3 sm:px-6 sm:py-4;
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
   }
   
-  /* Mobile typography */
-  .mobile-h1 {
-    @apply text-2xl sm:text-3xl md:text-4xl font-bold;
+  /* Active state for mobile */
+  .mobile-active-state {
+    @apply active:bg-primary/10;
+  }
+
+  /* Card hover for mobile */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-md active:scale-[0.99];
   }
   
-  .mobile-h2 {
-    @apply text-xl sm:text-2xl md:text-3xl font-semibold;
-  }
-  
-  .mobile-h3 {
-    @apply text-lg sm:text-xl md:text-2xl font-medium;
-  }
-  
-  .mobile-text {
-    @apply text-sm sm:text-base leading-relaxed;
-  }
-  
-  /* Mobile-first buttons */
-  .mobile-btn {
-    @apply w-full sm:w-auto text-center py-3 px-5 rounded-xl text-base font-medium;
-  }
-  
-  /* Mobile floating action button */
-  .mobile-fab {
-    @apply fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg;
-  }
-  
-  /* Mobile navigation */
-  .mobile-nav-item {
-    @apply flex items-center gap-3 py-3 px-4 rounded-xl;
-  }
-  
-  /* Mobile cards */
-  .mobile-card {
-    @apply rounded-xl p-4 shadow-md w-full;
-  }
-  
-  /* Mobile form inputs */
-  .mobile-input {
-    @apply w-full p-4 text-base rounded-xl;
-  }
-  
-  /* Bottom sheet for mobile */
-  .bottom-sheet {
-    @apply fixed bottom-0 left-0 right-0 bg-background rounded-t-3xl shadow-lg z-50;
-  }
-  
-  /* Bottom sheet handle */
-  .bottom-sheet-handle {
-    @apply w-12 h-1.5 bg-muted-foreground/40 rounded-full mx-auto my-3;
-  }
-  
-  /* Mobile-friendly animation */
-  .mobile-fade-in {
-    animation: mobileFadeIn 0.3s ease forwards;
-  }
-  
-  @keyframes mobileFadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* Mobile list item */
-  .mobile-list-item {
-    @apply flex items-center justify-between py-4 border-b last:border-b-0;
-  }
-  
-  /* Mobile badge */
-  .mobile-badge {
-    @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-medium;
+  /* Smooth scale transition for press effect */
+  .press-effect {
+    @apply transition-transform active:scale-95;
   }
 }
 
 /* Media Queries for better mobile support */
 @media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
   input, select, textarea {
-    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    font-size: 16px !important;
   }
   
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .hide-on-mobile {
+    display: none !important;
   }
   
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
+  button {
+    padding: 0.5rem 0.75rem;
   }
   
-  .mobile-container {
-    @apply px-4 py-4;
+  .dropdown-content {
+    min-width: 180px;
   }
   
-  .mobile-card-grid {
-    @apply grid grid-cols-1 gap-4;
+  .list-item-mobile {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .xs-text-center {
+    text-align: center;
   }
   
-  .mobile-full-height {
-    height: calc(100vh - 64px);
+  .xs-full-width {
+    width: 100% !important;
   }
   
-  /* For fixed mobile nav */
-  .has-bottom-nav {
-    padding-bottom: 64px !important;
+  .xs-p-2 {
+    padding: 0.5rem !important;
   }
   
-  .bottom-nav {
-    @apply fixed bottom-0 left-0 right-0 bg-background border-t border-tiffany-lightest flex items-center justify-around py-2 z-40;
+  h1, h2, h3 {
+    margin-bottom: 0.5rem;
   }
   
-  /* Safe area insets for notched phones */
-  .safe-area-bottom {
-    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem) !important;
+  .xs-text-sm {
+    font-size: 0.875rem !important;
+  }
+}
+
+@media (hover: none) {
+  .hover\:bg-primary:active {
+    @apply bg-primary/90;
   }
   
-  .safe-area-top {
-    padding-top: calc(env(safe-area-inset-top) + 1rem) !important;
+  button:active, a:active {
+    opacity: 0.8;
+  }
+  
+  .tap-highlight {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .tap-highlight::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+  
+  .tap-highlight:active::after {
+    background: rgba(0,0,0,0.05);
   }
 }
 
@@ -330,24 +312,4 @@
 
 .animate-scale-in {
   animation: scaleIn 0.3s ease-out;
-}
-
-/* Floating animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-float {
-  animation: float 5s ease-in-out infinite;
-}
-
-/* Pulse animation */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-.animate-pulse-slow {
-  animation: pulse 3s ease-in-out infinite;
 }
