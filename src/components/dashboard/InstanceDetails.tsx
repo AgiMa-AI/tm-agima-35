@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -12,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
-import { Server, Clock, Database, CreditCard, Download, BarChart, Shield, Terminal, Wechat, CreditCard as CreditCardIcon } from 'lucide-react';
+import { Server, Clock, Database, CreditCard, Download, BarChart, Shield, Terminal, MessageSquare, CreditCard as CreditCardIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Dialog,
@@ -63,7 +62,7 @@ const InstanceDetails = ({ instance }: InstanceDetailsProps) => {
     {
       id: 'wechat',
       name: '微信支付',
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-wechat"><path d="M9.5 9.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h.5c1.1 0 2-.9 2-2s-.9-2-2-2H5C3.34 3 2 4.34 2 6v8c0 1.66 1.34 3 3 3h9c1.66 0 3-1.34 3-3v-3c0-1.66-1.34-3-3-3h-4.5Z"/><path d="M19 9h-2c-1.65 0-3 1.35-3 3v3c0 1.65 1.35 3 3 3h4c1.65 0 3-1.35 3-3v-1c0-1.1-.9-2-2-2h-1c-.83 0-1.5-.67-1.5-1.5S20.17 9 21 9h.5c.83 0 1.5.67 1.5 1.5"/></svg>,
+      icon: <MessageSquare className="h-4 w-4" />,
     },
     {
       id: 'alipay',

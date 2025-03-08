@@ -1,130 +1,105 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { GPUInstance } from '@/data/instances';
-import { Server, Database, CreditCard, Clock, Activity } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 interface InstanceCardProps {
   instance: GPUInstance;
-  className?: string;
-  onRent?: (instance: GPUInstance) => void;
+  onRent?: () => void; // Add optional onRent prop
 }
 
-const InstanceCard = ({ instance, className, onRent }: InstanceCardProps) => {
-  // Define badge styles based on availability
-  const availabilityBadge = {
-    available: <Badge variant="outline" className="bg-green-500 text-white hover:bg-green-600">可用</Badge>,
-    rented: <Badge variant="outline" className="bg-yellow-500 text-white hover:bg-yellow-600">使用中</Badge>,
-    offline: <Badge variant="outline" className="bg-red-500 text-white hover:bg-red-600">离线</Badge>,
+const InstanceCard = ({ instance, onRent }: InstanceCardProps) => {
+  const navigate = useNavigate();
+  
+  const handleViewDetails = () => {
+    navigate(`/details/${instance.id}`);
   };
-
-  const handleRentClick = () => {
-    if (onRent && instance.availability === 'available') {
-      onRent(instance);
-    }
+  
+  // Handle rent button click
+  const handleRent = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigating to details
+    if (onRent) onRent();
   };
-
+  
   return (
-    <Card className={cn(
-      "overflow-hidden transition-all duration-300 h-full",
-      "hover:shadow-md hover:border-primary/20",
-      "flex flex-col touch-target",
-      className
-    )}>
-      <CardContent className="p-3 sm:p-4 md:p-6 flex-1">
-        <div className="flex justify-between items-start flex-wrap gap-2">
+    <Card className="h-full flex flex-col overflow-hidden transition-all hover:shadow-md cursor-pointer" onClick={handleViewDetails}>
+      <div className="relative">
+        <img 
+          src={instance.image || '/placeholder.svg'} 
+          alt={instance.name}
+          className="w-full h-32 sm:h-40 object-cover object-center"
+        />
+        <Badge className="absolute top-2 right-2" variant={
+          instance.availability === 'available' ? 'default' : 
+          instance.availability === 'rented' ? 'secondary' : 'destructive'
+        }>
+          {instance.availability === 'available' ? '可用' : 
+           instance.availability === 'rented' ? '使用中' : '离线'}
+        </Badge>
+      </div>
+      
+      <CardContent className="py-4 flex-grow">
+        <div className="mb-2">
+          <h3 className="font-medium text-base line-clamp-1">{instance.name}</h3>
+          <p className="text-xs text-muted-foreground">{instance.location}</p>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-y-2 gap-x-1 text-xs mb-3">
           <div>
-            <h3 className="text-base sm:text-lg font-semibold tracking-tight mb-1 line-clamp-1">
-              {instance.name}
-            </h3>
-            <div className="flex items-center gap-1 sm:gap-2 mb-3 sm:mb-4 flex-wrap">
-              {availabilityBadge[instance.availability]}
-              <span className="text-xs text-muted-foreground">
-                {instance.location}
-              </span>
-            </div>
+            <p className="text-muted-foreground">GPU</p>
+            <p className="font-medium line-clamp-1">{instance.gpuModel}</p>
           </div>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex flex-col items-end">
-                  <p className="text-base sm:text-lg font-bold text-primary whitespace-nowrap">
-                    ¥{instance.price}<span className="text-xs text-muted-foreground">/小时</span>
-                  </p>
-                  {instance.dailyPrice && (
-                    <p className="text-sm font-medium text-primary/80 whitespace-nowrap">
-                      ¥{instance.dailyPrice}<span className="text-xs text-muted-foreground">/天</span>
-                    </p>
-                  )}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>按天租赁更优惠，约 ¥{instance.dailyPrice || (instance.price * 24).toFixed(2)}/天</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-
-        <div className="space-y-3 sm:space-y-4">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Server className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
-            <div>
-              <p className="text-xs sm:text-sm font-medium">{instance.gpuModel}</p>
-              <p className="text-xs text-muted-foreground">{instance.gpuMemory} GB 显存</p>
-            </div>
+          <div>
+            <p className="text-muted-foreground">显存</p>
+            <p className="font-medium">{instance.gpuMemory}GB</p>
           </div>
-          
-          <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
-            <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">CPU</span>
-              <span>{instance.cpuCores} 核心</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">内存</span>
-              <span>{instance.ramSize} GB</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">存储</span>
-              <span>{instance.storageSize} GB</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">性能</span>
-              <span className="flex items-center">
-                <span className={cn(
-                  "inline-block w-2 h-2 rounded-full mr-1",
-                  instance.performance > 80 ? "bg-green-500" : 
-                  instance.performance > 50 ? "bg-yellow-500" : "bg-red-500"
-                )}></span>
-                {instance.performance}/100
-              </span>
-            </div>
+          <div>
+            <p className="text-muted-foreground">存储</p>
+            <p className="font-medium">{instance.storageSize}GB</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">内存</p>
+            <p className="font-medium">{instance.ramSize}GB</p>
           </div>
         </div>
+        
+        <div className="h-2 bg-secondary rounded-full">
+          <div 
+            className="h-2 bg-primary rounded-full" 
+            style={{ width: `${instance.performance}%` }}
+          ></div>
+        </div>
+        <p className="text-xs text-right mt-1">性能: {instance.performance}/100</p>
       </CardContent>
       
-      <CardFooter className="p-3 sm:p-4 pt-0 border-t mt-3 sm:mt-4 flex justify-between gap-2 flex-wrap sm:flex-nowrap">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="flex-1 min-w-[70px] h-9 text-xs sm:text-sm"
-          asChild
-        >
-          <Link to={`/details/${instance.id}`}>详情</Link>
-        </Button>
-        <Button 
-          variant="default" 
-          size="sm" 
-          className="flex-1 min-w-[70px] h-9 text-xs sm:text-sm"
-          disabled={instance.availability !== 'available'}
-          onClick={handleRentClick}
-        >
-          立即租用
-        </Button>
+      <CardFooter className="pt-0 pb-4 flex flex-col space-y-2">
+        <div className="flex justify-between items-baseline w-full">
+          <span className="font-bold text-primary text-lg">¥{instance.dailyPrice || (instance.price * 24).toFixed(2)}</span>
+          <span className="text-xs text-muted-foreground">每天</span>
+        </div>
+        
+        {instance.availability === 'available' && (
+          <div className="flex gap-2 w-full">
+            <Button variant="outline" size="sm" className="flex-1" onClick={handleViewDetails}>
+              详情
+            </Button>
+            <Button size="sm" className="flex-1" onClick={handleRent}>
+              租用
+              <ArrowRight className="ml-1 h-3 w-3" />
+            </Button>
+          </div>
+        )}
+        
+        {instance.availability !== 'available' && (
+          <Button variant="outline" size="sm" className="w-full" onClick={handleViewDetails}>
+            查看详情
+            <ArrowRight className="ml-1 h-3 w-3" />
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
