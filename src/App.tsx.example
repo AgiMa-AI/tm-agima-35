@@ -1,0 +1,24 @@
+
+// 这是一个示例文件，仅供参考。您需要在实际的App.tsx中添加以下路由配置
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { withAuth } from "@/hooks/useAuth";
+import Login from "@/pages/Login";
+import Terms from "@/pages/Terms";
+import Privacy from "@/pages/Privacy";
+// ... 其他导入的组件
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        {/* ... 其他路由 */}
+      </Routes>
+    </Router>
+  );
+}
+
+export default withAuth(App);

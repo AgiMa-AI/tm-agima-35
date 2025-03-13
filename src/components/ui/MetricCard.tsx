@@ -24,10 +24,10 @@ const MetricCard = ({
   className
 }: MetricCardProps) => {
   return (
-    <Card className={cn("h-full overflow-hidden transition-all duration-300 hover:shadow-md", className)}>
+    <Card className={cn("h-full overflow-hidden transition-all duration-300 hover:shadow-lg border border-border/30 bg-card/80 backdrop-blur-sm", className)}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
             <div className="flex items-baseline gap-1">
               <h3 className="text-2xl font-bold tracking-tight">{value}</h3>
@@ -42,7 +42,7 @@ const MetricCard = ({
             </div>
           </div>
           {icon && (
-            <div className="rounded-full p-2 bg-primary/10 text-primary">
+            <div className="rounded-full p-2.5 bg-primary/10 text-primary">
               {icon}
             </div>
           )}

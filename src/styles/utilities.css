@@ -1,0 +1,58 @@
+
+@layer utilities {
+  /* Glass effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-sm;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/20 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/40;
+  }
+  
+  /* 腾目科技特有的动效 */
+  .float-animation {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .pulse-animation {
+    animation: pulse-soft 2s infinite;
+  }
+
+  /* 品牌渐变色 */
+  .brand-gradient {
+    background: linear-gradient(135deg, #00BCC0 0%, #60D3A7 100%);
+  }
+
+  .brand-text-gradient {
+    background: linear-gradient(135deg, #00BCC0 0%, #60D3A7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* 蒂芙尼风格元素 */
+  .tiffany-shadow {
+    box-shadow: 0 4px 20px rgba(0, 188, 190, 0.15);
+  }
+
+  .tiffany-border {
+    @apply border-2 border-primary/30;
+  }
+
+  .tiffany-glow {
+    @apply hover:shadow-[0_0_15px_rgba(0,188,190,0.5)] transition-shadow duration-300;
+  }
+}

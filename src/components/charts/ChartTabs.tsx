@@ -17,18 +17,18 @@ interface ChartTabsProps {
 const ChartTabs = ({ hostMapData, statsData, gpuComparisonData, loading }: ChartTabsProps) => {
   return (
     <Tabs defaultValue="table" className="space-y-4">
-      <div className="bg-background p-4 rounded-md shadow-sm">
-        <TabsList className="w-full justify-start bg-muted/20 p-1">
-          <TabsTrigger value="table" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+      <div className="bg-background/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-border/30">
+        <TabsList className="w-full justify-start bg-muted/20 p-1 rounded-lg">
+          <TabsTrigger value="table" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary rounded-lg transition-all">
             数据表格
           </TabsTrigger>
-          <TabsTrigger value="hostmap" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+          <TabsTrigger value="hostmap" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary rounded-lg transition-all">
             主机地图
           </TabsTrigger>
-          <TabsTrigger value="stats" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+          <TabsTrigger value="stats" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary rounded-lg transition-all">
             性能统计
           </TabsTrigger>
-          <TabsTrigger value="gpucompare" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+          <TabsTrigger value="gpucompare" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary rounded-lg transition-all">
             GPU对比
           </TabsTrigger>
         </TabsList>

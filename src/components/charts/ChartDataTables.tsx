@@ -20,7 +20,7 @@ interface ChartDataTablesProps {
 const ChartDataTables = ({ gpuComparisonData, hostMapData, statsData, loading }: ChartDataTablesProps) => {
   return (
     <>
-      <div className="bg-background rounded-md shadow-md border-0">
+      <div className="bg-background/80 backdrop-blur-sm rounded-xl shadow-sm border border-border/30 overflow-hidden">
         <div className="p-4 bg-muted/30">
           <h3 className="text-lg font-medium">GPU 数据表格</h3>
           <p className="text-sm text-muted-foreground">详细数据列表</p>
@@ -59,7 +59,7 @@ const ChartDataTables = ({ gpuComparisonData, hostMapData, statsData, loading }:
         </div>
       </div>
       
-      <div className="bg-background rounded-md shadow-md border-0 mt-4">
+      <div className="bg-background/80 backdrop-blur-sm rounded-xl shadow-sm border border-border/30 mt-4 overflow-hidden">
         <div className="p-4 bg-muted/30">
           <h3 className="text-lg font-medium">主机地图数据</h3>
           <p className="text-sm text-muted-foreground">地理位置分布数据</p>
@@ -100,7 +100,7 @@ const ChartDataTables = ({ gpuComparisonData, hostMapData, statsData, loading }:
         </div>
       </div>
       
-      <div className="bg-background rounded-md shadow-md border-0 mt-4">
+      <div className="bg-background/80 backdrop-blur-sm rounded-xl shadow-sm border border-border/30 mt-4 overflow-hidden">
         <div className="p-4 bg-muted/30">
           <h3 className="text-lg font-medium">性能统计数据</h3>
           <p className="text-sm text-muted-foreground">时间序列性能数据</p>

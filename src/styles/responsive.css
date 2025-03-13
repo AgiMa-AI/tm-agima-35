@@ -1,0 +1,140 @@
+
+/* Mobile Responsive Utilities */
+@layer utilities {
+  /* Extra small screen size */
+  .xs\:inline {
+    display: inline;
+  }
+  
+  .xs\:hidden {
+    display: none;
+  }
+  
+  .xs\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  /* Mobile spacing */
+  .sm-spacing {
+    @apply space-y-3 sm:space-y-4;
+  }
+  
+  /* Responsive text */
+  .responsive-text {
+    @apply text-sm sm:text-base;
+  }
+  
+  /* Responsive buttons */
+  .responsive-btn {
+    @apply px-4 py-3 sm:px-4 sm:py-3 rounded-xl;
+  }
+  
+  /* Mobile friendly touch targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Mobile animations */
+  .mobile-slide-in {
+    animation: slide-in 0.3s ease forwards;
+  }
+  
+  /* Active state for mobile */
+  .mobile-active-state {
+    @apply active:bg-primary/10;
+  }
+
+  /* Card hover for mobile */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-md active:scale-[0.98];
+  }
+  
+  /* Smooth scale transition for press effect */
+  .press-effect {
+    @apply transition-transform active:scale-95;
+  }
+}
+
+/* Media Queries for better mobile support */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  input, select, textarea, button {
+    font-size: 16px !important;
+    @apply h-12 rounded-xl;
+  }
+  
+  .hide-on-mobile {
+    display: none !important;
+  }
+  
+  button {
+    padding: 0.75rem 1rem;
+    @apply rounded-xl;
+  }
+  
+  .dropdown-content {
+    min-width: 200px;
+  }
+  
+  .list-item-mobile {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .xs-text-center {
+    text-align: center;
+  }
+  
+  .xs-full-width {
+    width: 100% !important;
+  }
+  
+  .xs-p-3 {
+    padding: 0.75rem !important;
+  }
+  
+  h1, h2, h3 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .xs-text-sm {
+    font-size: 0.875rem !important;
+  }
+}
+
+@media (hover: none) {
+  .hover\:bg-primary:active {
+    @apply bg-primary/90;
+  }
+  
+  button:active, a:active {
+    opacity: 0.8;
+  }
+  
+  .tap-highlight {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .tap-highlight::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+  
+  .tap-highlight:active::after {
+    background: rgba(0,188,190,0.1);
+  }
+}

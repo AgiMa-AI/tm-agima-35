@@ -28,7 +28,7 @@ const ChartHeader = ({ dataMode, lastUpdated, onRefresh }: ChartHeaderProps) => 
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 bg-background p-4 rounded-md shadow-sm">
+    <div className="flex flex-wrap items-center justify-between gap-4 bg-background/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-border/30">
       <div className="flex items-center gap-2">
         <h1 className="text-2xl font-medium">数据模式</h1>
         <Badge variant={dataMode === 'live' ? 'default' : 'outline'} className="ml-2">

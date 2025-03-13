@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,21 +8,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { UserPlus, Users, Gift, Award, Copy, Share2, ChevronRight, Sparkles } from 'lucide-react';
+import { UserPlus, Users, Gift, Award, Copy, Share2, ChevronRight, Sparkles, GitBranchPlus, GitMerge, User } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from '@/components/ui/use-toast';
 
 const Invitation = () => {
+  const { user, getUserInviteTree } = useAuth();
   // Mock invitation data
-  const myInviteCode = "AGI-COMPUTE-42X9Z";
+  const myInviteCode = user?.inviteCode || "AGI-COMPUTE-42X9Z";
   const invitedUsers = [
     { id: 1, name: "张明", joinDate: "2025-02-15", contribution: 1280, status: "active" },
     { id: 2, name: "李小华", joinDate: "2025-02-20", contribution: 895, status: "active" },
     { id: 3, name: "王大力", joinDate: "2025-02-28", contribution: 450, status: "pending" },
   ];
   
+  // 邀请树结构
+  const inviteTree = user ? getUserInviteTree(user.id) : [];
+  
   const copyInviteCode = () => {
     navigator.clipboard.writeText(myInviteCode);
-    // You would normally use toast here
-    alert("邀请码已复制到剪贴板");
+    toast({
+      title: "已复制",
+      description: "邀请码已复制到剪贴板"
+    });
   };
 
   return (
@@ -108,14 +116,18 @@ const Invitation = () => {
         </div>
 
         <Tabs defaultValue="invited-users">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="invited-users" className="gap-2">
               <Users className="h-4 w-4" />
-              我邀请的用户
+              邀请用户
             </TabsTrigger>
             <TabsTrigger value="rewards-history" className="gap-2">
               <Sparkles className="h-4 w-4" />
               奖励历史
+            </TabsTrigger>
+            <TabsTrigger value="invite-tree" className="gap-2">
+              <GitBranchPlus className="h-4 w-4" />
+              邀请树
             </TabsTrigger>
           </TabsList>
           
@@ -180,6 +192,67 @@ const Invitation = () => {
                     当您邀请的用户开始贡献算力后，您将开始获得奖励，所有记录将显示在这里
                   </p>
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="invite-tree">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <GitMerge className="h-5 w-5 text-indigo-500" />
+                  邀请关系树
+                </CardTitle>
+                <CardDescription>
+                  查看您在平台中的邀请关系链，从根用户到您的路径
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {inviteTree.length > 0 ? (
+                  <div className="py-4">
+                    <div className="relative">
+                      {inviteTree.map((userId, index) => (
+                        <div key={userId} className="flex items-center mb-4 last:mb-0">
+                          {index > 0 && (
+                            <div className="absolute top-0 bottom-0 left-5 w-px bg-indigo-200 dark:bg-indigo-800 -ml-px" 
+                                 style={{top: `${(index - 1) * 3}rem`, height: '3rem'}}></div>
+                          )}
+                          <div className={`relative z-10 flex items-center gap-2 ${index === inviteTree.length - 1 ? 'text-primary font-medium' : ''}`}>
+                            <div className={`w-10 h-10 rounded-full ${index === 0 ? 'bg-amber-100 text-amber-700' : index === inviteTree.length - 1 ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-700'} flex items-center justify-center`}>
+                              {index === 0 ? (
+                                <Award className="h-5 w-5" />
+                              ) : index === inviteTree.length - 1 ? (
+                                <User className="h-5 w-5" />
+                              ) : (
+                                <UserPlus className="h-5 w-5" />
+                              )}
+                            </div>
+                            <div>
+                              {index === 0 ? '平台用户' : index === inviteTree.length - 1 ? '您' : `中间用户 ${index}`}
+                              {index === inviteTree.length - 1 && (
+                                <div className="text-xs text-muted-foreground">
+                                  当前位置 (层级 {inviteTree.length - 1})
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="mb-4 flex justify-center">
+                      <div className="rounded-full bg-gray-100 p-3 dark:bg-gray-800">
+                        <GitBranchPlus className="h-6 w-6 text-indigo-500" />
+                      </div>
+                    </div>
+                    <h3 className="font-medium text-lg">您是根用户</h3>
+                    <p className="text-sm text-muted-foreground mt-1 max-w-sm mx-auto">
+                      您是平台的根用户，没有上级邀请关系
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

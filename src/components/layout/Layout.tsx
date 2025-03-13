@@ -55,7 +55,7 @@ const Layout = ({
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-background">
       {!hideHeader && <Header onSearch={searchHandler} />}
       <div className="flex flex-1 overflow-hidden">
         {!hideSidebar && (
@@ -79,12 +79,12 @@ const Layout = ({
               variant="outline" 
               size="icon" 
               className={cn(
-                "fixed bottom-4 left-4 z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300",
+                "fixed bottom-4 left-4 z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300 h-14 w-14 tiffany-shadow",
                 !sidebarCollapsed && "opacity-0 pointer-events-none"
               )}
               onClick={toggleSidebar}
             >
-              <Menu className="h-4 w-4" />
+              <Menu className="h-6 w-6" />
             </Button>
             {/* Close button - visible when sidebar is open on mobile */}
             <Button
@@ -96,7 +96,7 @@ const Layout = ({
               )}
               onClick={() => setSidebarCollapsed(true)}
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </Button>
           </>
         )}

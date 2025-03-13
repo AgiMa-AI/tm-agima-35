@@ -15,11 +15,13 @@ import MobileApp from "./pages/MobileApp";
 import Charts from "./pages/Charts";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
-import { AuthProvider } from "./hooks/useAuth";
+import { AuthProvider } from "./providers/AuthProvider";
 import AGIModels from "./pages/AGIModels";
 import AGIDetailView from "./pages/AGIDetailView";
 import AGIHosting from "./pages/AGIHosting";
 import AGIRental from "./pages/AGIRental";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 
 // New pages for the updated business logic
 import AGILeasing from "./pages/AGILeasing";
@@ -65,6 +67,10 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/mobile-app" element={<MobileApp />} />
             <Route path="/charts" element={<Charts />} />
+            
+            {/* 服务条款和隐私政策路由 */}
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             
             {/* AGI模型相关路由 */}
             <Route path="/agi-models" element={<AGIModels />} />
