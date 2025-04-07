@@ -53,6 +53,28 @@
   .press-effect {
     @apply transition-transform active:scale-95;
   }
+  
+  /* Touch friendly buttons */
+  .touch-friendly {
+    @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
+  }
+  
+  /* Prevent text selection during taps */
+  .no-tap-highlight {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+  
+  /* Zoom controls for mobile */
+  .zoom-controls {
+    @apply fixed bottom-16 right-4 z-50 flex flex-col gap-2;
+  }
+  
+  /* Mobile view spacing adjustments */
+  .mobile-spacing {
+    @apply p-3 sm:p-4;
+  }
 }
 
 /* Media Queries for better mobile support */
@@ -63,7 +85,7 @@
   }
   
   input, select, textarea, button {
-    font-size: 16px !important;
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
     @apply h-12 rounded-xl;
   }
   
@@ -84,6 +106,33 @@
     padding: 0.75rem;
     margin-bottom: 0.5rem;
     border-radius: 0.75rem;
+  }
+  
+  /* Improve touch area for small buttons */
+  button.touch-area {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Improved scrolling experience */
+  .scroll-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Fix for iOS button rendering */
+  button, 
+  [role="button"] {
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+  
+  /* Fix for iOS tap delay */
+  a, button, [role="button"] {
+    touch-action: manipulation;
   }
 }
 
@@ -106,6 +155,18 @@
   
   .xs-text-sm {
     font-size: 0.875rem !important;
+  }
+  
+  /* Better table handling for mobile */
+  .mobile-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  /* Stack grid items */
+  .stack-on-mobile {
+    grid-template-columns: 1fr !important;
   }
 }
 
@@ -136,5 +197,24 @@
   
   .tap-highlight:active::after {
     background: rgba(0,188,190,0.1);
+  }
+  
+  /* Improved button feedback */
+  .feedback-on-tap:active {
+    transform: translateY(1px);
+  }
+}
+
+/* Meta viewport fix for orientation changes */
+@media screen and (orientation: portrait) {
+  html {
+    overflow-x: hidden;
+  }
+}
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  .h-screen {
+    height: -webkit-fill-available;
   }
 }

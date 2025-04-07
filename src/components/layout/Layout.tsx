@@ -5,7 +5,8 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,13 +22,12 @@ const Layout = ({
   searchHandler
 }: LayoutProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [scale, setScale] = useState(1);
+  const isMobile = useIsMobile();
   const location = useLocation();
 
   useEffect(() => {
     const handleResize = () => {
-      const newIsMobile = window.innerWidth < 768;
-      setIsMobile(newIsMobile);
       if (window.innerWidth >= 1024) {
         setSidebarCollapsed(false);
       } else {
@@ -52,6 +52,14 @@ const Layout = ({
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const zoomIn = () => {
+    setScale(prev => Math.min(prev + 0.1, 1.5));
+  };
+
+  const zoomOut = () => {
+    setScale(prev => Math.max(prev - 0.1, 0.8));
   };
 
   return (
@@ -79,7 +87,7 @@ const Layout = ({
               variant="outline" 
               size="icon" 
               className={cn(
-                "fixed bottom-4 left-4 z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300 h-14 w-14 tiffany-shadow",
+                "fixed bottom-4 left-4 z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300 h-14 w-14 tiffany-shadow touch-friendly",
                 !sidebarCollapsed && "opacity-0 pointer-events-none"
               )}
               onClick={toggleSidebar}
@@ -91,7 +99,7 @@ const Layout = ({
               variant="outline"
               size="icon"
               className={cn(
-                "fixed top-4 left-[260px] z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300",
+                "fixed top-4 left-[260px] z-50 rounded-full shadow-md lg:hidden transition-opacity duration-300 touch-friendly",
                 sidebarCollapsed && "opacity-0 pointer-events-none"
               )}
               onClick={() => setSidebarCollapsed(true)}
@@ -101,14 +109,39 @@ const Layout = ({
           </>
         )}
         <main className={cn(
-          "flex-1 overflow-y-auto transition-all duration-300 ease-in-out",
+          "flex-1 overflow-y-auto transition-all duration-300 ease-in-out scroll-container",
           !hideSidebar && !sidebarCollapsed && !isMobile ? 'lg:ml-[240px]' : 'ml-0'
         )}>
-          <div className="container mx-auto py-4 sm:py-6 px-3 sm:px-4 md:px-6 animate-fade-in">
+          <div 
+            className="container mx-auto py-4 sm:py-6 px-3 sm:px-4 md:px-6 animate-fade-in"
+            style={isMobile ? { transform: `scale(${scale})`, transformOrigin: 'top center' } : undefined}
+          >
             {children}
           </div>
         </main>
       </div>
+      
+      {/* Mobile zoom controls */}
+      {isMobile && (
+        <div className="zoom-controls">
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="rounded-full shadow-md touch-friendly" 
+            onClick={zoomIn}
+          >
+            <ZoomIn className="h-5 w-5" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="rounded-full shadow-md touch-friendly" 
+            onClick={zoomOut}
+          >
+            <ZoomOut className="h-5 w-5" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
