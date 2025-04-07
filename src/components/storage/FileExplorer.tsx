@@ -88,13 +88,29 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
           <p className="text-sm text-muted-foreground">管理和组织您的文件</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={navigateUp} disabled={currentPath === '/'}>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={navigateUp} 
+            disabled={currentPath === '/'} 
+            className="touch-friendly"
+          >
             上级目录
           </Button>
-          <Button variant="outline" size="sm" onClick={() => navigateToFolder('/')}>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => navigateToFolder('/')} 
+            className="touch-friendly"
+          >
             根目录
           </Button>
-          <Button size="sm" onClick={simulateUpload} disabled={isUploading}>
+          <Button 
+            size="sm" 
+            onClick={simulateUpload} 
+            disabled={isUploading} 
+            className="touch-friendly press-effect"
+          >
             <Upload className="h-4 w-4 mr-2" />
             上传
           </Button>
@@ -112,7 +128,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="搜索文件..."
-            className="pl-8"
+            className="pl-8 no-tap-highlight touch-friendly"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -123,10 +139,10 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
         <div className="flex items-center">
           <span className="text-sm font-medium mr-2">排序方式：</span>
           <Select value={sortField} onValueChange={handleSortFieldChange}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className={`${isMobile ? 'w-full' : 'w-[180px]'} touch-friendly`}>
               <SelectValue placeholder="选择排序字段" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="touch-friendly">
               <SelectItem value="name">名称</SelectItem>
               <SelectItem value="size">大小</SelectItem>
               <SelectItem value="lastModified">修改日期</SelectItem>
@@ -138,7 +154,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
           variant="ghost" 
           size="icon" 
           onClick={toggleSortDirection}
-          className="ml-1"
+          className="ml-1 touch-friendly press-effect min-h-[44px] min-w-[44px]"
         >
           {sortDirection === 'asc' ? (
             <ArrowUp className="h-4 w-4" />

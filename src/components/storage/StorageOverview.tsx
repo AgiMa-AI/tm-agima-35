@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Plus, RefreshCw, HardDrive, Image, FileText, AlertCircle } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface StorageOverviewProps {
   usedStorage: number;
@@ -18,9 +19,11 @@ const StorageOverview: React.FC<StorageOverviewProps> = ({
   usedPercentage,
   formatFileSize
 }) => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className={isMobile ? 'card-hover shadow-sm' : ''}>
         <CardHeader>
           <CardTitle>存储概览</CardTitle>
         </CardHeader>
@@ -30,44 +33,62 @@ const StorageOverview: React.FC<StorageOverviewProps> = ({
               <span>已使用</span>
               <span>{formatFileSize(usedStorage)} / {formatFileSize(totalStorage)}</span>
             </div>
-            <Progress value={usedPercentage} />
+            <Progress 
+              value={usedPercentage} 
+              className={isMobile ? 'h-3 rounded-full' : ''}
+            />
             <p className="text-xs text-muted-foreground text-right">
               剩余 {formatFileSize(totalStorage - usedStorage)}
             </p>
           </div>
           
-          <Button variant="outline" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full touch-friendly press-effect"
+          >
             <Plus className="h-4 w-4 mr-2" />
             升级存储
           </Button>
         </CardContent>
       </Card>
       
-      <Card>
+      <Card className={isMobile ? 'card-hover shadow-sm' : ''}>
         <CardHeader>
           <CardTitle>快速访问</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start touch-friendly h-12"
+          >
             <RefreshCw className="h-4 w-4 mr-2" />
             最近文件
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start touch-friendly h-12"
+          >
             <HardDrive className="h-4 w-4 mr-2" />
             大文件
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start touch-friendly h-12"
+          >
             <Image className="h-4 w-4 mr-2" />
             图像
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start touch-friendly h-12"
+          >
             <FileText className="h-4 w-4 mr-2" />
             文档
           </Button>
         </CardContent>
       </Card>
       
-      <Card>
+      <Card className={isMobile ? 'shadow-sm' : ''}>
         <CardHeader className="pb-2">
           <CardTitle>存储提示</CardTitle>
         </CardHeader>

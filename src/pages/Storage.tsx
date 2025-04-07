@@ -6,6 +6,7 @@ import FileExplorer from '@/components/storage/FileExplorer';
 import StorageOverview from '@/components/storage/StorageOverview';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StorageItem } from '@/types/storage';
+import { useToast } from '@/components/ui/use-toast';
 
 const mockStorageItems: StorageItem[] = [
   { 
@@ -66,6 +67,7 @@ const Storage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   
   const totalStorage = 100 * 1024 * 1024 * 1024; // 100 GB
   const usedStorage = 42 * 1024 * 1024 * 1024; // 42 GB
@@ -85,6 +87,11 @@ const Storage = () => {
         if (prev >= 100) {
           clearInterval(interval);
           setIsUploading(false);
+          toast({
+            title: "上传成功",
+            description: "文件已成功上传",
+            duration: 3000
+          });
           return 100;
         }
         return prev + 10;
@@ -107,7 +114,7 @@ const Storage = () => {
   
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className={`space-y-6 ${isMobile ? 'pb-16' : ''}`}>
         <div>
           <h1 className="text-3xl font-bold tracking-tight">存储</h1>
           <p className="text-muted-foreground mt-1">
@@ -115,36 +122,69 @@ const Storage = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="md:col-span-3">
-            <Card>
-              <CardHeader className="pb-3" />
-              <CardContent>
-                <FileExplorer
-                  currentPath={currentPath}
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                  filteredItems={filteredItems}
-                  navigateUp={navigateUp}
-                  navigateToFolder={navigateToFolder}
-                  simulateUpload={simulateUpload}
-                  isUploading={isUploading}
-                  uploadProgress={uploadProgress}
-                  formatFileSize={formatFileSize}
-                />
-              </CardContent>
-            </Card>
+        {/* 移动端视图中，先展示存储概览，再展示文件管理器 */}
+        {isMobile ? (
+          <>
+            <div className="grid grid-cols-1 gap-6">
+              <StorageOverview 
+                usedStorage={usedStorage}
+                totalStorage={totalStorage}
+                usedPercentage={usedPercentage}
+                formatFileSize={formatFileSize}
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-6">
+              <Card className="shadow-sm">
+                <CardContent className="pt-6">
+                  <FileExplorer
+                    currentPath={currentPath}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    filteredItems={filteredItems}
+                    navigateUp={navigateUp}
+                    navigateToFolder={navigateToFolder}
+                    simulateUpload={simulateUpload}
+                    isUploading={isUploading}
+                    uploadProgress={uploadProgress}
+                    formatFileSize={formatFileSize}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          </>
+        ) : (
+          // 桌面端布局
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="md:col-span-3">
+              <Card>
+                <CardHeader className="pb-3" />
+                <CardContent>
+                  <FileExplorer
+                    currentPath={currentPath}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    filteredItems={filteredItems}
+                    navigateUp={navigateUp}
+                    navigateToFolder={navigateToFolder}
+                    simulateUpload={simulateUpload}
+                    isUploading={isUploading}
+                    uploadProgress={uploadProgress}
+                    formatFileSize={formatFileSize}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="md:col-span-1">
+              <StorageOverview 
+                usedStorage={usedStorage}
+                totalStorage={totalStorage}
+                usedPercentage={usedPercentage}
+                formatFileSize={formatFileSize}
+              />
+            </div>
           </div>
-          
-          <div className="md:col-span-1">
-            <StorageOverview 
-              usedStorage={usedStorage}
-              totalStorage={totalStorage}
-              usedPercentage={usedPercentage}
-              formatFileSize={formatFileSize}
-            />
-          </div>
-        </div>
+        )}
       </div>
     </Layout>
   );
