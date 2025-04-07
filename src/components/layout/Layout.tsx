@@ -62,6 +62,10 @@ const Layout = ({
     setScale(prev => Math.max(prev - 0.1, 0.8));
   };
 
+  const resetZoom = () => {
+    setScale(1);
+  };
+
   return (
     <div className="flex h-full flex-col bg-background">
       {!hideHeader && <Header onSearch={searchHandler} />}
@@ -93,6 +97,7 @@ const Layout = ({
               onClick={toggleSidebar}
             >
               <Menu className="h-6 w-6" />
+              <span className="sr-only">打开菜单</span>
             </Button>
             {/* Close button - visible when sidebar is open on mobile */}
             <Button
@@ -105,6 +110,7 @@ const Layout = ({
               onClick={() => setSidebarCollapsed(true)}
             >
               <X className="h-5 w-5" />
+              <span className="sr-only">关闭菜单</span>
             </Button>
           </>
         )}
@@ -129,16 +135,30 @@ const Layout = ({
             size="icon" 
             className="rounded-full shadow-md h-12 w-12 touch-friendly" 
             onClick={zoomIn}
+            title="放大"
           >
             <ZoomIn className="h-5 w-5" />
+            <span className="sr-only">放大</span>
           </Button>
           <Button 
             variant="outline" 
             size="icon" 
             className="rounded-full shadow-md h-12 w-12 touch-friendly" 
             onClick={zoomOut}
+            title="缩小"
           >
             <ZoomOut className="h-5 w-5" />
+            <span className="sr-only">缩小</span>
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full shadow-md h-12 w-12 touch-friendly"
+            onClick={resetZoom}
+            title="重置大小"
+          >
+            <span className="text-xs font-medium">100%</span>
+            <span className="sr-only">重置大小</span>
           </Button>
         </div>
       )}

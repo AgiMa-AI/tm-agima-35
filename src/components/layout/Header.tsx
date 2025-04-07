@@ -66,6 +66,7 @@ const Header = ({ onSearch }: HeaderProps) => {
             aria-label="通知"
           >
             <Bell className="h-5 w-5" />
+            <span className="sr-only">通知</span>
           </Button>
 
           {isAuthenticated ? (
@@ -83,10 +84,10 @@ const Header = ({ onSearch }: HeaderProps) => {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 bg-background">
                 <DropdownMenuLabel>我的账户</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
                   <User className="mr-2 h-4 w-4" />
                   <span>个人资料</span>
                 </DropdownMenuItem>

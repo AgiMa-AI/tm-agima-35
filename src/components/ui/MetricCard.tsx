@@ -2,6 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface MetricCardProps {
   title: string;
@@ -13,6 +14,7 @@ interface MetricCardProps {
     isPositive: boolean;
   };
   className?: string;
+  tooltip?: string;
 }
 
 const MetricCard = ({
@@ -21,9 +23,10 @@ const MetricCard = ({
   icon,
   description,
   trend,
-  className
+  className,
+  tooltip
 }: MetricCardProps) => {
-  return (
+  const cardContent = (
     <Card className={cn("h-full overflow-hidden transition-all duration-300 hover:shadow-lg border border-border/30 bg-card/80 backdrop-blur-sm", className)}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
@@ -53,6 +56,23 @@ const MetricCard = ({
       </CardContent>
     </Card>
   );
+
+  if (tooltip) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            {cardContent}
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{tooltip}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  return cardContent;
 };
 
 export default MetricCard;
