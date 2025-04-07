@@ -2,7 +2,7 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { FolderOpen, File, FileText, Image, MoreVertical, Plus } from 'lucide-react';
+import { FolderOpen, File, FileText, Image, MoreVertical, Plus, ArrowUp, ArrowDown } from 'lucide-react';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -10,12 +10,17 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
 import { StorageItem } from '@/types/storage';
+import { SortField, SortDirection } from './FileExplorer';
 
 interface FileTableProps {
   items: StorageItem[];
   currentPath: string;
   navigateToFolder: (folderPath: string) => void;
   formatFileSize: (bytes: number) => string;
+  sortField: SortField;
+  sortDirection: SortDirection;
+  onSortFieldChange: (field: string) => void;
+  onToggleSortDirection: () => void;
 }
 
 export const getFileIcon = (type: string) => {
@@ -37,16 +42,59 @@ const FileTable: React.FC<FileTableProps> = ({
   items, 
   currentPath, 
   navigateToFolder,
-  formatFileSize
+  formatFileSize,
+  sortField,
+  sortDirection,
+  onSortFieldChange,
+  onToggleSortDirection
 }) => {
+  const renderSortIcon = (field: SortField) => {
+    if (sortField !== field) return null;
+    
+    return sortDirection === 'asc' ? (
+      <ArrowUp className="h-4 w-4 ml-1 inline" />
+    ) : (
+      <ArrowDown className="h-4 w-4 ml-1 inline" />
+    );
+  };
+
+  const handleHeaderClick = (field: SortField) => {
+    if (sortField === field) {
+      onToggleSortDirection();
+    } else {
+      onSortFieldChange(field);
+    }
+  };
+
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[400px]">名称</TableHead>
-            <TableHead>大小</TableHead>
-            <TableHead>修改日期</TableHead>
+            <TableHead 
+              className="w-[400px] cursor-pointer"
+              onClick={() => handleHeaderClick('name')}
+            >
+              <div className="flex items-center">
+                名称 {renderSortIcon('name')}
+              </div>
+            </TableHead>
+            <TableHead
+              className="cursor-pointer"
+              onClick={() => handleHeaderClick('size')}
+            >
+              <div className="flex items-center">
+                大小 {renderSortIcon('size')}
+              </div>
+            </TableHead>
+            <TableHead
+              className="cursor-pointer"
+              onClick={() => handleHeaderClick('lastModified')}
+            >
+              <div className="flex items-center">
+                修改日期 {renderSortIcon('lastModified')}
+              </div>
+            </TableHead>
             <TableHead className="text-right">操作</TableHead>
           </TableRow>
         </TableHeader>
