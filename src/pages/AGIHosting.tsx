@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,10 +27,13 @@ import {
   Globe,
   Lock
 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import MetricCard from '@/components/ui/MetricCard';
 
 const AGIHosting = () => {
   const { user } = useAuth();
   const [selectedHardware, setSelectedHardware] = useState<string | null>(null);
+  const isMobile = useIsMobile();
   
   const earnings = {
     daily: 78.25,
@@ -87,7 +91,7 @@ const AGIHosting = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <div className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg p-8 shadow-lg overflow-hidden">
+        <div className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg p-4 sm:p-8 shadow-lg overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
               <path d="M0,0 L100,0 L100,100 L0,100 Z" fill="url(#grid)" />
@@ -100,100 +104,78 @@ const AGIHosting = () => {
           </div>
           
           <div className="relative z-10 max-w-3xl">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight font-display mb-3">
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight font-display mb-2 sm:mb-3">
               让闲置算力创造价值
             </h1>
-            <p className="text-lg opacity-90 mb-6 max-w-2xl">
+            <p className="text-base sm:text-lg opacity-90 mb-4 sm:mb-6 max-w-2xl">
               托管您的高性能GPU和CPU资源，支持全球AGI模型运行，获取长期稳定的被动收入。
               我们的平台提供高达95%的资源利用率，为您带来最大化的收益。
             </p>
-            <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
+              <Button size={isMobile ? "sm" : "lg"} className="bg-white text-blue-700 hover:bg-blue-50 touch-friendly press-effect">
                 立即开始托管
               </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+              <Button size={isMobile ? "sm" : "lg"} variant="outline" className="text-white border-white hover:bg-white/10 touch-friendly press-effect">
                 了解更多
               </Button>
             </div>
             
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div className="font-bold text-3xl">95%</div>
-                <div className="text-sm opacity-80">平均资源利用率</div>
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20">
+                <div className="font-bold text-xl sm:text-3xl">95%</div>
+                <div className="text-xs sm:text-sm opacity-80">平均资源利用率</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div className="font-bold text-3xl">¥28K+</div>
-                <div className="text-sm opacity-80">单GPU月均收益</div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20">
+                <div className="font-bold text-xl sm:text-3xl">¥28K+</div>
+                <div className="text-xs sm:text-sm opacity-80">单GPU月均收益</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div className="font-bold text-3xl">5000+</div>
-                <div className="text-sm opacity-80">全球托管节点</div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20">
+                <div className="font-bold text-xl sm:text-3xl">5000+</div>
+                <div className="text-xs sm:text-sm opacity-80">全球托管节点</div>
               </div>
             </div>
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">今日收益</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline">
-                <p className="text-2xl font-bold">¥{earnings.daily.toFixed(2)}</p>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+          <MetricCard 
+            title="今日收益" 
+            value={`¥${earnings.daily.toFixed(2)}`}
+            tooltip="过去24小时内的算力托管收益"
+          />
           
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">本周收益</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline">
-                <p className="text-2xl font-bold">¥{earnings.weekly.toFixed(2)}</p>
-              </div>
-            </CardContent>
-          </Card>
+          <MetricCard 
+            title="本周收益" 
+            value={`¥${earnings.weekly.toFixed(2)}`}
+            tooltip="过去7天的算力托管累计收益"
+          />
           
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">本月收益</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline">
-                <p className="text-2xl font-bold">¥{earnings.monthly.toFixed(2)}</p>
-              </div>
-            </CardContent>
-          </Card>
+          <MetricCard 
+            title="本月收益" 
+            value={`¥${earnings.monthly.toFixed(2)}`}
+            tooltip="当月累计算力托管收益"
+          />
           
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">待结算</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline">
-                <p className="text-2xl font-bold">¥{earnings.pending.toFixed(2)}</p>
-                <Button variant="ghost" size="sm" className="ml-2">
-                  <HelpCircle className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <MetricCard 
+            title="待结算" 
+            value={`¥${earnings.pending.toFixed(2)}`}
+            icon={<HelpCircle className="h-4 w-4" />}
+            tooltip="已确认但尚未结算的收益，每月15日统一结算"
+          />
         </div>
         
         <Card className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/70 dark:to-slate-900 border-0">
           <CardHeader>
-            <CardTitle className="text-center text-2xl">为什么选择我们的算力托管平台？</CardTitle>
+            <CardTitle className="text-center text-xl sm:text-2xl">为什么选择我们的算力托管平台？</CardTitle>
             <CardDescription className="text-center">最大化您的硬件投资回报，同时为AGI技术发展做出贡献</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {benefits.map((benefit, index) => (
-                <div key={index} className="bg-background rounded-lg p-6 border shadow-sm hover:shadow-md transition-shadow">
-                  <div className="mb-4">{benefit.icon}</div>
-                  <h3 className="text-lg font-medium mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                <div key={index} className="bg-background rounded-lg p-4 sm:p-6 border shadow-sm hover:shadow-md transition-shadow press-effect">
+                  <div className="mb-3 sm:mb-4">{benefit.icon}</div>
+                  <h3 className="text-base sm:text-lg font-medium mb-2">{benefit.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -206,39 +188,41 @@ const AGIHosting = () => {
             <CardDescription>与传统云服务提供商相比，我们的平台能为您提供更高的收益</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[180px]">平台</TableHead>
-                    <TableHead>价格/天</TableHead>
-                    <TableHead>平均利用率</TableHead>
-                    <TableHead>月度收益（单GPU）</TableHead>
-                    <TableHead>对比</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {pricingComparison.map((pricing, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium">{pricing.provider}</TableCell>
-                      <TableCell>{pricing.pricePerDay}</TableCell>
-                      <TableCell>{pricing.utilization}</TableCell>
-                      <TableCell>{pricing.monthlyRevenue}</TableCell>
-                      <TableCell>
-                        {index === 1 && (
-                          <Badge className="bg-green-500">推荐</Badge>
-                        )}
-                      </TableCell>
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <div className="min-w-[600px] px-4 sm:px-0 sm:min-w-full">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[180px]">平台</TableHead>
+                      <TableHead>价格/天</TableHead>
+                      <TableHead>平均利用率</TableHead>
+                      <TableHead>月度收益（单GPU）</TableHead>
+                      <TableHead>对比</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {pricingComparison.map((pricing, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{pricing.provider}</TableCell>
+                        <TableCell>{pricing.pricePerDay}</TableCell>
+                        <TableCell>{pricing.utilization}</TableCell>
+                        <TableCell>{pricing.monthlyRevenue}</TableCell>
+                        <TableCell>
+                          {index === 1 && (
+                            <Badge className="bg-green-500">推荐</Badge>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
             
-            <div className="mt-6 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-900/30">
+            <div className="mt-6 p-3 sm:p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-900/30">
               <div className="flex">
                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 flex-shrink-0" />
-                <p className="text-sm text-green-800 dark:text-green-300">
+                <p className="text-xs sm:text-sm text-green-800 dark:text-green-300">
                   通过我们的平台，同样的硬件资源可以获得<span className="font-bold">多达2倍</span>的收益，归功于我们优化的利用率和智能任务调度。
                 </p>
               </div>
@@ -246,11 +230,11 @@ const AGIHosting = () => {
           </CardContent>
         </Card>
         
-        <Tabs defaultValue="overview">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="overview">概览</TabsTrigger>
-            <TabsTrigger value="hardware">选择硬件</TabsTrigger>
-            <TabsTrigger value="history">托管记录</TabsTrigger>
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 h-auto">
+            <TabsTrigger value="overview" className="py-3">概览</TabsTrigger>
+            <TabsTrigger value="hardware" className="py-3">选择硬件</TabsTrigger>
+            <TabsTrigger value="history" className="py-3">托管记录</TabsTrigger>
           </TabsList>
           
           <TabsContent value="overview" className="mt-6">
@@ -277,7 +261,7 @@ const AGIHosting = () => {
                               <p className="text-sm font-medium mt-2">已获收益: ¥{hosting.earnings.toFixed(2)}</p>
                               <div className="mt-3 flex justify-between">
                                 <Badge>运行中</Badge>
-                                <Button variant="outline" size="sm">
+                                <Button variant="outline" size="sm" className="touch-friendly">
                                   <Settings className="h-4 w-4 mr-1" />
                                   管理
                                 </Button>
@@ -292,7 +276,7 @@ const AGIHosting = () => {
                         <CardHeader>
                           <CardTitle className="text-base">算力使用率</CardTitle>
                         </CardHeader>
-                        <CardContent className="h-[200px] flex items-center justify-center bg-muted/50 rounded-md">
+                        <CardContent className="h-[160px] sm:h-[200px] flex items-center justify-center bg-muted/50 rounded-md">
                           <div className="flex items-center gap-2 text-muted-foreground">
                             <BarChart3 className="h-5 w-5" />
                             <span>使用率图表将在这里显示</span>
@@ -304,7 +288,7 @@ const AGIHosting = () => {
                         <CardHeader>
                           <CardTitle className="text-base">收益分析</CardTitle>
                         </CardHeader>
-                        <CardContent className="h-[200px] flex items-center justify-center bg-muted/50 rounded-md">
+                        <CardContent className="h-[160px] sm:h-[200px] flex items-center justify-center bg-muted/50 rounded-md">
                           <div className="flex items-center gap-2 text-muted-foreground">
                             <BarChart3 className="h-5 w-5" />
                             <span>收益分析图表将在这里显示</span>
@@ -314,13 +298,13 @@ const AGIHosting = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="text-center py-12">
-                    <Cpu className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
-                    <h3 className="text-xl font-medium mb-2">您还没有活跃的算力托管</h3>
-                    <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                  <div className="text-center py-8 sm:py-12">
+                    <Cpu className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-muted-foreground/50 mb-4" />
+                    <h3 className="text-lg sm:text-xl font-medium mb-2">您还没有活跃的算力托管</h3>
+                    <p className="text-muted-foreground max-w-md mx-auto mb-6 text-sm sm:text-base">
                       通过提供您的硬件资源来支持AGI模型运行，并获取稳定的被动收益
                     </p>
-                    <Button onClick={switchToHardwareTab}>
+                    <Button onClick={switchToHardwareTab} className="touch-friendly press-effect">
                       <Plus className="h-4 w-4 mr-2" />
                       开始托管
                     </Button>
@@ -341,7 +325,7 @@ const AGIHosting = () => {
                   {hardwareOptions.map(option => (
                     <div 
                       key={option.id}
-                      className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                      className={`border rounded-lg p-4 cursor-pointer transition-all press-effect active:scale-[0.98] ${
                         selectedHardware === option.id 
                           ? 'border-primary bg-primary/5' 
                           : 'hover:border-muted-foreground/50'
@@ -371,13 +355,13 @@ const AGIHosting = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="host-name">托管名称</Label>
-                        <Input id="host-name" placeholder="为您的托管取个名字" />
+                        <Input id="host-name" placeholder="为您的托管取个名字" className="h-12" />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="duration">托管时长</Label>
                         <select 
                           id="duration"
-                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                          className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         >
                           <option value="1">1个月</option>
                           <option value="3">3个月（享9.5折）</option>
@@ -390,14 +374,14 @@ const AGIHosting = () => {
                     <div className="space-y-2">
                       <Label htmlFor="payment-method">支付方式</Label>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                        <div className="border rounded-md p-3 flex items-center space-x-3 cursor-pointer hover:bg-muted/50">
+                        <div className="border rounded-md p-3 flex items-center space-x-3 cursor-pointer press-effect hover:bg-muted/50">
                           <CreditCard className="h-5 w-5 text-muted-foreground" />
                           <div>
                             <p className="font-medium">信用卡</p>
                             <p className="text-xs text-muted-foreground">Visa/Mastercard</p>
                           </div>
                         </div>
-                        <div className="border rounded-md p-3 flex items-center space-x-3 cursor-pointer hover:bg-muted/50">
+                        <div className="border rounded-md p-3 flex items-center space-x-3 cursor-pointer press-effect hover:bg-muted/50">
                           <DollarSign className="h-5 w-5 text-muted-foreground" />
                           <div>
                             <p className="font-medium">余额支付</p>
@@ -419,9 +403,9 @@ const AGIHosting = () => {
                       </div>
                     </div>
                     
-                    <div className="pt-4 flex justify-end">
-                      <Button variant="outline" className="mr-2">取消</Button>
-                      <Button>确认托管</Button>
+                    <div className="pt-4 flex flex-col sm:flex-row sm:justify-end gap-2">
+                      <Button variant="outline" className="w-full sm:w-auto touch-friendly press-effect">取消</Button>
+                      <Button className="w-full sm:w-auto touch-friendly press-effect">确认托管</Button>
                     </div>
                   </div>
                 )}
@@ -432,51 +416,88 @@ const AGIHosting = () => {
           <TabsContent value="history" className="mt-6">
             <Card>
               <CardHeader>
-                <div className="flex justify-between items-start">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                   <div>
                     <CardTitle>托管记录</CardTitle>
                     <CardDescription>您的历史托管记录与收益明细</CardDescription>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="touch-friendly self-start">
                     <Download className="h-4 w-4 mr-2" />
                     导出记录
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>硬件套餐</TableHead>
-                      <TableHead>开始日期</TableHead>
-                      <TableHead>结束日期</TableHead>
-                      <TableHead>状态</TableHead>
-                      <TableHead className="text-right">总收益</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {hostingHistory.map(hosting => (
-                      <TableRow key={hosting.id}>
-                        <TableCell>{hosting.hardware}</TableCell>
-                        <TableCell>{hosting.startDate}</TableCell>
-                        <TableCell>{hosting.endDate || '-'}</TableCell>
-                        <TableCell>
-                          <Badge className={hosting.status === 'active' ? 'bg-green-500' : 'bg-muted'}>
-                            {hosting.status === 'active' ? '运行中' : '已完成'}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right">¥{hosting.earnings.toFixed(2)}</TableCell>
-                      </TableRow>
-                    ))}
-                    {hostingHistory.length === 0 && (
-                      <TableRow>
-                        <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
-                          暂无托管记录
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                <div className="overflow-x-auto -mx-4 sm:mx-0">
+                  <div className="min-w-[600px] px-4 sm:px-0 sm:min-w-full">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>硬件套餐</TableHead>
+                          <TableHead>开始日期</TableHead>
+                          <TableHead>结束日期</TableHead>
+                          <TableHead>状态</TableHead>
+                          <TableHead className="text-right">总收益</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {hostingHistory.map(hosting => (
+                          <TableRow key={hosting.id}>
+                            <TableCell>{hosting.hardware}</TableCell>
+                            <TableCell>{hosting.startDate}</TableCell>
+                            <TableCell>{hosting.endDate || '-'}</TableCell>
+                            <TableCell>
+                              <Badge className={hosting.status === 'active' ? 'bg-green-500' : 'bg-muted'}>
+                                {hosting.status === 'active' ? '运行中' : '已完成'}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-right font-medium">¥{hosting.earnings.toFixed(2)}</TableCell>
+                          </TableRow>
+                        ))}
+                        {hostingHistory.length === 0 && (
+                          <TableRow>
+                            <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                              暂无托管记录
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+
+                {/* 移动端版本的托管记录 - 在小屏幕上显示卡片式布局 */}
+                <div className="sm:hidden mt-4 space-y-4">
+                  {hostingHistory.map(hosting => (
+                    <div key={hosting.id} className="border rounded-lg p-4 press-effect">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-medium">{hosting.hardware}</h3>
+                        <Badge className={hosting.status === 'active' ? 'bg-green-500' : 'bg-muted'}>
+                          {hosting.status === 'active' ? '运行中' : '已完成'}
+                        </Badge>
+                      </div>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">开始日期:</span>
+                          <span>{hosting.startDate}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">结束日期:</span>
+                          <span>{hosting.endDate || '-'}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">总收益:</span>
+                          <span className="font-medium">¥{hosting.earnings.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {hostingHistory.length === 0 && (
+                    <div className="text-center py-10 text-muted-foreground">
+                      暂无托管记录
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
