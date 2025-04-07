@@ -1,12 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import FileExplorer from '@/components/storage/FileExplorer';
 import StorageOverview from '@/components/storage/StorageOverview';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StorageItem } from '@/types/storage';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 
 const mockStorageItems: StorageItem[] = [
   { 
@@ -66,6 +67,7 @@ const Storage = () => {
   const [currentPath, setCurrentPath] = useState('/');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isMobile = useIsMobile();
   const { toast } = useToast();
   
@@ -78,7 +80,7 @@ const Storage = () => {
     item.path === currentPath
   );
   
-  const simulateUpload = () => {
+  const simulateUpload = useCallback(() => {
     setIsUploading(true);
     setUploadProgress(0);
     
@@ -97,20 +99,30 @@ const Storage = () => {
         return prev + 10;
       });
     }, 500);
-  };
+  }, [toast]);
   
-  const navigateToFolder = (folderPath: string) => {
-    setCurrentPath(folderPath);
-  };
+  const navigateToFolder = useCallback((folderPath: string) => {
+    // 添加文件夹导航动画
+    setIsLoading(true);
+    setTimeout(() => {
+      setCurrentPath(folderPath);
+      setIsLoading(false);
+    }, 300);
+  }, []);
   
-  const navigateUp = () => {
+  const navigateUp = useCallback(() => {
     if (currentPath === '/') return;
     
+    setIsLoading(true);
     const pathParts = currentPath.split('/').filter(Boolean);
     pathParts.pop();
     const newPath = pathParts.length === 0 ? '/' : '/' + pathParts.join('/');
-    setCurrentPath(newPath);
-  };
+    
+    setTimeout(() => {
+      setCurrentPath(newPath);
+      setIsLoading(false);
+    }, 300);
+  }, [currentPath]);
   
   return (
     <Layout>
@@ -135,7 +147,12 @@ const Storage = () => {
             </div>
             <div className="grid grid-cols-1 gap-6">
               <Card className="shadow-sm">
-                <CardContent className="pt-6">
+                <CardContent className="pt-6 relative">
+                  {isLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10 backdrop-blur-sm rounded-md">
+                      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    </div>
+                  )}
                   <FileExplorer
                     currentPath={currentPath}
                     searchQuery={searchQuery}
@@ -158,7 +175,12 @@ const Storage = () => {
             <div className="md:col-span-3">
               <Card>
                 <CardHeader className="pb-3" />
-                <CardContent>
+                <CardContent className="relative">
+                  {isLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10 backdrop-blur-sm rounded-md">
+                      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    </div>
+                  )}
                   <FileExplorer
                     currentPath={currentPath}
                     searchQuery={searchQuery}

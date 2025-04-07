@@ -2,16 +2,19 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { FolderOpen, File, FileText, Image, MoreVertical, Plus, ArrowUp, ArrowDown } from 'lucide-react';
+import { FolderOpen, File, FileText, Image, MoreVertical, Plus, ArrowUp, ArrowDown, Download, Edit2, Move, Trash2 } from 'lucide-react';
 import { 
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger 
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
 import { StorageItem } from '@/types/storage';
 import { SortField, SortDirection } from './FileExplorer';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useToast } from '@/hooks/use-toast';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface FileTableProps {
   items: StorageItem[];
@@ -50,6 +53,7 @@ const FileTable: React.FC<FileTableProps> = ({
   onToggleSortDirection
 }) => {
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   
   const renderSortIcon = (field: SortField) => {
     if (sortField !== field) return null;
@@ -69,7 +73,23 @@ const FileTable: React.FC<FileTableProps> = ({
     }
   };
 
-  // 根据移动设备渲染不同的文件视图
+  const handleActionClick = (action: string, item: StorageItem) => {
+    // 演示用，实际操作需要实现相应功能
+    const actions = {
+      download: '下载',
+      rename: '重命名',
+      move: '移动',
+      delete: '删除'
+    };
+    
+    toast({
+      title: `${actions[action as keyof typeof actions]}${item.type === 'folder' ? '文件夹' : '文件'}`,
+      description: `已选择${actions[action as keyof typeof actions]} "${item.name}"`,
+      duration: 3000
+    });
+  };
+
+  // 针对移动设备优化的文件列表渲染
   const renderMobileFileList = () => {
     if (items.length === 0) {
       return (
@@ -89,7 +109,7 @@ const FileTable: React.FC<FileTableProps> = ({
         {items.map((item) => (
           <div 
             key={item.id}
-            className="flex items-center justify-between p-4 bg-background border rounded-xl shadow-sm press-effect"
+            className="flex items-center justify-between p-4 bg-background border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 press-effect"
           >
             <div 
               className="flex items-center gap-3 flex-1"
@@ -114,10 +134,19 @@ const FileTable: React.FC<FileTableProps> = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem className="touch-friendly py-3">下载</DropdownMenuItem>
-                <DropdownMenuItem className="touch-friendly py-3">重命名</DropdownMenuItem>
-                <DropdownMenuItem className="touch-friendly py-3">移动</DropdownMenuItem>
-                <DropdownMenuItem className="text-red-600 touch-friendly py-3">删除</DropdownMenuItem>
+                <DropdownMenuItem className="touch-friendly py-3" onClick={() => handleActionClick('download', item)}>
+                  <Download className="h-4 w-4 mr-2" />下载
+                </DropdownMenuItem>
+                <DropdownMenuItem className="touch-friendly py-3" onClick={() => handleActionClick('rename', item)}>
+                  <Edit2 className="h-4 w-4 mr-2" />重命名
+                </DropdownMenuItem>
+                <DropdownMenuItem className="touch-friendly py-3" onClick={() => handleActionClick('move', item)}>
+                  <Move className="h-4 w-4 mr-2" />移动
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-red-600 touch-friendly py-3" onClick={() => handleActionClick('delete', item)}>
+                  <Trash2 className="h-4 w-4 mr-2" />删除
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -126,15 +155,15 @@ const FileTable: React.FC<FileTableProps> = ({
     );
   };
 
-  // 桌面版标准表格视图
+  // 桌面版标准表格视图，增强了交互性
   const renderDesktopTable = () => {
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead 
-                className="w-[400px] cursor-pointer"
+                className="w-[400px] cursor-pointer hover:bg-gray-50 transition-colors duration-200"
                 onClick={() => handleHeaderClick('name')}
               >
                 <div className="flex items-center">
@@ -142,7 +171,7 @@ const FileTable: React.FC<FileTableProps> = ({
                 </div>
               </TableHead>
               <TableHead
-                className="cursor-pointer"
+                className="cursor-pointer hover:bg-gray-50 transition-colors duration-200"
                 onClick={() => handleHeaderClick('size')}
               >
                 <div className="flex items-center">
@@ -150,7 +179,7 @@ const FileTable: React.FC<FileTableProps> = ({
                 </div>
               </TableHead>
               <TableHead
-                className="cursor-pointer"
+                className="cursor-pointer hover:bg-gray-50 transition-colors duration-200"
                 onClick={() => handleHeaderClick('lastModified')}
               >
                 <div className="flex items-center">
@@ -163,13 +192,13 @@ const FileTable: React.FC<FileTableProps> = ({
           <TableBody>
             {items.length > 0 ? (
               items.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.id} className="group hover:bg-gray-50 transition-colors duration-200">
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       {getFileIcon(item.type)}
                       {item.type === 'folder' ? (
                         <button 
-                          className="hover:underline text-left"
+                          className="hover:underline text-left hover:text-blue-600 transition-colors duration-200"
                           onClick={() => navigateToFolder(`${currentPath === '/' ? '' : currentPath}/${item.name}`)}
                         >
                           {item.name}
@@ -182,19 +211,37 @@ const FileTable: React.FC<FileTableProps> = ({
                   <TableCell>{item.type === 'folder' ? '-' : formatFileSize(item.size)}</TableCell>
                   <TableCell>{item.lastModified}</TableCell>
                   <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>下载</DropdownMenuItem>
-                        <DropdownMenuItem>重命名</DropdownMenuItem>
-                        <DropdownMenuItem>移动</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">删除</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <TooltipProvider>
+                      <DropdownMenu>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-xs">更多操作</p>
+                          </TooltipContent>
+                        </Tooltip>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => handleActionClick('download', item)}>
+                            <Download className="h-4 w-4 mr-2" />下载
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleActionClick('rename', item)}>
+                            <Edit2 className="h-4 w-4 mr-2" />重命名
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleActionClick('move', item)}>
+                            <Move className="h-4 w-4 mr-2" />移动
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="text-red-600" onClick={() => handleActionClick('delete', item)}>
+                            <Trash2 className="h-4 w-4 mr-2" />删除
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TooltipProvider>
                   </TableCell>
                 </TableRow>
               ))
