@@ -55,5 +55,22 @@ export const mockUsers: UserWithPassword[] = [
     energy: 100, // 添加能量值
     inviteCode: ROOT_INVITE_CODE, // 将agima账户的邀请码设为根邀请码
     inviteTree: ['3'] // 自己是根节点
+  },
+  // 添加新的用户账号
+  {
+    id: '4',
+    username: 'agima',
+    email: 'agima@example.com',
+    password: '123456',
+    role: 'admin' as const,
+    status: 'active',
+    joinDate: '2024-04-01',
+    computeUnits: 500,
+    avatar: '',
+    balance: 5000,
+    credits: 500,
+    energy: 50,
+    inviteCode: 'AGIMA789',
+    inviteTree: ['3', '4'] // agima邀请的用户
   }
-];
+]

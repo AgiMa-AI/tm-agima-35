@@ -121,13 +121,13 @@ const Layout = ({
         </main>
       </div>
       
-      {/* Mobile zoom controls */}
+      {/* Mobile zoom controls - improved positioning */}
       {isMobile && (
-        <div className="zoom-controls">
+        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
           <Button 
             variant="outline" 
             size="icon" 
-            className="rounded-full shadow-md touch-friendly" 
+            className="rounded-full shadow-md h-12 w-12 touch-friendly" 
             onClick={zoomIn}
           >
             <ZoomIn className="h-5 w-5" />
@@ -135,7 +135,7 @@ const Layout = ({
           <Button 
             variant="outline" 
             size="icon" 
-            className="rounded-full shadow-md touch-friendly" 
+            className="rounded-full shadow-md h-12 w-12 touch-friendly" 
             onClick={zoomOut}
           >
             <ZoomOut className="h-5 w-5" />
