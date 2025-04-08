@@ -1,7 +1,7 @@
 
 import React, { useState, useCallback } from 'react';
 import Layout from '@/components/layout/Layout';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import FileExplorer from '@/components/storage/FileExplorer';
 import StorageOverview from '@/components/storage/StorageOverview';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -174,8 +174,7 @@ const Storage = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="md:col-span-3">
               <Card>
-                <CardHeader className="pb-3" />
-                <CardContent className="relative">
+                <CardContent className="relative pt-6">
                   {isLoading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10 backdrop-blur-sm rounded-md">
                       <Loader2 className="h-8 w-8 animate-spin text-primary" />

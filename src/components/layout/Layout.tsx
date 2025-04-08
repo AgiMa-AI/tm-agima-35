@@ -36,14 +36,14 @@ const Layout = ({
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize(); // Initial check
+    handleResize(); // 初始检查
     
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
-  // Close sidebar when route changes on mobile
+  // 路由变化时在移动端关闭侧边栏
   useEffect(() => {
     if (isMobile) {
       setSidebarCollapsed(true);
@@ -72,7 +72,7 @@ const Layout = ({
       <div className="flex flex-1 overflow-hidden">
         {!hideSidebar && (
           <>
-            {/* Mobile sidebar overlay */}
+            {/* 移动端侧边栏遮罩层 */}
             <div 
               className={cn(
                 "fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-all duration-300 lg:hidden",
@@ -80,13 +80,13 @@ const Layout = ({
               )}
               onClick={() => setSidebarCollapsed(true)}
             />
-            {/* Sidebar */}
+            {/* 侧边栏 */}
             <Sidebar collapsed={sidebarCollapsed} className={cn(
               "absolute z-50 h-full lg:relative transition-all duration-300 ease-in-out",
               sidebarCollapsed && isMobile ? "-translate-x-full" : "translate-x-0",
               "shadow-lg lg:shadow-none"
             )} />
-            {/* Mobile toggle buttons */}
+            {/* 移动端切换按钮 */}
             <Button 
               variant="outline" 
               size="icon" 
@@ -99,7 +99,7 @@ const Layout = ({
               <Menu className="h-6 w-6" />
               <span className="sr-only">打开菜单</span>
             </Button>
-            {/* Close button - visible when sidebar is open on mobile */}
+            {/* 关闭按钮 - 移动端侧边栏打开时可见 */}
             <Button
               variant="outline"
               size="icon"
@@ -127,7 +127,7 @@ const Layout = ({
         </main>
       </div>
       
-      {/* Mobile zoom controls - improved positioning */}
+      {/* 移动端缩放控制 - 优化定位 */}
       {isMobile && (
         <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
           <Button 

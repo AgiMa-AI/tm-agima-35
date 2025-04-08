@@ -8,7 +8,7 @@ import { useChartData } from '@/hooks/useChartData';
 const Charts = () => {
   const { hostMapData, statsData, gpuComparisonData, loading, lastUpdated, dataMode } = useChartData();
 
-  // Force refresh data
+  // 强制刷新数据
   const handleRefresh = () => {
     window.location.reload();
   };

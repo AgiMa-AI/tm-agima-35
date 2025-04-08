@@ -9,7 +9,7 @@ import UserSearch from './components/users/UserSearch';
 import { User } from '@/types/auth';
 
 const AdminUsers = () => {
-  // Mock users data
+  // 模拟用户数据
   const [users] = useState<User[]>([
     { id: '1', username: "张明", email: "zhangming@example.com", status: "active", role: "renter", joinDate: "2025-01-15", computeUnits: 1280 },
     { id: '2', username: "李小华", email: "lixiaohua@example.com", status: "active", role: "provider", joinDate: "2025-01-20", computeUnits: 2895 },

@@ -9,7 +9,7 @@ const TooltipProvider = TooltipPrimitive.Provider
 
 const Tooltip = ({ delayDuration = 300, ...props }) => {
   const isMobile = useIsMobile();
-  // Extend delay on mobile for better touch experience
+  // 在移动端上延长延迟时间以获得更好的触摸体验
   const mobileDelayDuration = isMobile ? 800 : delayDuration;
   
   return <TooltipPrimitive.Root delayDuration={mobileDelayDuration} {...props} />

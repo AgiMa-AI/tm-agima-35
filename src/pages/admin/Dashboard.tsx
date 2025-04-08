@@ -7,7 +7,7 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, R
 import { Activity, Users, Server, CreditCard, Clock, TrendingUp, AlarmClock } from 'lucide-react';
 
 const AdminDashboard = () => {
-  // Mock data for charts
+  // 模拟图表数据
   const systemData = [
     { name: '1月', active: 120, completed: 80, canceled: 10 },
     { name: '2月', active: 180, completed: 110, canceled: 15 },
