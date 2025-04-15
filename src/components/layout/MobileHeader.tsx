@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth'; // Changed from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/useAuth';
 
 const MobileHeader = () => {
   const navigate = useNavigate();

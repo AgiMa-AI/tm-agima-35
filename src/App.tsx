@@ -10,7 +10,7 @@ import Charts from './pages/Charts';
 import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import AdminUsers from './pages/admin/Users';
-import { AuthProvider } from './providers/AuthProvider'; // Changed from './context/AuthContext'
+import { AuthProvider } from '@/providers/AuthProvider';
 import Login from './pages/Login';
 import Storage from './pages/Storage';
 
