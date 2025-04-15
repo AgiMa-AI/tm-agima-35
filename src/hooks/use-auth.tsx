@@ -1,4 +1,4 @@
 
-import { useAuth as useAuthContext, AuthProvider, withAuth } from '@/context/AuthContext';
+import { useAuth as useAuthFromProvider } from '@/providers/AuthProvider';
 
-export { useAuthContext as useAuth, AuthProvider, withAuth };
+export { useAuthFromProvider as useAuth };

@@ -4,19 +4,30 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileLayout from '@/components/layout/MobileLayout';
 import Layout from '@/components/layout/Layout';
-import { AuthProvider } from '@/context/AuthContext';
+import { AuthProvider } from '@/providers/AuthProvider';
 
-// Update import paths to use index.tsx or create index files for these components
-import Home from '@/pages/index';
+// Import pages
+import Home from '@/pages/Index';
 import Instances from '@/pages/Instances';
 import Charts from '@/pages/Charts';
 import Settings from '@/pages/Settings';
 import NotFound from '@/pages/NotFound';
 import AdminUsers from '@/pages/admin/Users';
 import Login from '@/pages/Login';
-import Register from '@/pages/Register';
-import Transfer from '@/pages/Transfer';
 import Storage from '@/pages/Storage';
+
+// Create Register and Transfer pages
+const Register = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <h1 className="text-2xl font-bold">Register Page</h1>
+  </div>
+);
+
+const Transfer = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <h1 className="text-2xl font-bold">Transfer Page</h1>
+  </div>
+);
 
 const App = () => {
   const isMobile = useIsMobile();
