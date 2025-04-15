@@ -10,10 +10,8 @@ import Charts from './pages/Charts';
 import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import AdminUsers from './pages/admin/Users';
-import { AuthProvider } from './providers/AuthProvider'; // Changed from './context/AuthContext' to './providers/AuthProvider'
+import { AuthProvider } from './providers/AuthProvider'; // Changed from './context/AuthContext'
 import Login from './pages/Login';
-import Register from './pages/Login'; // Using Login page as Register page isn't available
-import Transfer from './pages/Storage'; // Using Storage page as Transfer page isn't available
 import Storage from './pages/Storage';
 
 const App = () => {
