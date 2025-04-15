@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect, ReactNode, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import { User } from '@/types/auth';
@@ -7,6 +7,14 @@ import AuthContext from '@/context/AuthContext';
 import { mockUsers } from '@/data/mockUsers';
 import { getUserInviteTree, createUser } from '@/utils/authUtils';
 import { findUserByUsername, transferFunds } from '@/services/transferService';
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

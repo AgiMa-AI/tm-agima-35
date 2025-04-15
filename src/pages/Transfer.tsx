@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { TransferForm } from '@/components/transfer/TransferForm';
+import TransferForm from '@/components/transfer/TransferForm';
 
 const Transfer = () => {
   return (

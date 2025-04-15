@@ -6,28 +6,17 @@ import MobileLayout from '@/components/layout/MobileLayout';
 import Layout from '@/components/layout/Layout';
 import { AuthProvider } from '@/providers/AuthProvider';
 
-// Import pages
-import Home from '@/pages/Index';
+// Import pages with correct paths
+import Home from '@/pages/index'; // Fixed casing issue
 import Instances from '@/pages/Instances';
 import Charts from '@/pages/Charts';
 import Settings from '@/pages/Settings';
 import NotFound from '@/pages/NotFound';
 import AdminUsers from '@/pages/admin/Users';
 import Login from '@/pages/Login';
+import Register from './pages/Register'; // Fixed relative import
+import Transfer from './pages/Transfer'; // Fixed relative import
 import Storage from '@/pages/Storage';
-
-// Create Register and Transfer pages
-const Register = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-2xl font-bold">Register Page</h1>
-  </div>
-);
-
-const Transfer = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-2xl font-bold">Transfer Page</h1>
-  </div>
-);
 
 const App = () => {
   const isMobile = useIsMobile();
