@@ -10,7 +10,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/context/AuthContext'; // Changed from '@/hooks/use-auth'
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface MobileSidebarProps {
