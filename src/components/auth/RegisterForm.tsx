@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -77,11 +78,11 @@ const RegisterForm = ({ isLoading, onSubmit }: RegisterFormProps) => {
       </div>
       
       <div className="space-y-1.5 sm:space-y-2">
-        <Label htmlFor="register-password" className="text-sm font-medium">密码</Label>
+        <Label htmlFor="register-password" className="text-sm font-medium">秘钥</Label>
         <Input 
           id="register-password" 
           type="password" 
-          placeholder="创建您的密码" 
+          placeholder="创建您的秘钥" 
           className="h-10 sm:h-12"
           value={formData.password}
           onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -90,11 +91,11 @@ const RegisterForm = ({ isLoading, onSubmit }: RegisterFormProps) => {
       </div>
       
       <div className="space-y-1.5 sm:space-y-2">
-        <Label htmlFor="register-confirm-password" className="text-sm font-medium">确认密码</Label>
+        <Label htmlFor="register-confirm-password" className="text-sm font-medium">确认秘钥</Label>
         <Input 
           id="register-confirm-password" 
           type="password" 
-          placeholder="再次输入您的密码" 
+          placeholder="再次输入您的秘钥" 
           className="h-10 sm:h-12"
           value={formData.confirmPassword}
           onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
