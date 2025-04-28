@@ -1,15 +1,17 @@
 
-# GPU 计算资源租赁平台
+# GPU计算资源租赁平台
 
 ## 项目技术栈
 
-**前端**: Flutter + Dart
-**后端**: Go + Fiber 框架
-**数据库**: PostgreSQL + Redis
+**前端**: React + TypeScript + Vite
+**UI框架**: Tailwind CSS + Shadcn UI
+**状态管理**: React Context + TanStack Query
+**路由**: React Router
+**图表**: Recharts
 
 ## 项目说明
 
-GPU 计算资源租赁平台是一个连接GPU资源供应商和需求方的双边市场平台。该平台允许GPU拥有者出租其计算资源，而需要高性能计算能力的用户可以租用这些资源。
+GPU计算资源租赁平台是一个连接GPU资源供应商和需求方的双边市场平台。该平台允许GPU拥有者出租其计算资源，而需要高性能计算能力的用户可以租用这些资源。
 
 ### 核心功能
 
@@ -34,17 +36,17 @@ GPU 计算资源租赁平台是一个连接GPU资源供应商和需求方的双�
 ### 开发环境配置
 
 ```sh
-# 前端 (Flutter)
-flutter pub get
-
-# 后端 (Go)
-go mod download
+# 安装依赖
+npm install
 
 # 启动开发服务器
-make dev
+npm run dev
+
+# 构建生产版本
+npm run build
 ```
 
-## API 文档
+## API文档
 
 API文档将在开发过程中更新并提供Swagger UI界面访问。
 
@@ -55,24 +57,27 @@ API文档将在开发过程中更新并提供Swagger UI界面访问。
 ## 项目架构
 
 ```
-├── frontend/           # Flutter前端代码
-│   ├── lib/            # Dart源代码
-│   ├── assets/         # 静态资源
-│   └── test/           # 测试代码
+├── src/
+│   ├── components/    # UI组件
+│   │   ├── layout/    # 布局相关组件
+│   │   ├── ui/        # 基础UI组件
+│   │   └── ...        # 其他业务组件
+│   │
+│   ├── pages/         # 页面组件
+│   │   └── admin/     # 管理后台页面
+│   │
+│   ├── hooks/         # 自定义React Hooks
+│   ├── context/       # 上下文管理
+│   ├── providers/     # 应用服务提供者
+│   ├── services/      # API服务
+│   ├── utils/         # 工具函数
+│   ├── types/         # 类型定义
+│   └── styles/        # 样式文件
 │
-├── backend/            # Go后端代码
-│   ├── api/            # API路由和处理器
-│   ├── models/         # 数据模型
-│   ├── services/       # 业务逻辑
-│   └── utils/          # 工具函数
-│
-├── database/           # 数据库相关
-│   ├── migrations/     # 数据库迁移脚本
-│   └── seeds/          # 初始数据
-│
-└── docs/               # 项目文档
+├── public/            # 静态资源
+└── ...                # 配置文件等
 ```
 
 ## 版权信息
 
-© 2023 GPU计算资源租赁平台
+© 2024 GPU计算资源租赁平台
