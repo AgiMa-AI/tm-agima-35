@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import MetricCard from '@/components/ui/MetricCard';
 import InstanceCard from '@/components/dashboard/InstanceCard';
@@ -34,6 +35,15 @@ const Index = () => {
     loading: chartsLoading,
     lastUpdated
   } = useChartData();
+
+  // Generate random storage capacity between 500,000 and 2,000,000 GB
+  const [randomStorage, setRandomStorage] = useState(0);
+  
+  useEffect(() => {
+    // Generate a random number between 500,000 and 2,000,000
+    const randomGigabytes = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
+    setRandomStorage(randomGigabytes);
+  }, []);
   
   const handleSearch = (query: string) => {
     updateFilters({ search: query || undefined });
@@ -90,7 +100,7 @@ const Index = () => {
           />
           <MetricCard
             title="总存储容量"
-            value={`${instances.reduce((sum, i) => sum + i.storageSize, 0).toLocaleString()} GB`}
+            value={`${randomStorage.toLocaleString()} GB`}
             description="所有实例总计"
             icon={<Database className="h-4 w-4" />}
           />
