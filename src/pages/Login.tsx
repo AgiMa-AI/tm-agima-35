@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
@@ -16,7 +15,6 @@ const Login = () => {
   const [animationCompleted, setAnimationCompleted] = useState(false);
 
   useEffect(() => {
-    // 模拟完成初始加载动画
     const timer = setTimeout(() => {
       setAnimationCompleted(true);
     }, 1000);
@@ -55,8 +53,8 @@ const Login = () => {
     
     if (password !== confirmPassword) {
       toast({
-        title: "密码不匹配",
-        description: "请确保两次输入的密码相同",
+        title: "秘钥不匹配",
+        description: "请确保两次输入的秘钥相同",
         variant: "destructive",
       });
       return;
@@ -74,7 +72,6 @@ const Login = () => {
       );
       
       if (success) {
-        // 导航到主页
         navigate('/');
       }
     } finally {
@@ -91,7 +88,7 @@ const Login = () => {
   };
 
   if (!animationCompleted) {
-    return <div className="min-h-screen bg-gradient-to-b from-secondary/50 to-background" />; // 简单的加载页面
+    return <div className="min-h-screen bg-gradient-to-b from-secondary/50 to-background" />;
   }
 
   return (

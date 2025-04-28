@@ -46,12 +46,12 @@ const LoginForm = ({ isLoading, onSubmit }: LoginFormProps) => {
       
       <div className="space-y-1.5 sm:space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="password" className="text-sm font-medium">密码</Label>
+          <Label htmlFor="password" className="text-sm font-medium">秘钥</Label>
           <Link 
             to="/forgot-password" 
             className="text-xs sm:text-sm text-primary hover:text-primary/80 transition-colors"
           >
-            忘记密码?
+            忘记秘钥?
           </Link>
         </div>
         <div className="relative">
@@ -59,7 +59,7 @@ const LoginForm = ({ isLoading, onSubmit }: LoginFormProps) => {
           <Input 
             id="password" 
             type={showPassword ? "text" : "password"} 
-            placeholder="输入您的密码"
+            placeholder="输入您的秘钥"
             className="pl-10 pr-10"
             value={formData.password}
             onChange={(e) => setFormData({...formData, password: e.target.value})}
