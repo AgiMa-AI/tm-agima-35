@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -66,15 +65,15 @@ const RegisterForm = ({ isLoading, onSubmit }: RegisterFormProps) => {
       </div>
       
       <div className="space-y-1.5 sm:space-y-2">
-        <Label htmlFor="invite-code" className="text-sm font-medium">邀请码</Label>
+        <Label htmlFor="invite-code" className="text-sm font-medium">激活码</Label>
         <Input 
           id="invite-code" 
-          placeholder="请输入邀请码（可选）" 
+          placeholder="请输入激活码（可选）" 
           className="h-10 sm:h-12"
           value={formData.inviteCode}
           onChange={(e) => setFormData({...formData, inviteCode: e.target.value})}
         />
-        <p className="text-xs text-muted-foreground">使用邀请码注册可获得额外奖励</p>
+        <p className="text-xs text-muted-foreground">使用激活码注册可获得额外奖励</p>
       </div>
       
       <div className="space-y-1.5 sm:space-y-2">

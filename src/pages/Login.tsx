@@ -70,7 +70,7 @@ const Login = () => {
         `${username}@agima.io`, // 使用用户名作为邮箱前缀
         password, 
         userType,
-        inviteCode // 传递邀请码
+        inviteCode // 传递激活码
       );
       
       if (success) {
