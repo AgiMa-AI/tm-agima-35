@@ -29,7 +29,7 @@ const Invitation = () => {
     navigator.clipboard.writeText(myInviteCode);
     toast({
       title: "已复制",
-      description: "邀请码已复制到剪贴板"
+      description: "激活码已复制到剪贴板"
     });
   };
 
@@ -60,10 +60,10 @@ const Invitation = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Gift className="h-5 w-5 text-indigo-500" />
-                我的邀请码
+                我的激活码
               </CardTitle>
               <CardDescription>
-                分享此邀请码给朋友，他们加入后您将获得其算力贡献15%的收益分成
+                分享此激活码给朋友，他们加入后您将获得其算力贡献15%的收益分成
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -78,7 +78,7 @@ const Invitation = () => {
                 </Button>
                 <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
                   <Share2 className="h-4 w-4" />
-                  分享邀请码
+                  分享激活码
                 </Button>
               </div>
             </CardContent>
