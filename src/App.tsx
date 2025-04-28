@@ -16,6 +16,7 @@ import Charts from "./pages/Charts";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import { AuthProvider } from "./providers/AuthProvider";
+import AGIModels from "./pages/AGIModels";
 
 // Create a new QueryClient instance with extended caching for our chart data
 const queryClient = new QueryClient({
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/mobile-app" element={<MobileApp />} />
             <Route path="/charts" element={<Charts />} />
+            <Route path="/agi-models" element={<AGIModels />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </TooltipProvider>
