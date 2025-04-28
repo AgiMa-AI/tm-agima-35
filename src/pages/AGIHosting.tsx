@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { AlertCircle, BarChart3, Cpu, CreditCard, DollarSign, Download, HelpCircle, Plus, Server, Settings, CheckCircle2, TrendingUp, Shield, Globe, Lock } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MetricCard from '@/components/ui/MetricCard';
+
 const AGIHosting = () => {
   const {
     user
@@ -25,38 +26,39 @@ const AGIHosting = () => {
     pending: 125.60
   };
   const hardwareOptions = [{
-    id: 'gpu-basic',
-    name: 'GPU 基础套餐',
-    specs: '4x NVIDIA RTX 4080',
+    id: 'model-basic',
+    name: 'AGI 基础模型',
+    specs: '4GB 参数规模',
     price: 1200,
     earnings: '每月 ¥550-750'
   }, {
-    id: 'gpu-pro',
-    name: 'GPU 专业套餐',
-    specs: '2x NVIDIA RTX 4090',
+    id: 'model-pro',
+    name: 'AGI 专业模型',
+    specs: '16GB 参数规模',
     price: 2400,
     earnings: '每月 ¥1100-1500'
   }, {
-    id: 'gpu-enterprise',
-    name: 'GPU 企业套餐',
-    specs: '4x NVIDIA RTX 4090',
+    id: 'model-enterprise',
+    name: 'AGI 企业模型',
+    specs: '64GB 参数规模',
     price: 4800,
     earnings: '每月 ¥2200-3000'
   }];
   const hostingHistory = [{
     id: 1,
-    hardware: 'GPU 专业套餐',
+    hardware: 'AGI 专业模型',
     startDate: '2023-11-15',
     status: 'active',
     earnings: 1285.50
   }, {
     id: 2,
-    hardware: 'GPU 基础套餐',
+    hardware: 'AGI 基础模型',
     startDate: '2023-10-01',
     endDate: '2023-11-01',
     status: 'completed',
     earnings: 650.75
   }];
+
   const benefits = [{
     icon: <TrendingUp className="h-10 w-10 text-primary" />,
     title: "最大化闲置算力价值",
@@ -74,6 +76,7 @@ const AGIHosting = () => {
     title: "灵活的控制与透明度",
     description: "随时查看您的算力使用情况、收益数据和性能指标，完全掌控您的托管体验。"
   }];
+
   const pricingComparison = [{
     provider: "传统云服务",
     pricePerDay: "¥2400",
@@ -85,12 +88,14 @@ const AGIHosting = () => {
     utilization: "95%",
     monthlyRevenue: "¥27,930"
   }];
+
   const switchToHardwareTab = () => {
     const hardwareTab = document.querySelector('button[value="hardware"]') as HTMLButtonElement;
     if (hardwareTab) {
       hardwareTab.click();
     }
   };
+
   return <Layout>
       <div className="space-y-6">
         <div className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg p-4 sm:p-8 shadow-lg overflow-hidden">
@@ -210,7 +215,7 @@ const AGIHosting = () => {
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="grid w-full grid-cols-3 h-auto">
             <TabsTrigger value="overview" className="py-3">概览</TabsTrigger>
-            <TabsTrigger value="hardware" className="py-3">选择硬件</TabsTrigger>
+            <TabsTrigger value="hardware" className="py-3">选择模型</TabsTrigger>
             <TabsTrigger value="history" className="py-3">托管记录</TabsTrigger>
           </TabsList>
           
@@ -286,8 +291,8 @@ const AGIHosting = () => {
           <TabsContent value="hardware" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>选择托管硬件</CardTitle>
-                <CardDescription>选择您想要托管的算力硬件套餐</CardDescription>
+                <CardTitle>选择托管模型</CardTitle>
+                <CardDescription>选择您想要托管的AGI模型</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -350,7 +355,7 @@ const AGIHosting = () => {
                         <div>
                           <p className="text-sm font-medium text-yellow-800">请注意</p>
                           <p className="text-xs text-yellow-700 mt-1">
-                            托管期间我们会对您的硬件进行远程管理，确保安全稳定运行。收益将根据实际使用率按日结算，每月15日发放上月收益。
+                            托管期间我们会对您的AGI模型进行远程管理，确保安全稳定运行。收益将根据实际使用率按日结算，每月15日发放上月收益。
                           </p>
                         </div>
                       </div>
@@ -414,7 +419,6 @@ const AGIHosting = () => {
                   </div>
                 </div>
 
-                {/* 移动端版本的托管记录 - 在小屏幕上显示卡片式布局 */}
                 <div className="sm:hidden mt-4 space-y-4">
                   {hostingHistory.map(hosting => <div key={hosting.id} className="border rounded-lg p-4 press-effect">
                       <div className="flex justify-between items-start mb-2">
@@ -449,4 +453,5 @@ const AGIHosting = () => {
       </div>
     </Layout>;
 };
+
 export default AGIHosting;
