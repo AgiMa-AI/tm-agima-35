@@ -14,26 +14,19 @@ const Login = () => {
   const navigate = useNavigate();
   const { login, register, isLoading: authLoading, user, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [animationCompleted, setAnimationCompleted] = useState(false);
-  const [showLanguageDialog, setShowLanguageDialog] = useState(false);
-  const [isChineseLanguage, setIsChineseLanguage] = useState(true);
+  const [showLanguageDialog, setShowLanguageDialog] = useState(true); // Show dialog by default
+  const [isChineseLanguage, setIsChineseLanguage] = useState(false); // Default to English
 
   useEffect(() => {
     // Check if user has already made a language choice
     const languagePref = localStorage.getItem('languagePreference');
     
-    if (languagePref === null) {
-      // First visit, show language dialog after animation
-      const timer = setTimeout(() => {
-        setAnimationCompleted(true);
-        setShowLanguageDialog(true);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else {
+    if (languagePref !== null) {
       // User has already chosen language preference
       setIsChineseLanguage(languagePref === 'zh');
-      setAnimationCompleted(true);
+      setShowLanguageDialog(false); // Don't show dialog if preference exists
     }
+    // If no preference, the dialog will be shown (default state is true)
   }, []);
 
   const handleSelectChinese = () => {
@@ -94,10 +87,10 @@ const Login = () => {
     try {
       const success = await register(
         username, 
-        `${username}@agima.io`, // 使用用户名作为邮箱前缀
+        `${username}@agima.io`,
         password, 
         userType,
-        inviteCode // 传递激活码
+        inviteCode
       );
       
       if (success) {
@@ -115,10 +108,6 @@ const Login = () => {
       description: isChineseLanguage ? "请使用新的账号登录" : "Please login with a new account",
     });
   };
-
-  if (!animationCompleted) {
-    return <div className="min-h-screen bg-gradient-to-b from-secondary/50 to-background" />;
-  }
 
   // Determine tab labels based on language choice
   const loginLabel = isChineseLanguage ? "登录" : "Login";
@@ -157,6 +146,7 @@ const Login = () => {
             <RegisterForm 
               isLoading={isLoading || authLoading}
               onSubmit={handleRegisterSubmit}
+              isChineseLanguage={isChineseLanguage}
             />
           </TabsContent>
         </Tabs>
