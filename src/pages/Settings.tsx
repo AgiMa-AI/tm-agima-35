@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,11 +10,13 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Check, CreditCard, Key, Lock, Shield, User, Wallet } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Settings = () => {
   const [apiKey, setApiKey] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
+  const [selectedLanguage, setSelectedLanguage] = useState("zh-CN");
   
   const handleSaveAPIKey = () => {
     if (apiKey.trim() === "") {
@@ -30,6 +31,14 @@ const Settings = () => {
     toast({
       title: "成功",
       description: "API 密钥已保存",
+      variant: "default",
+    });
+  };
+  
+  const handleSavePreferences = () => {
+    toast({
+      title: "成功",
+      description: "偏好设置已保存",
       variant: "default",
     });
   };
@@ -355,16 +364,15 @@ const Settings = () => {
                 
                 <div className="space-y-2 pt-2">
                   <Label htmlFor="language">语言</Label>
-                  <select 
-                    id="language" 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    defaultValue="zh-CN"
-                  >
-                    <option value="zh-CN">简体中文</option>
-                    <option value="en-US">English</option>
-                    <option value="ja-JP">日本語</option>
-                    <option value="ko-KR">한국어</option>
-                  </select>
+                  <Select defaultValue={selectedLanguage} onValueChange={setSelectedLanguage}>
+                    <SelectTrigger id="language" className="w-full">
+                      <SelectValue placeholder="选择语言" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="zh-CN">简体中文</SelectItem>
+                      <SelectItem value="en-US">English</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="space-y-2">
@@ -377,11 +385,10 @@ const Settings = () => {
                     <option value="Asia/Shanghai">中国标准时间 (GMT+8)</option>
                     <option value="America/New_York">东部标准时间 (GMT-5)</option>
                     <option value="Europe/London">格林威治标准时间 (GMT)</option>
-                    <option value="Asia/Tokyo">日本标准时间 (GMT+9)</option>
                   </select>
                 </div>
                 
-                <Button>保存偏好设置</Button>
+                <Button onClick={handleSavePreferences}>保存偏好设置</Button>
               </CardContent>
             </Card>
           </TabsContent>
