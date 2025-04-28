@@ -54,10 +54,10 @@ const RegisterForm = ({ isLoading, onSubmit }: RegisterFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
       <div className="space-y-1.5 sm:space-y-2">
-        <Label htmlFor="register-username" className="text-sm font-medium">用户名</Label>
+        <Label htmlFor="register-username" className="text-sm font-medium">AGI账户</Label>
         <Input 
           id="register-username" 
-          placeholder="创建您的用户名" 
+          placeholder="创建您的AGI账户" 
           className="h-10 sm:h-12"
           value={formData.username}
           onChange={(e) => setFormData({...formData, username: e.target.value})}
