@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,82 +9,89 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Check, CreditCard, Key, Lock, Shield, User, Wallet } from 'lucide-react';
+import { AlertCircle, Check, CreditCard, Key, Lock, Moon, Shield, Sun, User, Wallet } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTheme } from '@/providers/ThemeProvider';
+import { useLanguage } from '@/providers/LanguageProvider';
 
 const Settings = () => {
   const [apiKey, setApiKey] = useState("");
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
-  const [selectedLanguage, setSelectedLanguage] = useState("zh-CN");
   
   const handleSaveAPIKey = () => {
     if (apiKey.trim() === "") {
       toast({
-        title: "错误",
-        description: "请输入有效的 API 密钥",
+        title: t("error"),
+        description: t("api_key_error"),
         variant: "destructive",
       });
       return;
     }
     
     toast({
-      title: "成功",
-      description: "API 密钥已保存",
+      title: t("success"),
+      description: t("api_key_saved"),
       variant: "default",
     });
   };
   
   const handleSavePreferences = () => {
     toast({
-      title: "成功",
-      description: "偏好设置已保存",
+      title: t("success"),
+      description: t("preferences_saved"),
       variant: "default",
     });
   };
+
+  useEffect(() => {
+    // Apply the theme whenever it changes
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
   
   return (
     <Layout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">设置</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t("settings")}</h1>
           <p className="text-muted-foreground mt-1">
-            管理您的账户设置和偏好
+            {t("manage_account_preferences")}
           </p>
         </div>
         
         <Tabs defaultValue="account">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="account">账户</TabsTrigger>
-            <TabsTrigger value="billing">支付</TabsTrigger>
-            <TabsTrigger value="api">API 访问</TabsTrigger>
-            <TabsTrigger value="preferences">系统偏好</TabsTrigger>
+            <TabsTrigger value="account">{t("account")}</TabsTrigger>
+            <TabsTrigger value="billing">{t("billing")}</TabsTrigger>
+            <TabsTrigger value="api">{t("api_access")}</TabsTrigger>
+            <TabsTrigger value="preferences">{t("system_preferences")}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="account" className="space-y-4 mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>用户资料（User Profile）</CardTitle>
-                <CardDescription>更新您的账户信息</CardDescription>
+                <CardTitle>{t("user_profile")}</CardTitle>
+                <CardDescription>{t("update_account_info")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">姓名</Label>
+                    <Label htmlFor="name">{t("name")}</Label>
                     <Input id="name" defaultValue="张三" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">电子邮件</Label>
+                    <Label htmlFor="email">{t("email")}</Label>
                     <Input id="email" type="email" defaultValue="zhang@example.com" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">电话号码</Label>
+                    <Label htmlFor="phone">{t("phone")}</Label>
                     <Input id="phone" defaultValue="13800138000" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="company" className="flex items-center">
-                      公司
+                      {t("company")}
                       <Lock className="ml-1 h-3 w-3 text-muted-foreground" />
                     </Label>
                     <Input 
@@ -94,31 +102,31 @@ const Settings = () => {
                     />
                   </div>
                 </div>
-                <Button>保存更改</Button>
+                <Button>{t("save_changes")}</Button>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <CardTitle>安全设置</CardTitle>
-                <CardDescription>管理您的密码和安全选项</CardDescription>
+                <CardTitle>{t("security_settings")}</CardTitle>
+                <CardDescription>{t("manage_password_security")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="current-password">当前密码</Label>
+                  <Label htmlFor="current-password">{t("current_password")}</Label>
                   <Input id="current-password" type="password" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="new-password">新密码</Label>
+                    <Label htmlFor="new-password">{t("new_password")}</Label>
                     <Input id="new-password" type="password" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password">确认新密码</Label>
+                    <Label htmlFor="confirm-password">{t("confirm_password")}</Label>
                     <Input id="confirm-password" type="password" />
                   </div>
                 </div>
-                <Button>更新密码</Button>
+                <Button>{t("update_password")}</Button>
                 
                 <Separator className="my-4" />
                 
@@ -127,14 +135,14 @@ const Settings = () => {
                     <div className="space-y-0.5">
                       <div className="flex items-center">
                         <Shield className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span className="text-sm font-medium">双因素认证</span>
+                        <span className="text-sm font-medium">{t("two_factor")}</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        启用两步验证以增强账户安全性
+                        {t("enable_two_factor")}
                       </p>
                     </div>
                     <Button variant="outline" size="sm">
-                      启用
+                      {t("enable")}
                     </Button>
                   </div>
                 </div>
@@ -145,8 +153,8 @@ const Settings = () => {
           <TabsContent value="billing" className="space-y-4 mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>支付方式</CardTitle>
-                <CardDescription>管理您的支付方式和账单</CardDescription>
+                <CardTitle>{t("payment_methods")}</CardTitle>
+                <CardDescription>{t("manage_payment_billing")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="rounded-lg border p-3">
@@ -164,12 +172,12 @@ const Settings = () => {
                   </div>
                 </div>
                 
-                <Button variant="outline">添加支付方式</Button>
+                <Button variant="outline">{t("add_payment")}</Button>
                 
                 <Separator className="my-4" />
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">账单历史</h3>
+                  <h3 className="text-lg font-medium mb-2">{t("billing_history")}</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between py-2 border-b">
                       <div>
@@ -216,8 +224,8 @@ const Settings = () => {
             
             <Card>
               <CardHeader>
-                <CardTitle>账户配额</CardTitle>
-                <CardDescription>管理您的计算资源限制</CardDescription>
+                <CardTitle>{t("account_quotas")}</CardTitle>
+                <CardDescription>{t("manage_resource_limits")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-4">
@@ -252,7 +260,7 @@ const Settings = () => {
                   </div>
                 </div>
                 
-                <Button variant="outline">申请提高限额</Button>
+                <Button variant="outline">{t("request_increase")}</Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -260,35 +268,35 @@ const Settings = () => {
           <TabsContent value="api" className="space-y-4 mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>API 访问</CardTitle>
-                <CardDescription>管理您的 API 密钥和权限</CardDescription>
+                <CardTitle>{t("api_access")}</CardTitle>
+                <CardDescription>{t("manage_account_preferences")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="api-key">API 密钥</Label>
+                  <Label htmlFor="api-key">{t("api_key")}</Label>
                   <div className="flex gap-2">
                     <Input 
                       id="api-key" 
                       value={apiKey} 
                       onChange={(e) => setApiKey(e.target.value)}
-                      placeholder="输入您的 API 密钥" 
+                      placeholder={language === 'zh-CN' ? "输入您的 API 密钥" : "Enter your API key"} 
                     />
-                    <Button onClick={handleSaveAPIKey}>保存</Button>
+                    <Button onClick={handleSaveAPIKey}>{t("save")}</Button>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    此密钥用于访问 API 和进行程序化操作
+                    {language === 'zh-CN' ? "此密钥用于访问 API 和进行程序化操作" : "This key is used to access the API and perform programmatic operations"}
                   </p>
                 </div>
                 
                 <Separator className="my-4" />
                 
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium">访问权限</h3>
+                  <h3 className="text-lg font-medium">{t("access_permissions")}</h3>
                   
                   <div className="flex items-center justify-between py-2 border-b">
                     <div className="flex items-center">
                       <Key className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <span>实例管理</span>
+                      <span>{t("instance_management")}</span>
                     </div>
                     <Switch defaultChecked id="instance-management" />
                   </div>
@@ -296,7 +304,7 @@ const Settings = () => {
                   <div className="flex items-center justify-between py-2 border-b">
                     <div className="flex items-center">
                       <User className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <span>用户数据访问</span>
+                      <span>{t("user_data_access")}</span>
                     </div>
                     <Switch id="user-data-access" />
                   </div>
@@ -304,21 +312,21 @@ const Settings = () => {
                   <div className="flex items-center justify-between py-2 border-b">
                     <div className="flex items-center">
                       <Wallet className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <span>支付操作</span>
+                      <span>{t("payment_operations")}</span>
                     </div>
                     <Switch id="payment-operations" />
                   </div>
                 </div>
                 
-                <div className="rounded-md bg-yellow-50 p-3 border border-yellow-200">
+                <div className="rounded-md bg-yellow-50 p-3 border border-yellow-200 dark:bg-yellow-950/30 dark:border-yellow-900">
                   <div className="flex items-start">
-                    <AlertCircle className="h-4 w-4 text-yellow-800 mt-0.5 mr-2" />
+                    <AlertCircle className="h-4 w-4 text-yellow-800 dark:text-yellow-500 mt-0.5 mr-2" />
                     <div>
-                      <p className="text-sm font-medium text-yellow-800">
-                        安全提示
+                      <p className="text-sm font-medium text-yellow-800 dark:text-yellow-500">
+                        {t("security_tip")}
                       </p>
-                      <p className="text-xs text-yellow-700 mt-1">
-                        请勿共享您的 API 密钥。如果您认为密钥已泄露，请立即重新生成密钥。
+                      <p className="text-xs text-yellow-700 dark:text-yellow-400 mt-1">
+                        {t("api_security_warning")}
                       </p>
                     </div>
                   </div>
@@ -330,29 +338,33 @@ const Settings = () => {
           <TabsContent value="preferences" className="space-y-4 mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>系统偏好</CardTitle>
-                <CardDescription>自定义您的使用体验</CardDescription>
+                <CardTitle>{t("system_preferences")}</CardTitle>
+                <CardDescription>{language === 'zh-CN' ? "自定义您的使用体验" : "Customize your experience"}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between py-2 border-b">
                   <div>
-                    <p className="font-medium">深色模式</p>
+                    <p className="font-medium">{t("dark_mode")}</p>
                     <p className="text-sm text-muted-foreground">
-                      启用深色主题
+                      {t("enable_dark_theme")}
                     </p>
                   </div>
-                  <Switch 
-                    checked={isDarkMode} 
-                    onCheckedChange={setIsDarkMode} 
-                    id="dark-mode"
-                  />
+                  <div className="flex items-center space-x-2">
+                    <Sun className="h-4 w-4 text-muted-foreground" />
+                    <Switch 
+                      checked={theme === 'dark'} 
+                      onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')} 
+                      id="dark-mode"
+                    />
+                    <Moon className="h-4 w-4 text-muted-foreground" />
+                  </div>
                 </div>
                 
                 <div className="flex items-center justify-between py-2 border-b">
                   <div>
-                    <p className="font-medium">通知</p>
+                    <p className="font-medium">{t("notifications")}</p>
                     <p className="text-sm text-muted-foreground">
-                      接收有关您的实例和账户的通知
+                      {t("receive_notifications")}
                     </p>
                   </div>
                   <Switch 
@@ -363,32 +375,35 @@ const Settings = () => {
                 </div>
                 
                 <div className="space-y-2 pt-2">
-                  <Label htmlFor="language">语言</Label>
-                  <Select defaultValue={selectedLanguage} onValueChange={setSelectedLanguage}>
+                  <Label htmlFor="language">{t("language")}</Label>
+                  <Select 
+                    value={language} 
+                    onValueChange={(value) => setLanguage(value as "zh-CN" | "en-US")}
+                  >
                     <SelectTrigger id="language" className="w-full">
-                      <SelectValue placeholder="选择语言" />
+                      <SelectValue placeholder={t("select_language")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="zh-CN">简体中文</SelectItem>
-                      <SelectItem value="en-US">English</SelectItem>
+                      <SelectItem value="zh-CN">{t("simplified_chinese")}</SelectItem>
+                      <SelectItem value="en-US">{t("english")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="timezone">时区</Label>
+                  <Label htmlFor="timezone">{t("timezone")}</Label>
                   <select 
                     id="timezone" 
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     defaultValue="Asia/Shanghai"
                   >
-                    <option value="Asia/Shanghai">中国标准时间 (GMT+8)</option>
-                    <option value="America/New_York">东部标准时间 (GMT-5)</option>
-                    <option value="Europe/London">格林威治标准时间 (GMT)</option>
+                    <option value="Asia/Shanghai">{t("china_time")}</option>
+                    <option value="America/New_York">{t("eastern_time")}</option>
+                    <option value="Europe/London">{t("gmt")}</option>
                   </select>
                 </div>
                 
-                <Button onClick={handleSavePreferences}>保存偏好设置</Button>
+                <Button onClick={handleSavePreferences}>{t("save_preferences")}</Button>
               </CardContent>
             </Card>
           </TabsContent>

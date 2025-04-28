@@ -16,6 +16,8 @@ import Charts from "./pages/Charts";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import { AuthProvider } from "./providers/AuthProvider";
+import { ThemeProvider } from "./providers/ThemeProvider";
+import { LanguageProvider } from "./providers/LanguageProvider";
 import AGIModels from "./pages/AGIModels";
 import AGIRental from "./pages/AGIRental";
 import AGIHosting from "./pages/AGIHosting";
@@ -42,33 +44,37 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Index />} />
-            <Route path="/instances" element={<Instances />} />
-            <Route path="/details/:id" element={<Details />} />
-            <Route path="/billing" element={<Billing />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/storage" element={<Storage />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/mobile-app" element={<MobileApp />} />
-            <Route path="/charts" element={<Charts />} />
-            <Route path="/agi-models" element={<AGIModels />} />
-            <Route path="/agi-rental/:id" element={<AGIRental />} />
-            <Route path="/agi-hosting" element={<AGIHosting />} />
-            <Route path="/mobile-computing" element={<MobileComputing />} />
-            <Route path="/earnings" element={<Earnings />} />
-            <Route path="/invitation" element={<Invitation />} />
-            <Route path="/service-distribution" element={<ServiceDistribution />} />
-            <Route path="/agi-leasing" element={<AGILeasing />} />
-            <Route path="/agi/:id" element={<AGIDetailView />} />
-            <Route path="/case-studies/:id" element={<CaseStudy />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </TooltipProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Index />} />
+                <Route path="/instances" element={<Instances />} />
+                <Route path="/details/:id" element={<Details />} />
+                <Route path="/billing" element={<Billing />} />
+                <Route path="/history" element={<History />} />
+                <Route path="/storage" element={<Storage />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/mobile-app" element={<MobileApp />} />
+                <Route path="/charts" element={<Charts />} />
+                <Route path="/agi-models" element={<AGIModels />} />
+                <Route path="/agi-rental/:id" element={<AGIRental />} />
+                <Route path="/agi-hosting" element={<AGIHosting />} />
+                <Route path="/mobile-computing" element={<MobileComputing />} />
+                <Route path="/earnings" element={<Earnings />} />
+                <Route path="/invitation" element={<Invitation />} />
+                <Route path="/service-distribution" element={<ServiceDistribution />} />
+                <Route path="/agi-leasing" element={<AGILeasing />} />
+                <Route path="/agi/:id" element={<AGIDetailView />} />
+                <Route path="/case-studies/:id" element={<CaseStudy />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </TooltipProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   </QueryClientProvider>
