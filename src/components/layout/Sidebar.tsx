@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Home, Server, CreditCard, Clock, Settings, Database, 
-  Smartphone, BarChart, Bot, Cpu, Globe, Users, 
+  Smartphone, BarChart, Bot, Cpu, Globe, 
   Puzzle, LineChart, PieChart, Share2, Wifi, Zap,
   Network
 } from 'lucide-react';
