@@ -9,9 +9,10 @@ import { Eye, EyeOff, User, Key, ChevronRight } from 'lucide-react';
 interface LoginFormProps {
   isLoading: boolean;
   onSubmit: (username: string, password: string) => Promise<void>;
+  isChineseLanguage?: boolean;
 }
 
-const LoginForm = ({ isLoading, onSubmit }: LoginFormProps) => {
+const LoginForm = ({ isLoading, onSubmit, isChineseLanguage = true }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -27,15 +28,24 @@ const LoginForm = ({ isLoading, onSubmit }: LoginFormProps) => {
     setShowPassword(!showPassword);
   };
 
+  // Text translations based on language
+  const userLabel = isChineseLanguage ? "AGI账户" : "AGI Account";
+  const userPlaceholder = isChineseLanguage ? "输入您的AGI账户" : "Enter your AGI account";
+  const keyLabel = isChineseLanguage ? "秘钥" : "Secret Key";
+  const keyPlaceholder = isChineseLanguage ? "输入您的秘钥" : "Enter your secret key";
+  const forgotKeyText = isChineseLanguage ? "忘记秘钥?" : "Forgot key?";
+  const loginText = isChineseLanguage ? "登录" : "Login";
+  const loadingText = isChineseLanguage ? "登录中..." : "Logging in...";
+
   return (
     <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
       <div className="space-y-1.5 sm:space-y-2">
-        <Label htmlFor="username" className="text-sm font-medium">AGI账户</Label>
+        <Label htmlFor="username" className="text-sm font-medium">{userLabel}</Label>
         <div className="relative">
           <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
             id="username" 
-            placeholder="输入您的AGI账户" 
+            placeholder={userPlaceholder}
             className="pl-10"
             value={formData.username}
             onChange={(e) => setFormData({...formData, username: e.target.value})}
@@ -46,12 +56,12 @@ const LoginForm = ({ isLoading, onSubmit }: LoginFormProps) => {
       
       <div className="space-y-1.5 sm:space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="password" className="text-sm font-medium">秘钥</Label>
+          <Label htmlFor="password" className="text-sm font-medium">{keyLabel}</Label>
           <Link 
             to="/forgot-password" 
             className="text-xs sm:text-sm text-primary hover:text-primary/80 transition-colors"
           >
-            忘记秘钥?
+            {forgotKeyText}
           </Link>
         </div>
         <div className="relative">
@@ -59,7 +69,7 @@ const LoginForm = ({ isLoading, onSubmit }: LoginFormProps) => {
           <Input 
             id="password" 
             type={showPassword ? "text" : "password"} 
-            placeholder="输入您的秘钥"
+            placeholder={keyPlaceholder}
             className="pl-10 pr-10"
             value={formData.password}
             onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -84,9 +94,9 @@ const LoginForm = ({ isLoading, onSubmit }: LoginFormProps) => {
         className="w-full h-11 sm:h-12 mt-2 rounded-xl shadow-md hover:shadow-lg transition-all font-medium text-base"
         disabled={isLoading}
       >
-        {isLoading ? "登录中..." : (
+        {isLoading ? loadingText : (
           <span className="flex items-center justify-center">
-            登录
+            {loginText}
             <ChevronRight className="ml-2 h-5 w-5" />
           </span>
         )}
