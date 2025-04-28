@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,7 +19,7 @@ import { Label } from '@/components/ui/label';
 interface MobileDevice {
   id: string;
   name: string;
-  model: string;
+  brand: string;
   cpuCores: number;
   gpu: string;
   ram: string;
@@ -31,12 +30,12 @@ interface MobileDevice {
   computePower: number;
 }
 
-// Mock data for user's mobile devices
+// Mock data for user's mobile devices with updated structure
 const mockMobileDevices: MobileDevice[] = [
   {
     id: 'dev-1',
     name: '我的手机',
-    model: '小米13 Pro',
+    brand: '小米',
     cpuCores: 8,
     gpu: 'Adreno 740',
     ram: '12GB',
@@ -49,7 +48,7 @@ const mockMobileDevices: MobileDevice[] = [
   {
     id: 'dev-2',
     name: '平板设备',
-    model: '华为 MatePad Pro',
+    brand: '华为',
     cpuCores: 6,
     gpu: 'Mali-G78',
     ram: '8GB',
@@ -58,6 +57,45 @@ const mockMobileDevices: MobileDevice[] = [
     earningsToday: 0,
     earningsTotal: 15.22,
     computePower: 50
+  },
+  {
+    id: 'dev-3',
+    name: '备用手机',
+    brand: 'OPPO',
+    cpuCores: 8,
+    gpu: 'Adreno 650',
+    ram: '8GB',
+    status: 'disconnected',
+    batteryLevel: 45,
+    earningsToday: 0,
+    earningsTotal: 8.75,
+    computePower: 55
+  },
+  {
+    id: 'dev-4',
+    name: '工作手机',
+    brand: 'vivo',
+    cpuCores: 6,
+    gpu: 'Mali-G77',
+    ram: '6GB',
+    status: 'disconnected',
+    batteryLevel: 78,
+    earningsToday: 0,
+    earningsTotal: 12.30,
+    computePower: 45
+  },
+  {
+    id: 'dev-5',
+    name: '游戏手机',
+    brand: '一加',
+    cpuCores: 8,
+    gpu: 'Adreno 660',
+    ram: '16GB',
+    status: 'disconnected',
+    batteryLevel: 92,
+    earningsToday: 0,
+    earningsTotal: 23.50,
+    computePower: 80
   }
 ];
 
@@ -251,7 +289,7 @@ const MobileComputing = () => {
                         <SelectItem key={device.id} value={device.id}>
                           <span className="flex items-center">
                             <Smartphone className="h-4 w-4 mr-2" />
-                            {device.name} ({device.model})
+                            {device.brand} {device.name}
                           </span>
                         </SelectItem>
                       ))}
@@ -263,8 +301,8 @@ const MobileComputing = () => {
                   <div className="space-y-4 pt-2">
                     <div className="space-y-1">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">设备型号:</span>
-                        <span className="font-medium">{device.model}</span>
+                        <span className="text-muted-foreground">品牌:</span>
+                        <span className="font-medium">{device.brand}</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">CPU核心:</span>
@@ -453,7 +491,6 @@ const MobileComputing = () => {
           </div>
         </div>
 
-        {/* Hardware Selection Dialog */}
         <Dialog open={isHardwareDialogOpen} onOpenChange={setIsHardwareDialogOpen}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
@@ -492,7 +529,6 @@ const MobileComputing = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Payment Dialog */}
         <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
