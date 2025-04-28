@@ -111,7 +111,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
               <NavItem 
                 href="/agi-leasing" 
                 icon={<LineChart className="h-4 w-4" />}
-                title="按天租赁"
+                title="我要租赁"
                 isActive={isActive('/agi-leasing')}
               />
               <NavItem 
