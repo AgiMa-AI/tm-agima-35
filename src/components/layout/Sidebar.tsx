@@ -7,8 +7,8 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Home, Server, CreditCard, Clock, Settings, Database, 
-  Smartphone, BarChart, Bot, Cpu, Globe, Users, Key, 
-  Puzzle, Shield, LineChart, PieChart, Share2, Wifi, Zap,
+  Smartphone, BarChart, Bot, Cpu, Globe, Users, 
+  Puzzle, LineChart, PieChart, Share2, Wifi, Zap,
   Network
 } from 'lucide-react';
 
@@ -168,56 +168,8 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
                 isActive={isActive('/settings')}
               />
             </div>
-            
-            {!collapsed && <Separator className="my-4" />}
-            
-            <div className="grid gap-1 px-2 pt-2">
-              <h3 className={cn(
-                "mb-1 text-xs font-medium text-muted-foreground bg-primary/5 px-2 py-1 rounded-sm",
-                collapsed && "sr-only"
-              )}>
-                后台管理
-              </h3>
-              <NavItem 
-                href="/admin/dashboard" 
-                icon={<Shield className="h-4 w-4" />}
-                title="管理控制台"
-                isActive={isActive('/admin/dashboard')}
-              />
-              <NavItem 
-                href="/admin/users" 
-                icon={<Users className="h-4 w-4" />}
-                title="用户管理"
-                isActive={isActive('/admin/users')}
-              />
-              <NavItem 
-                href="/admin/tasks" 
-                icon={<Clock className="h-4 w-4" />}
-                title="任务调度"
-                isActive={isActive('/admin/tasks')}
-              />
-              <NavItem 
-                href="/admin/api-keys" 
-                icon={<Key className="h-4 w-4" />}
-                title="API 密钥"
-                isActive={isActive('/admin/api-keys')}
-              />
-            </div>
           </nav>
         </ScrollArea>
-        <div className="mt-auto p-4 border-t">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="w-full justify-center bg-primary/5 hover:bg-primary/10 text-primary" 
-            asChild
-          >
-            <Link to="/admin/dashboard">
-              <Shield className="h-4 w-4 mr-2" />
-              {!collapsed ? "后台管理" : null}
-            </Link>
-          </Button>
-        </div>
       </div>
     </aside>
   );
