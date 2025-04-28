@@ -25,6 +25,7 @@ import Invitation from "./pages/Invitation";
 import ServiceDistribution from "./pages/ServiceDistribution";
 import AGILeasing from "./pages/AGILeasing";
 import AGIDetailView from "./pages/AGIDetailView";
+import CaseStudy from "./pages/CaseStudy";
 
 // Create a new QueryClient instance with extended caching for our chart data
 const queryClient = new QueryClient({
@@ -64,6 +65,7 @@ const App = () => (
             <Route path="/service-distribution" element={<ServiceDistribution />} />
             <Route path="/agi-leasing" element={<AGILeasing />} />
             <Route path="/agi/:id" element={<AGIDetailView />} />
+            <Route path="/case-studies/:id" element={<CaseStudy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </TooltipProvider>
