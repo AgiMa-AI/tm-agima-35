@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,86 +9,89 @@ import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
-import { 
-  AlertCircle, 
-  BarChart3, 
-  Cpu, 
-  CreditCard, 
-  DollarSign, 
-  Download, 
-  HelpCircle, 
-  Plus, 
-  Server, 
-  Settings,
-  CheckCircle2,
-  TrendingUp,
-  Shield,
-  Globe,
-  Lock
-} from 'lucide-react';
+import { AlertCircle, BarChart3, Cpu, CreditCard, DollarSign, Download, HelpCircle, Plus, Server, Settings, CheckCircle2, TrendingUp, Shield, Globe, Lock } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MetricCard from '@/components/ui/MetricCard';
-
 const AGIHosting = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [selectedHardware, setSelectedHardware] = useState<string | null>(null);
   const isMobile = useIsMobile();
-  
   const earnings = {
     daily: 78.25,
     weekly: 547.80,
     monthly: 2350.45,
     pending: 125.60
   };
-  
-  const hardwareOptions = [
-    { id: 'gpu-basic', name: 'GPU 基础套餐', specs: '4x NVIDIA RTX 4080', price: 1200, earnings: '每月 ¥550-750' },
-    { id: 'gpu-pro', name: 'GPU 专业套餐', specs: '2x NVIDIA RTX 4090', price: 2400, earnings: '每月 ¥1100-1500' },
-    { id: 'gpu-enterprise', name: 'GPU 企业套餐', specs: '4x NVIDIA RTX 4090', price: 4800, earnings: '每月 ¥2200-3000' }
-  ];
-  
-  const hostingHistory = [
-    { id: 1, hardware: 'GPU 专业套餐', startDate: '2023-11-15', status: 'active', earnings: 1285.50 },
-    { id: 2, hardware: 'GPU 基础套餐', startDate: '2023-10-01', endDate: '2023-11-01', status: 'completed', earnings: 650.75 }
-  ];
-  
-  const benefits = [
-    {
-      icon: <TrendingUp className="h-10 w-10 text-primary" />,
-      title: "最大化闲置算力价值",
-      description: "通过我们的平台，您可以轻松将闲置的高性能GPU/CPU资源转化为稳定的被动收入来源。"
-    },
-    {
-      icon: <Shield className="h-10 w-10 text-primary" />,
-      title: "安全可靠的资源管理",
-      description: "我们采用企业级安全措施和先进的隔离技术，确保您的硬件资源得到安全、高效的使用。"
-    },
-    {
-      icon: <Globe className="h-10 w-10 text-primary" />,
-      title: "加入全球AGI网络",
-      description: "您的算力将支持全球研究者和开发者推动AI技术的发展，成为AGI技术进步的重要一环。"
-    },
-    {
-      icon: <Lock className="h-10 w-10 text-primary" />,
-      title: "灵活的控制与透明度",
-      description: "随时查看您的算力使用情况、收益数据和性能指标，完全掌控您的托管体验。"
-    }
-  ];
-  
-  const pricingComparison = [
-    { provider: "传统云服务", pricePerDay: "¥2400", utilization: "60%", monthlyRevenue: "不适用" },
-    { provider: "我们的平台", pricePerDay: "¥980", utilization: "95%", monthlyRevenue: "¥27,930" }
-  ];
-  
+  const hardwareOptions = [{
+    id: 'gpu-basic',
+    name: 'GPU 基础套餐',
+    specs: '4x NVIDIA RTX 4080',
+    price: 1200,
+    earnings: '每月 ¥550-750'
+  }, {
+    id: 'gpu-pro',
+    name: 'GPU 专业套餐',
+    specs: '2x NVIDIA RTX 4090',
+    price: 2400,
+    earnings: '每月 ¥1100-1500'
+  }, {
+    id: 'gpu-enterprise',
+    name: 'GPU 企业套餐',
+    specs: '4x NVIDIA RTX 4090',
+    price: 4800,
+    earnings: '每月 ¥2200-3000'
+  }];
+  const hostingHistory = [{
+    id: 1,
+    hardware: 'GPU 专业套餐',
+    startDate: '2023-11-15',
+    status: 'active',
+    earnings: 1285.50
+  }, {
+    id: 2,
+    hardware: 'GPU 基础套餐',
+    startDate: '2023-10-01',
+    endDate: '2023-11-01',
+    status: 'completed',
+    earnings: 650.75
+  }];
+  const benefits = [{
+    icon: <TrendingUp className="h-10 w-10 text-primary" />,
+    title: "最大化闲置算力价值",
+    description: "通过我们的平台，您可以轻松将闲置的高性能GPU/CPU资源转化为稳定的被动收入来源。"
+  }, {
+    icon: <Shield className="h-10 w-10 text-primary" />,
+    title: "安全可靠的资源管理",
+    description: "我们采用企业级安全措施和先进的隔离技术，确保您的硬件资源得到安全、高效的使用。"
+  }, {
+    icon: <Globe className="h-10 w-10 text-primary" />,
+    title: "加入全球AGI网络",
+    description: "您的算力将支持全球研究者和开发者推动AI技术的发展，成为AGI技术进步的重要一环。"
+  }, {
+    icon: <Lock className="h-10 w-10 text-primary" />,
+    title: "灵活的控制与透明度",
+    description: "随时查看您的算力使用情况、收益数据和性能指标，完全掌控您的托管体验。"
+  }];
+  const pricingComparison = [{
+    provider: "传统云服务",
+    pricePerDay: "¥2400",
+    utilization: "60%",
+    monthlyRevenue: "不适用"
+  }, {
+    provider: "我们的平台",
+    pricePerDay: "¥980",
+    utilization: "95%",
+    monthlyRevenue: "¥27,930"
+  }];
   const switchToHardwareTab = () => {
     const hardwareTab = document.querySelector('button[value="hardware"]') as HTMLButtonElement;
     if (hardwareTab) {
       hardwareTab.click();
     }
   };
-  
-  return (
-    <Layout>
+  return <Layout>
       <div className="space-y-6">
         <div className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg p-4 sm:p-8 shadow-lg overflow-hidden">
           <div className="absolute inset-0 opacity-10">
@@ -115,9 +117,7 @@ const AGIHosting = () => {
               <Button size={isMobile ? "sm" : "lg"} className="bg-white text-blue-700 hover:bg-blue-50 touch-friendly press-effect">
                 立即开始托管
               </Button>
-              <Button size={isMobile ? "sm" : "lg"} variant="outline" className="text-white border-white hover:bg-white/10 touch-friendly press-effect">
-                了解更多
-              </Button>
+              
             </div>
             
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
@@ -138,30 +138,13 @@ const AGIHosting = () => {
         </div>
         
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
-          <MetricCard 
-            title="今日收益" 
-            value={`¥${earnings.daily.toFixed(2)}`}
-            tooltip="过去24小时内的算力托管收益"
-          />
+          <MetricCard title="今日收益" value={`¥${earnings.daily.toFixed(2)}`} tooltip="过去24小时内的算力托管收益" />
           
-          <MetricCard 
-            title="本周收益" 
-            value={`¥${earnings.weekly.toFixed(2)}`}
-            tooltip="过去7天的算力托管累计收益"
-          />
+          <MetricCard title="本周收益" value={`¥${earnings.weekly.toFixed(2)}`} tooltip="过去7天的算力托管累计收益" />
           
-          <MetricCard 
-            title="本月收益" 
-            value={`¥${earnings.monthly.toFixed(2)}`}
-            tooltip="当月累计算力托管收益"
-          />
+          <MetricCard title="本月收益" value={`¥${earnings.monthly.toFixed(2)}`} tooltip="当月累计算力托管收益" />
           
-          <MetricCard 
-            title="待结算" 
-            value={`¥${earnings.pending.toFixed(2)}`}
-            icon={<HelpCircle className="h-4 w-4" />}
-            tooltip="已确认但尚未结算的收益，每月15日统一结算"
-          />
+          <MetricCard title="待结算" value={`¥${earnings.pending.toFixed(2)}`} icon={<HelpCircle className="h-4 w-4" />} tooltip="已确认但尚未结算的收益，每月15日统一结算" />
         </div>
         
         <Card className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/70 dark:to-slate-900 border-0">
@@ -171,13 +154,11 @@ const AGIHosting = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {benefits.map((benefit, index) => (
-                <div key={index} className="bg-background rounded-lg p-4 sm:p-6 border shadow-sm hover:shadow-md transition-shadow press-effect">
+              {benefits.map((benefit, index) => <div key={index} className="bg-background rounded-lg p-4 sm:p-6 border shadow-sm hover:shadow-md transition-shadow press-effect">
                   <div className="mb-3 sm:mb-4">{benefit.icon}</div>
                   <h3 className="text-base sm:text-lg font-medium mb-2">{benefit.title}</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">{benefit.description}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
           </CardContent>
         </Card>
@@ -201,19 +182,15 @@ const AGIHosting = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {pricingComparison.map((pricing, index) => (
-                      <TableRow key={index}>
+                    {pricingComparison.map((pricing, index) => <TableRow key={index}>
                         <TableCell className="font-medium">{pricing.provider}</TableCell>
                         <TableCell>{pricing.pricePerDay}</TableCell>
                         <TableCell>{pricing.utilization}</TableCell>
                         <TableCell>{pricing.monthlyRevenue}</TableCell>
                         <TableCell>
-                          {index === 1 && (
-                            <Badge className="bg-green-500">推荐</Badge>
-                          )}
+                          {index === 1 && <Badge className="bg-green-500">推荐</Badge>}
                         </TableCell>
-                      </TableRow>
-                    ))}
+                      </TableRow>)}
                   </TableBody>
                 </Table>
               </div>
@@ -244,18 +221,14 @@ const AGIHosting = () => {
                 <CardDescription>您当前的算力托管状态和收益分析</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                {hostingHistory.some(h => h.status === 'active') ? (
-                  <>
+                {hostingHistory.some(h => h.status === 'active') ? <>
                     <div className="rounded-lg border p-4">
                       <h3 className="font-medium mb-2 flex items-center">
                         <Server className="h-5 w-5 mr-2 text-primary" />
                         当前活跃的托管
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {hostingHistory
-                          .filter(h => h.status === 'active')
-                          .map(hosting => (
-                            <div key={hosting.id} className="bg-muted/50 p-4 rounded-lg">
+                        {hostingHistory.filter(h => h.status === 'active').map(hosting => <div key={hosting.id} className="bg-muted/50 p-4 rounded-lg">
                               <p className="font-medium">{hosting.hardware}</p>
                               <p className="text-sm text-muted-foreground">启动时间: {hosting.startDate}</p>
                               <p className="text-sm font-medium mt-2">已获收益: ¥{hosting.earnings.toFixed(2)}</p>
@@ -266,8 +239,7 @@ const AGIHosting = () => {
                                   管理
                                 </Button>
                               </div>
-                            </div>
-                          ))}
+                            </div>)}
                       </div>
                     </div>
                     
@@ -296,9 +268,7 @@ const AGIHosting = () => {
                         </CardContent>
                       </Card>
                     </div>
-                  </>
-                ) : (
-                  <div className="text-center py-8 sm:py-12">
+                  </> : <div className="text-center py-8 sm:py-12">
                     <Cpu className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-muted-foreground/50 mb-4" />
                     <h3 className="text-lg sm:text-xl font-medium mb-2">您还没有活跃的算力托管</h3>
                     <p className="text-muted-foreground max-w-md mx-auto mb-6 text-sm sm:text-base">
@@ -308,8 +278,7 @@ const AGIHosting = () => {
                       <Plus className="h-4 w-4 mr-2" />
                       开始托管
                     </Button>
-                  </div>
-                )}
+                  </div>}
               </CardContent>
             </Card>
           </TabsContent>
@@ -322,21 +291,10 @@ const AGIHosting = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {hardwareOptions.map(option => (
-                    <div 
-                      key={option.id}
-                      className={`border rounded-lg p-4 cursor-pointer transition-all press-effect active:scale-[0.98] ${
-                        selectedHardware === option.id 
-                          ? 'border-primary bg-primary/5' 
-                          : 'hover:border-muted-foreground/50'
-                      }`}
-                      onClick={() => setSelectedHardware(option.id)}
-                    >
+                  {hardwareOptions.map(option => <div key={option.id} className={`border rounded-lg p-4 cursor-pointer transition-all press-effect active:scale-[0.98] ${selectedHardware === option.id ? 'border-primary bg-primary/5' : 'hover:border-muted-foreground/50'}`} onClick={() => setSelectedHardware(option.id)}>
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-medium">{option.name}</h3>
-                        {selectedHardware === option.id && (
-                          <Badge className="bg-primary">已选择</Badge>
-                        )}
+                        {selectedHardware === option.id && <Badge className="bg-primary">已选择</Badge>}
                       </div>
                       <p className="text-sm text-muted-foreground">{option.specs}</p>
                       <Separator className="my-3" />
@@ -344,12 +302,10 @@ const AGIHosting = () => {
                         <p className="font-bold">¥{option.price}/月</p>
                         <p className="text-sm text-green-600">{option.earnings}</p>
                       </div>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
                 
-                {selectedHardware && (
-                  <div className="mt-6 space-y-4 border-t pt-6">
+                {selectedHardware && <div className="mt-6 space-y-4 border-t pt-6">
                     <h3 className="font-medium">填写托管信息</h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -359,10 +315,7 @@ const AGIHosting = () => {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="duration">托管时长</Label>
-                        <select 
-                          id="duration"
-                          className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        >
+                        <select id="duration" className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                           <option value="1">1个月</option>
                           <option value="3">3个月（享9.5折）</option>
                           <option value="6">6个月（享9折）</option>
@@ -407,8 +360,7 @@ const AGIHosting = () => {
                       <Button variant="outline" className="w-full sm:w-auto touch-friendly press-effect">取消</Button>
                       <Button className="w-full sm:w-auto touch-friendly press-effect">确认托管</Button>
                     </div>
-                  </div>
-                )}
+                  </div>}
               </CardContent>
             </Card>
           </TabsContent>
@@ -441,8 +393,7 @@ const AGIHosting = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {hostingHistory.map(hosting => (
-                          <TableRow key={hosting.id}>
+                        {hostingHistory.map(hosting => <TableRow key={hosting.id}>
                             <TableCell>{hosting.hardware}</TableCell>
                             <TableCell>{hosting.startDate}</TableCell>
                             <TableCell>{hosting.endDate || '-'}</TableCell>
@@ -452,15 +403,12 @@ const AGIHosting = () => {
                               </Badge>
                             </TableCell>
                             <TableCell className="text-right font-medium">¥{hosting.earnings.toFixed(2)}</TableCell>
-                          </TableRow>
-                        ))}
-                        {hostingHistory.length === 0 && (
-                          <TableRow>
+                          </TableRow>)}
+                        {hostingHistory.length === 0 && <TableRow>
                             <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
                               暂无托管记录
                             </TableCell>
-                          </TableRow>
-                        )}
+                          </TableRow>}
                       </TableBody>
                     </Table>
                   </div>
@@ -468,8 +416,7 @@ const AGIHosting = () => {
 
                 {/* 移动端版本的托管记录 - 在小屏幕上显示卡片式布局 */}
                 <div className="sm:hidden mt-4 space-y-4">
-                  {hostingHistory.map(hosting => (
-                    <div key={hosting.id} className="border rounded-lg p-4 press-effect">
+                  {hostingHistory.map(hosting => <div key={hosting.id} className="border rounded-lg p-4 press-effect">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-medium">{hosting.hardware}</h3>
                         <Badge className={hosting.status === 'active' ? 'bg-green-500' : 'bg-muted'}>
@@ -490,21 +437,16 @@ const AGIHosting = () => {
                           <span className="font-medium">¥{hosting.earnings.toFixed(2)}</span>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                  {hostingHistory.length === 0 && (
-                    <div className="text-center py-10 text-muted-foreground">
+                    </div>)}
+                  {hostingHistory.length === 0 && <div className="text-center py-10 text-muted-foreground">
                       暂无托管记录
-                    </div>
-                  )}
+                    </div>}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default AGIHosting;
