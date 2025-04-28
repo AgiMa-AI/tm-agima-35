@@ -2,12 +2,12 @@
 import { mockUsers } from "@/data/mockUsers";
 import { User, UserWithPassword } from "@/types/auth";
 
-// 生成唯一邀请码
+// 生成唯一激活码
 export const generateInviteCode = (): string => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let code = 'AGI-';
+  const digits = '0123456789';
+  let code = 'AGI';
   for (let i = 0; i < 6; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += digits.charAt(Math.floor(Math.random() * digits.length));
   }
   return code;
 };

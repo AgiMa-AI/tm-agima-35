@@ -14,8 +14,8 @@ import { toast } from '@/components/ui/use-toast';
 
 const Invitation = () => {
   const { user, getUserInviteTree } = useAuth();
-  // Mock invitation data
-  const myInviteCode = user?.inviteCode || "AGI-COMPUTE-42X9Z";
+  // Mock invitation data with updated format (AGI + 6 digits)
+  const myInviteCode = user?.inviteCode || "AGI123456";
   const invitedUsers = [
     { id: 1, name: "张明", joinDate: "2025-02-15", contribution: 1280, status: "active" },
     { id: 2, name: "李小华", joinDate: "2025-02-20", contribution: 895, status: "active" },
