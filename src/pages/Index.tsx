@@ -36,13 +36,21 @@ const Index = () => {
     lastUpdated
   } = useChartData();
 
-  // Generate random storage capacity between 500,000 and 2,000,000 GB
-  const [randomStorage, setRandomStorage] = useState(0);
+  // Generate random 3-digit storage capacity in GB (100-999) and store in localStorage
+  const [storageCapacity, setStorageCapacity] = useState<number>(0);
   
   useEffect(() => {
-    // Generate a random number between 500,000 and 2,000,000
-    const randomGigabytes = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
-    setRandomStorage(randomGigabytes);
+    // Check if we already have a stored value
+    const storedValue = localStorage.getItem('storageCapacity');
+    if (storedValue) {
+      setStorageCapacity(parseInt(storedValue, 10));
+    } else {
+      // Generate a random number between 100 and 999 (3 digits)
+      const randomGigabytes = Math.floor(Math.random() * 900) + 100;
+      setStorageCapacity(randomGigabytes);
+      // Save to localStorage to persist between visits
+      localStorage.setItem('storageCapacity', randomGigabytes.toString());
+    }
   }, []);
   
   const handleSearch = (query: string) => {
@@ -100,7 +108,7 @@ const Index = () => {
           />
           <MetricCard
             title="总存储容量"
-            value={`${randomStorage.toLocaleString()} GB`}
+            value={`${storageCapacity.toLocaleString()} GB`}
             description="所有实例总计"
             icon={<Database className="h-4 w-4" />}
           />
