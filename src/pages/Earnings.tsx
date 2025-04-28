@@ -11,7 +11,7 @@ const Earnings = () => {
     <Layout>
       <div className="space-y-4 sm:space-y-6">
         <div className="bg-background p-3 sm:p-4 rounded-md shadow-sm">
-          <h1 className="text-xl sm:text-2xl font-medium">收益管理</h1>
+          <h1 className="text-xl sm:text-2xl font-medium">财务数据中心</h1>
           <p className="text-muted-foreground text-sm sm:text-base mt-1">
             查看并管理您的算力出租收益
           </p>

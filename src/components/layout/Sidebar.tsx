@@ -129,7 +129,7 @@ const Sidebar = ({ collapsed, className }: SidebarProps) => {
               <NavItem 
                 href="/earnings" 
                 icon={<PieChart className="h-4 w-4" />}
-                title="收益明细"
+                title="财务数据中心"
                 isActive={isActive('/earnings')}
               />
             </div>

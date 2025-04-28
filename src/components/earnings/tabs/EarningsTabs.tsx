@@ -18,7 +18,7 @@ const EarningsTabs = ({ activeTab, onTabChange }: EarningsTabsProps) => {
           className={activeTab === 'tasks' ? 'bg-primary text-primary-foreground' : ''}
         >
           <ListFilter className="h-4 w-4 mr-2" />
-          算力任务记录
+          财务任务记录
         </TabsTrigger>
         <TabsTrigger 
           value="transfer" 
