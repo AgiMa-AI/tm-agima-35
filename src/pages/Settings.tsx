@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Check, CreditCard, Key, Shield, User, Wallet } from 'lucide-react';
+import { AlertCircle, Check, CreditCard, Key, Lock, Shield, User, Wallet } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
 
 const Settings = () => {
@@ -73,8 +72,16 @@ const Settings = () => {
                     <Input id="phone" defaultValue="13800138000" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="company">公司</Label>
-                    <Input id="company" defaultValue="科技有限公司" />
+                    <Label htmlFor="company" className="flex items-center">
+                      公司
+                      <Lock className="ml-1 h-3 w-3 text-muted-foreground" />
+                    </Label>
+                    <Input 
+                      id="company" 
+                      defaultValue="腾目科技有限公司" 
+                      disabled={true}
+                      className="bg-muted cursor-not-allowed"
+                    />
                   </div>
                 </div>
                 <Button>保存更改</Button>
