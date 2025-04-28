@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -54,7 +55,7 @@ const Settings = () => {
           <TabsContent value="account" className="space-y-4 mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>个人信息</CardTitle>
+                <CardTitle>用户资料（User Profile）</CardTitle>
                 <CardDescription>更新您的账户信息</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
