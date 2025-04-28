@@ -30,12 +30,12 @@ const LoginForm = ({ isLoading, onSubmit }: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
       <div className="space-y-1.5 sm:space-y-2">
-        <Label htmlFor="username" className="text-sm font-medium">用户名</Label>
+        <Label htmlFor="username" className="text-sm font-medium">AGI账户</Label>
         <div className="relative">
           <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
             id="username" 
-            placeholder="输入您的用户名" 
+            placeholder="输入您的AGI账户" 
             className="pl-10"
             value={formData.username}
             onChange={(e) => setFormData({...formData, username: e.target.value})}
