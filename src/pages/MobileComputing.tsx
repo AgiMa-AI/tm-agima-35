@@ -289,7 +289,7 @@ const MobileComputing = () => {
                         <SelectItem key={device.id} value={device.id}>
                           <span className="flex items-center">
                             <Smartphone className="h-4 w-4 mr-2" />
-                            {device.brand} {device.name}
+                            {device.brand}
                           </span>
                         </SelectItem>
                       ))}
@@ -303,18 +303,6 @@ const MobileComputing = () => {
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">品牌:</span>
                         <span className="font-medium">{device.brand}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">CPU核心:</span>
-                        <span className="font-medium">{device.cpuCores}核</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">GPU:</span>
-                        <span className="font-medium">{device.gpu}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">内存:</span>
-                        <span className="font-medium">{device.ram}</span>
                       </div>
                     </div>
                     
